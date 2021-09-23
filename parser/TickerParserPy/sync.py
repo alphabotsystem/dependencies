@@ -1,4 +1,3 @@
-from os import environ
 from zmq import Context, Poller, REQ, LINGER, POLLIN
 from orjson import loads
 from io import BytesIO

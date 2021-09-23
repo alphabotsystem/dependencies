@@ -1,4 +1,3 @@
-from os import environ
 from time import time
 from zmq import Context, Poller
 from zmq import REQ, LINGER, POLLIN

@@ -1,4 +1,3 @@
-from os import environ
 from time import time
 from base64 import decodebytes
 from zmq.asyncio import Context, Poller

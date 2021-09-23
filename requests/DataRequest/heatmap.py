@@ -1,4 +1,3 @@
-from os import environ
 from sys import maxsize as MAXSIZE
 from time import time
 from traceback import format_exc

@@ -1,4 +1,3 @@
-from os import environ
 from zmq.asyncio import Context, Poller
 from zmq import REQ, LINGER, POLLIN
 from orjson import loads
