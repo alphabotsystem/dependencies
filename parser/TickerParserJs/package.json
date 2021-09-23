@@ -1,0 +1,9 @@
+{
+  "dependencies": {
+    "ccxt": "^1.55.71"
+  },
+  "name": "ticker-parser-js",
+  "version": "1.0.0",
+  "main": "core.js",
+  "license": "MIT"
+}
