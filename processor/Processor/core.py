@@ -173,23 +173,23 @@ class Processor(object):
 		payload2 = {"raw": {"quotePrice": [1]}}
 
 		if fromBase not in ["USD", "USDT", "USDC", "DAI", "HUSD", "TUSD", "PAX", "USDK", "USDN", "BUSD", "GUSD", "USDS"]:
-			outputMessage, request = await Processor.process_quote_arguments(messageRequest, [], tickerId=fromBase + "USD", excluded=["CCXT", "Serum", "LLD"])
+			outputMessage, request = await Processor.process_quote_arguments(messageRequest, [], tickerId=f"{fromBase}USD", excluded=["LLD"])
 			if outputMessage is not None: return None, outputMessage
 			payload1, quoteText = await Processor.process_request("quote", messageRequest.authorId, request)
 			if payload1 is None: return None, quoteText
-			fromBase = request.get(payload1.get("platform")).get("ticker").get("id")
+			fromBase = request.get(payload1.get("platform")).get("ticker").get("base")
 		else:
 			fromBase = "USD"
 		if toBase not in ["USD", "USDT", "USDC", "DAI", "HUSD", "TUSD", "PAX", "USDK", "USDN", "BUSD", "GUSD", "USDS"]:
-			outputMessage, request = await Processor.process_quote_arguments(messageRequest, [], tickerId="USD" + toBase, excluded=["CCXT", "Serum", "LLD"])
+			outputMessage, request = await Processor.process_quote_arguments(messageRequest, [], tickerId=f"{toBase}USD", excluded=["LLD"])
 			if outputMessage is not None: return None, outputMessage
 			payload2, quoteText = await Processor.process_request("quote", messageRequest.authorId, request)
 			if payload2 is None: return None, quoteText
-			toBase = request.get(payload2.get("platform")).get("ticker").get("id")
+			toBase = request.get(payload2.get("platform")).get("ticker").get("base")
 		else:
 			toBase = "USD"
 
-		convertedValue = payload1["raw"]["quotePrice"][0] * amount * payload2["raw"]["quotePrice"][0]
+		convertedValue = payload1["raw"]["quotePrice"][0] * amount / payload2["raw"]["quotePrice"][0]
 		if convertedValue > 1000000000000000000000: return None, "Sir?"
 
 		payload = {
