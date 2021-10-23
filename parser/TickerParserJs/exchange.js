@@ -44,6 +44,10 @@ class StocksExchange {
 		this.markets = {}
 		this.timeframes = ["1m"]
 	}
+
+	milliseconds() {
+		return Date.now();
+	}
 }
 
 module.exports = { Exchange };

@@ -49,3 +49,6 @@ class StocksExchange(object):
 		self.symbols = []
 		self.markets = {}
 		self.timeframes = ["1m"]
+
+	def milliseconds():
+		return int(time() * 1000)
