@@ -3,7 +3,7 @@ from time import time
 from asyncio import wait
 from traceback import format_exc
 
-from TickerParserPy import TickerParser, Exchange
+from TickerParser import TickerParser, Exchange
 from .parameter import TradeParameter as Parameter
 from .abstract import AbstractRequestHandler, AbstractRequest
 

@@ -2,7 +2,7 @@ from sys import maxsize as MAXSIZE
 from asyncio import wait
 from traceback import format_exc
 
-from TickerParserPy import TickerParser
+from TickerParser import TickerParser
 
 class AbstractRequestHandler(object):
 	def __init__(self, platforms):

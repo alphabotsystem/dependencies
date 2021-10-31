@@ -3,7 +3,7 @@ from time import time
 from re import search
 from traceback import format_exc
 
-from TickerParserPy import TickerParser, Exchange
+from TickerParser import TickerParser, Exchange
 from .parameter import ChartParameter as Parameter
 from .abstract import AbstractRequestHandler, AbstractRequest
 

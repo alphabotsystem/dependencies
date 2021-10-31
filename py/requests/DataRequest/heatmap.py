@@ -2,7 +2,7 @@ from sys import maxsize as MAXSIZE
 from time import time
 from traceback import format_exc
 
-from TickerParserPy import TickerParser
+from TickerParser import TickerParser
 from .parameter import HeatmapParameter as Parameter
 from .abstract import AbstractRequestHandler, AbstractRequest
 

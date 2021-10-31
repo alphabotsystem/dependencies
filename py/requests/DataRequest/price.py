@@ -2,7 +2,7 @@ from sys import maxsize as MAXSIZE
 from time import time
 from traceback import format_exc
 
-from TickerParserPy import TickerParser, Exchange
+from TickerParser import TickerParser, Exchange
 from .parameter import PriceParameter as Parameter
 from .abstract import AbstractRequestHandler, AbstractRequest
 
