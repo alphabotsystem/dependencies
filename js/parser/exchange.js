@@ -1,5 +1,4 @@
 const ccxt = require('ccxt');
-const supported = require("./supported.js");
 
 
 class Exchange {
@@ -10,12 +9,11 @@ class Exchange {
 		this.properties = null
 		this.type = marketType
 
-		if (supported.ccxtExchanges.includes(id) && ccxt.exchanges.includes(id)) {
+		if (marketType === "crypto") {
 			this.properties = new ccxt[id];
 			if (id == "binanceusdm") this.name = "Binance Futures" // USDⓈ-M
 			else if (id == "binancecoinm") this.name = "Binance Futures COIN-M"
 			else this.name = this.properties.name
-			this.type = "crypto"
 		} else {
 			this.properties = new StocksExchange(id)
 			this.name = !name ? id.charAt(0).toUpperCase() + id.substring(1) : name

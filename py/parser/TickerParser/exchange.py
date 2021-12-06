@@ -17,7 +17,6 @@ class Exchange(object):
 			if id == "binanceusdm": self.name = "Binance Futures" # USDⓈ-M
 			elif id == "binancecoinm": self.name = "Binance Futures COIN-M"
 			else: self.name = self.properties.name
-			self.type = "crypto"
 		else:
 			self.properties = StocksExchange(id)
 			self.name = id.title() if name is None else name
