@@ -3,8 +3,6 @@ from requests import post, get
 from json import dumps
 import ccxt
 
-from . import supported
-
 
 class Exchange(object):
 	def __init__(self, id, marketType, name=None, region=None):
@@ -14,7 +12,7 @@ class Exchange(object):
 		self.properties = None
 		self.type = marketType
 
-		if id in supported.ccxtExchanges and id in ccxt.exchanges:
+		if self.type == "crypto":
 			self.properties = getattr(ccxt, id)()
 			if id == "binanceusdm": self.name = "Binance Futures" # USDⓈ-M
 			elif id == "binancecoinm": self.name = "Binance Futures COIN-M"
