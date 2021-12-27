@@ -1,7 +1,13 @@
+from datetime import datetime
+from pytz import utc
+
 class MessageRequest(object):
 	def __init__(self, raw=None, content=None, accountId=None, authorId=None, channelId=None, guildId=None, presetUsed=False, accountProperties={}, guildProperties={}):
 		self.raw = raw
 		self.content = content
+
+		_timestamp = datetime.now().astimezone(utc)
+		self.snapshot = "{}-{:02d}".format(_timestamp.year, _timestamp.month)
 
 		self.accountId = accountId
 		self.authorId = authorId

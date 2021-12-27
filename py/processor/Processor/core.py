@@ -26,7 +26,7 @@ class Processor(object):
 	zmqContext = Context.instance()
 
 	@staticmethod
-	async def process_request(service, authorId, request, timeout=60, retries=3):
+	async def process_task(service, authorId, request, timeout=60, retries=3):
 		socket = Processor.zmqContext.socket(REQ)
 		payload, responseText = None, None
 		socket.connect(Processor.services[service])
@@ -50,7 +50,7 @@ class Processor(object):
 		else:
 			socket.close()
 			if retries == 1: raise Exception("time out")
-			else: payload, responseText = await Processor.process_request(service, authorId, request, retries=retries-1)
+			else: payload, responseText = await Processor.process_task(service, authorId, request, retries=retries-1)
 
 		return payload, responseText
 
@@ -163,11 +163,9 @@ class Processor(object):
 
 	@staticmethod
 	async def process_conversion(messageRequest, fromBase, toBase, amount):
-		try: amount = float(amount)
-		except: return None, "Provided amount is not a number."
-		if amount > 1000000000000000000000: return None, "Sir?"
+		if amount <= 0 or amount >= 1000000000000000: return None, "Sir?"
 
-		if fromBase == toBase: return None, "Converting into the same unit is trivial."
+		if fromBase == toBase: return None, "Converting into the same asset is trivial."
 
 		payload1 = {"raw": {"quotePrice": [1]}}
 		payload2 = {"raw": {"quotePrice": [1]}}
@@ -175,7 +173,7 @@ class Processor(object):
 		if fromBase not in ["USD", "USDT", "USDC", "DAI", "HUSD", "TUSD", "PAX", "USDK", "USDN", "BUSD", "GUSD", "USDS"]:
 			outputMessage, request = await Processor.process_quote_arguments(messageRequest, [], tickerId=f"{fromBase}USD", excluded=["LLD"])
 			if outputMessage is not None: return None, outputMessage
-			payload1, quoteText = await Processor.process_request("quote", messageRequest.authorId, request)
+			payload1, quoteText = await Processor.process_task("quote", messageRequest.authorId, request)
 			if payload1 is None: return None, quoteText
 			fromBase = request.get(payload1.get("platform")).get("ticker").get("base")
 		else:
@@ -183,14 +181,14 @@ class Processor(object):
 		if toBase not in ["USD", "USDT", "USDC", "DAI", "HUSD", "TUSD", "PAX", "USDK", "USDN", "BUSD", "GUSD", "USDS"]:
 			outputMessage, request = await Processor.process_quote_arguments(messageRequest, [], tickerId=f"{toBase}USD", excluded=["LLD"])
 			if outputMessage is not None: return None, outputMessage
-			payload2, quoteText = await Processor.process_request("quote", messageRequest.authorId, request)
+			payload2, quoteText = await Processor.process_task("quote", messageRequest.authorId, request)
 			if payload2 is None: return None, quoteText
 			toBase = request.get(payload2.get("platform")).get("ticker").get("base")
 		else:
 			toBase = "USD"
 
 		convertedValue = payload1["raw"]["quotePrice"][0] * amount / payload2["raw"]["quotePrice"][0]
-		if convertedValue > 1000000000000000000000: return None, "Sir?"
+		if convertedValue > 1000000000000000: return None, "Sir?"
 
 		payload = {
 			"quotePrice": "{:,.3f} {}".format(amount, fromBase),

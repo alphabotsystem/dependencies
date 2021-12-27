@@ -23,7 +23,7 @@ PARAMETERS = {
 		Parameter("public", "public trigger", ["pub", "publish", "public"], ccxt="public", iexc="public", serum="public"),
 		Parameter("message", "alert trigger message", ["message"], ccxt="message", iexc="message", serum="message"),
 		Parameter("forcePlatform", "force quote on CoinGecko", ["cg", "coingecko"], coingecko=True),
-		Parameter("forcePlatform", "force quote on a crypto exchange", ["cx", "ccxt", "crypto"], ccxt=True),
+		Parameter("forcePlatform", "force quote on a crypto exchange", ["cx", "ccxt", "crypto", "exchange"], ccxt=True),
 		Parameter("forcePlatform", "force quote on a stock exchange", ["ix", "iexc", "stock"], iexc=True),
 		Parameter("forcePlatform", "force quote on Serum", ["serum", "srm"], serum=True),
 		Parameter("forcePlatform", "force quote on Alternative.me", ["am", "alternativeme"], alternativeme=True),
