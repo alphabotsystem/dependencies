@@ -8,6 +8,9 @@ from .parameter import TradeParameter as Parameter
 from .abstract import AbstractRequestHandler, AbstractRequest
 
 
+PARAMETERS = []
+
+
 class TradeRequestHandler(AbstractRequestHandler):
 	def __init__(self, tickerId, platforms, bias="traditional", **kwargs):
 		super().__init__(platforms)
