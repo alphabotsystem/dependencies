@@ -60,3 +60,8 @@ class TickerParser(object):
 	def get_formatted_amount_ccxt(exchangeId, symbol, amount):
 		[response] = TickerParser.execute_parser_request(b"get_formatted_amount_ccxt", [exchangeId.encode(), symbol.encode(), str(amount).encode()])
 		return response.decode()
+
+	@staticmethod
+	def get_venues(platforms, tickerId):
+		[response] = TickerParser.execute_parser_request(b"get_venues", [platforms.encode(), tickerId.encode()])
+		return loads(response)

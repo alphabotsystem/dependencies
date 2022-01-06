@@ -238,8 +238,6 @@ PARAMETERS = {
 		Parameter("heatmapIntensity", "medium heatmap intensity", ["medium", "med"], tradinglite=(0,62)),
 		Parameter("heatmapIntensity", "high heatmap intensity", ["high"], tradinglite=(0,39)),
 		Parameter("heatmapIntensity", "crazy heatmap intensity", ["crazy"], tradinglite=(0,16)),
-		Parameter("autoDeleteOverride", "autodelete", ["del", "delete", "autodelete"], tradinglite="autodelete", tradingview="autodelete", bookmap="autodelete", gocharting="autodelete", finviz="autodelete", alternativeme="autodelete", alphaflow="autodelete"),
-		Parameter("hideRequest", "hide request", ["hide"], tradinglite="hide", tradingview="hide", bookmap="hide", gocharting="hide", finviz="hide", alternativeme="hide", alphaflow="hide"),
 		Parameter("forcePlatform", "force chart on TradingLite", ["tl", "tradinglite"], tradinglite=True),
 		Parameter("forcePlatform", "force chart on TradingView", ["tv", "tradingview"], tradingview=True),
 		Parameter("forcePlatform", "force chart on Bookmap", ["bm", "bookmap"], bookmap=True),

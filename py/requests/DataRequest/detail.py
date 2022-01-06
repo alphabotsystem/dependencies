@@ -11,8 +11,6 @@ PARAMETERS = {
 	"preferences": [
 		Parameter("forcePlatform", "force quote on CoinGecko", ["cg", "coingecko", "crypto"], coingecko=True),
 		Parameter("forcePlatform", "force quote on a stock exchange", ["ix", "iexc", "stock", "stocks"], iexc=True),
-		Parameter("autoDeleteOverride", "autodelete", ["del", "delete", "autodelete"], coingecko="autodelete", iexc="autodelete"),
-		Parameter("hideRequest", "hide request", ["hide"], coingecko="hide", iexc="hide")
 	]
 }
 DEFAULTS = {

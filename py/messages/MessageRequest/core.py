@@ -2,7 +2,7 @@ from datetime import datetime
 from pytz import utc
 
 class MessageRequest(object):
-	def __init__(self, raw=None, content=None, accountId=None, authorId=None, channelId=None, guildId=None, presetUsed=False, accountProperties={}, guildProperties={}):
+	def __init__(self, raw=None, content=None, accountId=None, authorId=None, channelId=None, guildId=None, presetUsed=False, accountProperties={}, guildProperties={}, autodelete=None):
 		self.raw = raw
 		self.content = content
 
@@ -16,17 +16,19 @@ class MessageRequest(object):
 
 		self.accountProperties = accountProperties
 		self.guildProperties = MessageRequest.create_guild_settings(guildProperties)
-		self.overrides = self.guildProperties.get("overrides", {})
+		self.overrides = self.guildProperties.get("overrides", {}).get(str(channelId), {})
 
 		self.presetUsed = False
 
-		self.autodelete = self.guildProperties["settings"]["messageProcessing"]["autodelete"]
-		self.marketBias = self.guildProperties["settings"]["messageProcessing"]["bias"]
+		self.autodelete = autodelete
+		if autodelete is not None and autodelete < 0:
+			self.autodelete = None
+		elif autodelete is None and self.overrides.get("messageProcessing", {}).get("autodelete", self.guildProperties["settings"]["messageProcessing"]["autodelete"]):
+			self.autodelete = 1
 
-		if str(channelId) in self.overrides:
-			self.autodelete = self.overrides[str(channelId)].get("messageProcessing", {}).get("autodelete", self.autodelete)
-			self.marketBias = self.overrides[str(channelId)].get("messageProcessing", {}).get("bias", self.marketBias)
-	
+		self.marketBias = self.overrides.get("messageProcessing", {}).get("bias", self.guildProperties["settings"]["messageProcessing"]["bias"])
+
+
 	# -------------------------
 	# Properties
 	# -------------------------
@@ -43,24 +45,24 @@ class MessageRequest(object):
 	# -------------------------
 
 	def get_platform_order_for(self, commandType):
-		if commandType == "charts":
+		if commandType == "c":
 			return (self.accountProperties["settings"]["charts"]["preferredOrder"] if "settings" in self.accountProperties else ["TradingView", "GoCharting", "Finviz", "TradingLite", "Bookmap"]) + ["Alternative.me"]
-		elif commandType == "heatmaps":
+		elif commandType == "hmap":
 			if self.marketBias == "traditional":
 				return ["Finviz", "Bitgur"]
 			else:
 				return ["Bitgur", "Finviz"]
-		elif commandType == "quotes":
+		elif commandType == "p":
 			if self.marketBias == "traditional":
 				return ["IEXC", "Alternative.me", "CoinGecko", "CCXT", "Serum", "LLD"]
 			else:
 				return ["Alternative.me", "CoinGecko", "CCXT", "Serum", "IEXC", "LLD"]
-		elif commandType == "details":
+		elif commandType == "info":
 			if self.marketBias == "traditional":
 				return ["IEXC", "CoinGecko"]
 			else:
 				return ["CoinGecko", "IEXC"]
-		elif commandType == "trades":
+		elif commandType == "x":
 			return ["CCXT"]
 		else:
 			raise ValueError("incorrect commant type: {}".format(commandType))

@@ -93,8 +93,6 @@ PARAMETERS = {
 		Parameter("category", "software", ["software"], bitgur="software"),
 		Parameter("category", "supply and logistics", ["supply", "logistics"], bitgur="supply_and_logistics"),
 		Parameter("category", "trading and investing", ["trading", "investing"], bitgur="trading_and_investing"),
-		Parameter("autoDeleteOverride", "autodelete", ["del", "delete", "autodelete"], finviz="autodelete", bitgur="autodelete"),
-		Parameter("hideRequest", "hide request", ["hide"], finviz="hide", bitgur="hide"),
 		Parameter("forcePlatform", "force heat map on Finviz", ["fv", "finviz"], finviz=True),
 		Parameter("forcePlatform", "force heat map on Bitgur", ["bg", "bitgur"], bitgur=True),
 		Parameter("force", "force", ["--force"], finviz="force", bitgur="force"),

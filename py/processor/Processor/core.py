@@ -58,7 +58,7 @@ class Processor(object):
 	async def process_chart_arguments(messageRequest, arguments, tickerId=None, platform=None, platformQueue=None, **kwargs):
 		if isinstance(tickerId, str): tickerId = tickerId[:25]
 		if platform is not None: platformQueue = [platform]
-		elif platformQueue is None: platformQueue = messageRequest.get_platform_order_for("charts")
+		elif platformQueue is None: platformQueue = messageRequest.get_platform_order_for("c")
 
 		for p in kwargs.get("excluded", []):
 			if p in platformQueue:
@@ -79,7 +79,7 @@ class Processor(object):
 	@staticmethod
 	async def process_heatmap_arguments(messageRequest, arguments, platform=None, platformQueue=None, **kwargs):
 		if platform is not None: platformQueue = [platform]
-		elif platformQueue is None: platformQueue = messageRequest.get_platform_order_for("heatmaps")
+		elif platformQueue is None: platformQueue = messageRequest.get_platform_order_for("hmap")
 
 		for p in kwargs.get("excluded", []):
 			if p in platformQueue:
@@ -99,7 +99,7 @@ class Processor(object):
 	async def process_quote_arguments(messageRequest, arguments, tickerId=None, platform=None, platformQueue=None, **kwargs):
 		if isinstance(tickerId, str): tickerId = tickerId[:25]
 		if platform is not None: platformQueue = [platform]
-		elif platformQueue is None: platformQueue = messageRequest.get_platform_order_for("quotes")
+		elif platformQueue is None: platformQueue = messageRequest.get_platform_order_for("p")
 
 		for p in kwargs.get("excluded", []):
 			if p in platformQueue:
@@ -121,7 +121,7 @@ class Processor(object):
 	async def process_detail_arguments(messageRequest, arguments, tickerId=None, platform=None, platformQueue=None, **kwargs):
 		if isinstance(tickerId, str): tickerId = tickerId[:25]
 		if platform is not None: platformQueue = [platform]
-		elif platformQueue is None: platformQueue = messageRequest.get_platform_order_for("details")
+		elif platformQueue is None: platformQueue = messageRequest.get_platform_order_for("info")
 
 		for p in kwargs.get("excluded", []):
 			if p in platformQueue:
@@ -143,7 +143,7 @@ class Processor(object):
 	async def process_trade_arguments(messageRequest, arguments, tickerId=None, platform=None, platformQueue=None, **kwargs):
 		if isinstance(tickerId, str): tickerId = tickerId[:25]
 		if platform is not None: platformQueue = [platform]
-		elif platformQueue is None: platformQueue = messageRequest.get_platform_order_for("trades")
+		elif platformQueue is None: platformQueue = messageRequest.get_platform_order_for("x")
 
 		for p in kwargs.get("excluded", []):
 			if p in platformQueue:

@@ -8,20 +8,12 @@ from .abstract import AbstractRequestHandler, AbstractRequest
 
 
 PARAMETERS = {
-	"style": [],
 	"preferences": [
 		Parameter("lld", "funding", ["fun", "fund", "funding"], lld="funding"),
 		Parameter("lld", "open interest", ["oi", "openinterest", "ov", "openvalue"], lld="oi"),
 		Parameter("lld", "longs/shorts ratio", ["ls", "l/s", "longs/shorts", "long/short"], lld="ls"),
 		Parameter("lld", "shorts/longs ratio", ["sl", "s/l", "shorts/longs", "short/long"], lld="sl"),
 		Parameter("lld", "dominance", ["dom", "dominance"], lld="dom"),
-		Parameter("isAmountPercent", "percentage amount", ["%"], ccxt="amountPercent", iexc="amountPercent", serum="amountPercent"),
-		Parameter("isPricePercent", "percentage price", ["%"], ccxt="pricePercent", iexc="pricePercent", serum="pricePercent"),
-		Parameter("isLimitOrder", "limit order", ["@", "at"], ccxt="limitOrder", iexc="limitOrder", serum="limitOrder"),
-		Parameter("autoDeleteOverride", "autodelete", ["del", "delete", "autodelete"], coingecko="autodelete", ccxt="autodelete", iexc="autodelete", serum="autodelete", alternativeme="autodelete", lld="autodelete"),
-		Parameter("hideRequest", "hide request", ["hide"], coingecko="hide", ccxt="hide", iexc="hide", serum="hide", alternativeme="hide", lld="hide"),
-		Parameter("public", "public trigger", ["pub", "publish", "public"], ccxt="public", iexc="public", serum="public"),
-		Parameter("message", "alert trigger message", ["message"], ccxt="message", iexc="message", serum="message"),
 		Parameter("forcePlatform", "force quote on CoinGecko", ["cg", "coingecko"], coingecko=True),
 		Parameter("forcePlatform", "force quote on a crypto exchange", ["cx", "ccxt", "crypto", "exchange"], ccxt=True),
 		Parameter("forcePlatform", "force quote on a stock exchange", ["ix", "iexc", "stock", "stocks"], iexc=True),
@@ -33,27 +25,21 @@ PARAMETERS = {
 }
 DEFAULTS = {
 	"Alternative.me": {
-		"style": [],
 		"preferences": []
 	},
 	"CoinGecko": {
-		"style": [],
 		"preferences": []
 	},
 	"CCXT": {
-		"style": [],
 		"preferences": []
 	},
 	"IEXC": {
-		"style": [],
 		"preferences": []
 	},
 	"Serum": {
-		"style": [],
 		"preferences": []
 	},
 	"LLD": {
-		"style": [],
 		"preferences": []
 	}
 }
@@ -62,7 +48,6 @@ DEFAULTS = {
 class PriceRequestHandler(AbstractRequestHandler):
 	def __init__(self, tickerId, platforms, bias="traditional", **kwargs):
 		super().__init__(platforms)
-		self.isMarketAlert = kwargs.get("isMarketAlert", False)
 		self.isPaperTrade = kwargs.get("isPaperTrade", False)
 		for platform in platforms:
 			self.requests[platform] = PriceRequest(tickerId, platform, bias)
@@ -78,19 +63,11 @@ class PriceRequestHandler(AbstractRequestHandler):
 
 			finalOutput = None
 
-			outputMessage, success = await request.add_style(argument)
-			if outputMessage is not None: finalOutput = outputMessage
-			elif success: continue
-
 			outputMessage, success = await request.add_preferences(argument)
 			if outputMessage is not None: finalOutput = outputMessage
 			elif success: continue
 
 			outputMessage, success = await request.add_exchange(argument)
-			if outputMessage is not None: finalOutput = outputMessage
-			elif success: continue
-
-			outputMessage, success = await request.add_numerical_parameters(argument)
 			if outputMessage is not None: finalOutput = outputMessage
 			elif success: continue
 
@@ -111,45 +88,13 @@ class PriceRequestHandler(AbstractRequestHandler):
 		for platform, request in self.requests.items():
 			if request.errorIsFatal: continue
 
-			styles = [e.parsed[platform] for e in request.styles]
 			preferences = [{"id": e.id, "value": e.parsed[platform]} for e in request.preferences]
 
-			if self.isMarketAlert:
-				if not request.ticker.get("isSimple"):
-					request.set_error("Price alerts for aggregated tickers aren't available.", isFatal=True)
-				if len(request.numericalParameters) > 1:
-					request.set_error("Only one alert trigger level can be specified at once.")
-				elif len(request.numericalParameters) == 0:
-					request.set_error("Alert trigger level was not provided.")
-				if {"id": "isAmountPercent", "value": "amountPercent"} in preferences:
-					request.set_error("`Percentage Amount` parameter is only supported by Alpha Paper Trader.")
-				if {"id": "isPricePercent", "value": "pricePercent"} in preferences:
-					request.set_error("`Percentage Price` parameter is only supported by Alpha Paper Trader.")
-				if {"id": "isLimitOrder", "value": "limitOrder"} in preferences:
-					request.set_error("`Limit Order` parameter is only supported by Alpha Paper Trader.")
-			elif self.isPaperTrade:
-				if not request.ticker.get("isSimple"):
-					request.set_error("Paper trading for aggregated tickers isn't available.", isFatal=True)
-				if request.hasExchange:
-					request.set_error("Specifying an exchange is not supported. Omit the exchange from your request to execute the trade.", isFatal=True)
-				if request.ticker.get("id") is not None:
-					if len(request.numericalParameters) == 0: request.set_error("Paper trade amount was not provided.")
-					elif len(request.numericalParameters) > 2: request.set_error("Too many numerical arguments provided.")
-				else:
-					if len(request.numericalParameters) != 0: request.set_error("Numerical arguments can't be used with this command.")
-				if {"id": "public", "value": "public"} in preferences:
-					request.set_error("`Public Trigger` parameter is only supported by Price Alerts.")
-			else:
-				if len(request.numericalParameters) > 0:
-					request.set_error("Only Alpha Price Alerts accept numerical parameters.".format(request.ticker.get("id")), isFatal=True)
-				if {"id": "public", "value": "public"} in preferences:
-					request.set_error("`Public Trigger` parameter is only supported by Price Alerts.")
-				if {"id": "isAmountPercent", "value": "amountPercent"} in preferences:
-					request.set_error("`Percentage Amount` parameter is only supported by Alpha Paper Trader.")
-				if {"id": "isPricePercent", "value": "pricePercent"} in preferences:
-					request.set_error("`Percentage Price` parameter is only supported by Alpha Paper Trader.")
-				if {"id": "isLimitOrder", "value": "limitOrder"} in preferences:
-					request.set_error("`Limit Order` parameter is only supported by Alpha Paper Trader.")
+			# if self.isPaperTrade:
+			# 	if not request.ticker.get("isSimple"):
+			# 		request.set_error("Paper trading for aggregated tickers isn't available.", isFatal=True)
+			# 	if request.hasExchange:
+			# 		request.set_error("Specifying an exchange is not supported. Omit the exchange from your request to execute the trade.", isFatal=True)
 
 			if platform == "Alternative.me":
 				if request.tickerId not in ["FGI"]:
@@ -193,9 +138,7 @@ class PriceRequest(AbstractRequest):
 		self.ticker = {}
 		self.exchange = {}
 
-		self.styles = []
 		self.preferences = []
-		self.numericalParameters = []
 
 		self.hasExchange = False
 
@@ -237,19 +180,9 @@ class PriceRequest(AbstractRequest):
 
 	# async def add_exchange(self, argument) -- inherited
 
-	# async def add_style(self, argument) -- inherited
+	async def add_style(self, argument): raise NotImplementedError
 
 	# async def add_preferences(self, argument) -- inherited
-
-	async def add_numerical_parameters(self, argument):
-		try:
-			numericalParameter = float(argument)
-			if numericalParameter <= 0:
-				outputMessage = "Only parameters greater than `0` are accepted."
-				return outputMessage, False
-			self.numericalParameters.append(numericalParameter)
-			return None, True
-		except: return None, None
 
 	def set_default_for(self, t):
 		if t == "preferences":
@@ -262,8 +195,6 @@ class PriceRequest(AbstractRequest):
 			"ticker": self.ticker,
 			"exchange": self.exchange,
 			"parserBias": self.parserBias,
-			"styles": [e.parsed[self.platform] for e in self.styles],
-			"preferences": [{"id": e.id, "value": e.parsed[self.platform]} for e in self.preferences],
-			"numericalParameters": self.numericalParameters
+			"preferences": [{"id": e.id, "value": e.parsed[self.platform]} for e in self.preferences]
 		}
 		return d

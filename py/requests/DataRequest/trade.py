@@ -8,18 +8,6 @@ from .parameter import TradeParameter as Parameter
 from .abstract import AbstractRequestHandler, AbstractRequest
 
 
-PARAMETERS = {
-	"preferences": [
-		Parameter("autoDeleteOverride", "autodelete", ["del", "delete", "autodelete"], ichibot="autodelete"),
-		Parameter("hideRequest", "hide request", ["hide"], ichibot="hide"),
-	]
-}
-DEFAULTS = {
-	"Ichibot": {
-		"preferences": []
-	}
-}
-
 class TradeRequestHandler(AbstractRequestHandler):
 	def __init__(self, tickerId, platforms, bias="traditional", **kwargs):
 		super().__init__(platforms)
@@ -37,15 +25,7 @@ class TradeRequestHandler(AbstractRequestHandler):
 
 			finalOutput = None
 
-			outputMessage, success = await request.add_preferences(argument)
-			if outputMessage is not None: finalOutput = outputMessage
-			elif success: continue
-
 			outputMessage, success = await request.add_exchange(argument)
-			if outputMessage is not None: finalOutput = outputMessage
-			elif success: continue
-
-			outputMessage, success = await request.add_numerical_parameters(argument)
 			if outputMessage is not None: finalOutput = outputMessage
 			elif success: continue
 
@@ -93,9 +73,6 @@ class TradeRequest(AbstractRequest):
 		self.ticker = {}
 		self.exchange = {}
 
-		self.preferences = []
-		self.numericalParameters = []
-
 		self.hasExchange = False
 
 	async def process_ticker(self):
@@ -132,30 +109,15 @@ class TradeRequest(AbstractRequest):
 
 	async def add_style(self, argument): raise NotImplementedError
 
-	# async def add_preferences(self, argument) -- inherited
+	async def add_preferences(self, argument): raise NotImplementedError
 
-	async def add_numerical_parameters(self, argument):
-		try:
-			numericalParameter = float(argument)
-			if numericalParameter <= 0:
-				outputMessage = "Only parameters greater than `0` are accepted."
-				return outputMessage, False
-			self.numericalParameters.append(numericalParameter)
-			return None, True
-		except: return None, None
-
-	def set_default_for(self, t):
-		if t == "preferences":
-			for parameter in DEFAULTS.get(self.platform, {}).get(t, []):
-				if not self.has_parameter(parameter.id, self.preferences): self.preferences.append(parameter)
+	def set_default_for(self, t): pass
 
 
 	def to_dict(self):
 		d = {
 			"ticker": self.ticker,
 			"exchange": self.exchange,
-			"parserBias": self.parserBias,
-			"preferences": [{"id": e.id, "value": e.parsed[self.platform]} for e in self.preferences],
-			"numericalParameters": self.numericalParameters
+			"parserBias": self.parserBias
 		}
 		return d
