@@ -19,7 +19,7 @@ class TradeRequestHandler(AbstractRequestHandler):
 
 	async def parse_argument(self, argument):
 		for platform, request in self.requests.items():
-			argument = argument.lower().replace(" ", "")
+			_argument = argument.lower().replace(" ", "")
 			if request.errorIsFatal or argument == "": continue
 
 			# None None - No successeful parse
@@ -29,7 +29,7 @@ class TradeRequestHandler(AbstractRequestHandler):
 
 			finalOutput = None
 
-			outputMessage, success = await request.add_exchange(argument)
+			outputMessage, success = await request.add_exchange(_argument)
 			if outputMessage is not None: finalOutput = outputMessage
 			elif success: continue
 

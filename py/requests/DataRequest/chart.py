@@ -310,7 +310,7 @@ class ChartRequestHandler(AbstractRequestHandler):
 
 	async def parse_argument(self, argument):
 		for platform, request in self.requests.items():
-			argument = argument.lower().replace(" ", "")
+			_argument = argument.lower().replace(" ", "")
 			if request.errorIsFatal or argument == "": continue
 
 			# None None - No successeful parse
@@ -320,31 +320,31 @@ class ChartRequestHandler(AbstractRequestHandler):
 
 			finalOutput = None
 
-			outputMessage, success = await request.add_timeframe(argument)
+			outputMessage, success = await request.add_timeframe(_argument)
 			if outputMessage is not None: finalOutput = outputMessage
 			elif success: continue
 
-			outputMessage, success = await request.add_indicator(argument)
+			outputMessage, success = await request.add_indicator(_argument)
 			if outputMessage is not None: finalOutput = outputMessage
 			elif success: continue
 
-			outputMessage, success = await request.add_type(argument)
+			outputMessage, success = await request.add_type(_argument)
 			if outputMessage is not None: finalOutput = outputMessage
 			elif success: continue
 
-			outputMessage, success = await request.add_style(argument)
+			outputMessage, success = await request.add_style(_argument)
 			if outputMessage is not None: finalOutput = outputMessage
 			elif success: continue
 
-			outputMessage, success = await request.add_preferences(argument)
+			outputMessage, success = await request.add_preferences(_argument)
 			if outputMessage is not None: finalOutput = outputMessage
 			elif success: continue
 
-			outputMessage, success = await request.add_exchange(argument)
+			outputMessage, success = await request.add_exchange(_argument)
 			if outputMessage is not None: finalOutput = outputMessage
 			elif success: continue
 
-			outputMessage, success = await request.add_numerical_parameters(argument)
+			outputMessage, success = await request.add_numerical_parameters(_argument)
 			if outputMessage is not None: finalOutput = outputMessage
 			elif success: continue
 
