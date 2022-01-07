@@ -19,7 +19,8 @@ class TradeRequestHandler(AbstractRequestHandler):
 
 	async def parse_argument(self, argument):
 		for platform, request in self.requests.items():
-			if request.errorIsFatal: continue
+			argument = argument.lower().replace(" ", "")
+			if request.errorIsFatal or argument == "": continue
 
 			# None None - No successeful parse
 			# None True - Successful parse and add

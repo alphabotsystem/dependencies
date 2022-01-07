@@ -54,7 +54,8 @@ class PriceRequestHandler(AbstractRequestHandler):
 
 	async def parse_argument(self, argument):
 		for platform, request in self.requests.items():
-			if request.errorIsFatal: continue
+			argument = argument.lower().replace(" ", "")
+			if request.errorIsFatal or argument == "": continue
 
 			# None None - No successeful parse
 			# None True - Successful parse and add
@@ -89,12 +90,6 @@ class PriceRequestHandler(AbstractRequestHandler):
 			if request.errorIsFatal: continue
 
 			preferences = [{"id": e.id, "value": e.parsed[platform]} for e in request.preferences]
-
-			# if self.isPaperTrade:
-			# 	if not request.ticker.get("isSimple"):
-			# 		request.set_error("Paper trading for aggregated tickers isn't available.", isFatal=True)
-			# 	if request.hasExchange:
-			# 		request.set_error("Specifying an exchange is not supported. Omit the exchange from your request to execute the trade.", isFatal=True)
 
 			if platform == "Alternative.me":
 				if request.tickerId not in ["FGI"]:

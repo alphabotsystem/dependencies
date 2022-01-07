@@ -310,7 +310,8 @@ class ChartRequestHandler(AbstractRequestHandler):
 
 	async def parse_argument(self, argument):
 		for platform, request in self.requests.items():
-			if request.errorIsFatal: continue
+			argument = argument.lower().replace(" ", "")
+			if request.errorIsFatal or argument == "": continue
 
 			# None None - No successeful parse
 			# None True - Successful parse and add
@@ -522,7 +523,7 @@ class ChartRequest(AbstractRequest):
 		try:
 			numericalParameter = float(argument)
 			if numericalParameter <= 0:
-				outputMessage = "Only parameters greater than `0` are accepted."
+				outputMessage = "Only parameters greater than `0` are valid."
 				return outputMessage, False
 			if self.platform not in ["GoCharting"]:
 				outputMessage = "Indicator lengths can only be changed on GoCharting."
