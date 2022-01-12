@@ -1,5 +1,4 @@
-const ccxt = require('ccxt');
-
+const ccxt = require("ccxt")
 
 class Exchange {
 	constructor(id, marketType, name, region) {
@@ -10,8 +9,10 @@ class Exchange {
 		this.type = marketType
 
 		if (marketType === "crypto") {
-			this.properties = new ccxt[id]();
-			if (id == "binanceusdm") this.name = "Binance Futures" // USDⓈ-M
+			this.properties = new ccxt[id]()
+			// USDⓈ-M
+			if (id == "binanceusdm") this.name = "Binance Futures"
+			// COIN-M
 			else if (id == "binancecoinm") this.name = "Binance Futures COIN-M"
 			else this.name = this.properties.name
 		} else {
@@ -25,7 +26,7 @@ class Exchange {
 			id: this.id,
 			name: this.name,
 			region: this.region,
-			type: this.type
+			type: this.type,
 		}
 	}
 
@@ -44,8 +45,8 @@ class StocksExchange {
 	}
 
 	milliseconds() {
-		return Date.now();
+		return Date.now()
 	}
 }
 
-module.exports = { Exchange };
+module.exports = { Exchange }
