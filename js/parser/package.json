@@ -4,6 +4,6 @@
   },
   "name": "ticker-parser",
   "version": "1.0.0",
-  "main": "core.js",
+  "main": "index.js",
   "license": "MIT"
 }
