@@ -10,7 +10,7 @@ class Exchange {
 		this.type = marketType
 
 		if (marketType === "crypto") {
-			this.properties = new ccxt[id];
+			this.properties = new ccxt[id]();
 			if (id == "binanceusdm") this.name = "Binance Futures" // USDⓈ-M
 			else if (id == "binancecoinm") this.name = "Binance Futures COIN-M"
 			else this.name = this.properties.name
