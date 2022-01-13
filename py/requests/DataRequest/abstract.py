@@ -13,6 +13,7 @@ class AbstractRequestHandler(object):
 	async def process_ticker(self):
 		tasks = set()
 		for platform, request in self.requests.items():
+			if request.errorIsFatal: continue
 			tasks.add(request.process_ticker())
 		await wait(tasks)
 
