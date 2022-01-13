@@ -15,7 +15,8 @@ class AbstractRequestHandler(object):
 		for platform, request in self.requests.items():
 			if request.errorIsFatal: continue
 			tasks.add(request.process_ticker())
-		await wait(tasks)
+		if len(tasks) > 0:
+			await wait(tasks)
 
 	def get_preferred_platform(self):
 		currentMinimumErrors = MAXSIZE
