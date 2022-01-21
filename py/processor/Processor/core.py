@@ -162,7 +162,7 @@ class Processor(object):
 		return outputMessage, requestHandler.to_dict()
 
 	@staticmethod
-	async def process_conversion(messageRequest, fromBase, toBase, amount):
+	async def process_conversion(messageRequest, fromBase, toBase, amount, excluded=["LLD"]):
 		if amount <= 0 or amount >= 1000000000000000: return None, "Sir?"
 
 		if fromBase == toBase: return None, "Converting into the same asset is trivial."
@@ -171,7 +171,7 @@ class Processor(object):
 		payload2 = {"raw": {"quotePrice": [1]}}
 
 		if fromBase not in ["USD", "USDT", "USDC", "DAI", "HUSD", "TUSD", "PAX", "USDK", "USDN", "BUSD", "GUSD", "USDS"]:
-			outputMessage, request = await Processor.process_quote_arguments(messageRequest, [], tickerId=f"{fromBase}USD", excluded=["LLD"])
+			outputMessage, request = await Processor.process_quote_arguments(messageRequest, [], tickerId=f"{fromBase}USD", excluded=excluded)
 			if outputMessage is not None: return None, outputMessage
 			payload1, quoteText = await Processor.process_task("quote", messageRequest.authorId, request)
 			if payload1 is None: return None, quoteText
@@ -179,7 +179,7 @@ class Processor(object):
 		else:
 			fromBase = "USD"
 		if toBase not in ["USD", "USDT", "USDC", "DAI", "HUSD", "TUSD", "PAX", "USDK", "USDN", "BUSD", "GUSD", "USDS"]:
-			outputMessage, request = await Processor.process_quote_arguments(messageRequest, [], tickerId=f"{toBase}USD", excluded=["LLD"])
+			outputMessage, request = await Processor.process_quote_arguments(messageRequest, [], tickerId=f"{toBase}USD", excluded=excluded)
 			if outputMessage is not None: return None, outputMessage
 			payload2, quoteText = await Processor.process_task("quote", messageRequest.authorId, request)
 			if payload2 is None: return None, quoteText
