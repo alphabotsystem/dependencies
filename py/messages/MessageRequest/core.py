@@ -2,7 +2,7 @@ from datetime import datetime
 from pytz import utc
 
 class MessageRequest(object):
-	def __init__(self, raw=None, content=None, accountId=None, authorId=None, channelId=None, guildId=None, presetUsed=False, accountProperties={}, guildProperties={}, autodelete=None):
+	def __init__(self, raw=None, content=None, accountId=None, authorId=None, channelId=None, guildId=None, accountProperties={}, guildProperties={}, autodelete=None):
 		self.raw = raw
 		self.content = content
 
@@ -17,8 +17,6 @@ class MessageRequest(object):
 		self.accountProperties = accountProperties
 		self.guildProperties = MessageRequest.create_guild_settings(guildProperties)
 		self.overrides = self.guildProperties.get("overrides", {}).get(str(channelId), {})
-
-		self.presetUsed = False
 
 		self.autodelete = autodelete
 		if autodelete is not None and autodelete < 0:
@@ -39,7 +37,7 @@ class MessageRequest(object):
 	def get_limit(self):
 		return 30 if self.is_registered() else 10
 
-	
+
 	# -------------------------
 	# Charting platforms
 	# -------------------------
@@ -67,7 +65,7 @@ class MessageRequest(object):
 		else:
 			raise ValueError("incorrect commant type: {}".format(commandType))
 
-	
+
 	# -------------------------
 	# User properties
 	# -------------------------
@@ -77,16 +75,13 @@ class MessageRequest(object):
 
 	def is_pro(self):
 		return self.is_registered() and self.accountProperties["customer"]["personalSubscription"].get("plan", "free") == "price_HLr5Pnrj3yRWOP"
-	
+
 	def is_trialing(self):
 		return self.is_pro() and self.accountProperties["customer"]["personalSubscription"].get("trialing", False)
 
 
 	def personal_price_alerts_available(self):
 		return self.is_registered() and (self.is_trialing() or bool(self.accountProperties["customer"]["addons"].get("marketAlerts", 0)))
-
-	def personal_command_presets_available(self):
-		return self.is_registered() and (self.is_trialing() or bool(self.accountProperties["customer"]["addons"].get("commandPresets", 0)))
 
 	def personal_flow_available(self):
 		return self.is_registered() and (self.is_trialing() or bool(self.accountProperties["customer"]["addons"].get("flow", 0)))
@@ -100,13 +95,10 @@ class MessageRequest(object):
 	# -------------------------
 
 	def is_serverwide_pro_used(self):
-		return self.serverwide_price_alerts_available() or self.serverwide_command_presets_available() or self.serverwide_flow_available() or self.serverwide_statistics_available()
+		return self.serverwide_price_alerts_available() or self.serverwide_flow_available() or self.serverwide_statistics_available()
 
 	def serverwide_price_alerts_available(self):
 		return self.guildProperties["addons"]["marketAlerts"]["enabled"]
-
-	def serverwide_command_presets_available(self):
-		return self.guildProperties["addons"]["commandPresets"]["enabled"]
 
 	def serverwide_flow_available(self):
 		return self.guildProperties["addons"]["flow"]["enabled"]
@@ -121,13 +113,10 @@ class MessageRequest(object):
 
 	def price_alerts_available(self):
 		return self.serverwide_price_alerts_available() or self.personal_price_alerts_available()
-	
-	def command_presets_available(self):
-		return self.serverwide_command_presets_available() or self.personal_command_presets_available()
-	
+
 	def flow_available(self):
 		return self.serverwide_flow_available() or self.personal_flow_available()
-	
+
 	def statistics_available(self):
 		return self.serverwide_statistics_available() or self.personal_statistics_available()
 
@@ -144,9 +133,6 @@ class MessageRequest(object):
 					"enabled": False
 				},
 				"marketAlerts": {
-					"enabled": False
-				},
-				"commandPresets": {
 					"enabled": False
 				},
 				"flow": {
