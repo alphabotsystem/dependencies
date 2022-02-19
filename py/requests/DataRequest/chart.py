@@ -244,7 +244,6 @@ PARAMETERS = {
 		Parameter("forcePlatform", "force chart on GoCharting", ["gc", "gocharting"], gocharting=True),
 		Parameter("forcePlatform", "force chart on Finviz", ["fv", "finviz"], finviz=True),
 		Parameter("forcePlatform", "force chart on Alternative.me", ["am", "alternativeme"], alternativeme=True),
-		Parameter("link", "link", ["link"], tradinglite="link", tradingview="link", bookmap="link", gocharting="link", finviz="link"),
 		Parameter("force", "force", ["--force"], tradinglite="force", tradingview="force", bookmap="force", gocharting="force", finviz="force", alternativeme="force", alphaflow="force"),
 		Parameter("upload", "upload", ["--upload"], tradinglite="upload", tradingview="upload", bookmap="upload", gocharting="upload", finviz="upload", alternativeme="upload", alphaflow="upload")
 	]
