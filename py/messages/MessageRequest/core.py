@@ -44,7 +44,10 @@ class MessageRequest(object):
 
 	def get_platform_order_for(self, commandType):
 		if commandType == "c":
-			return (self.accountProperties["settings"]["charts"]["preferredOrder"] if "settings" in self.accountProperties else ["TradingView", "GoCharting", "Finviz", "TradingLite", "Bookmap"]) + ["Alternative.me"]
+			if self.marketBias == "traditional":
+				return (self.accountProperties["settings"]["charts"]["preferredOrder"] if "settings" in self.accountProperties else ["TradingView", "GoCharting", "Finviz", "TradingLite", "Bookmap"]) + ["Alternative.me"]
+			else:
+				return ["Alternative.me"] + (self.accountProperties["settings"]["charts"]["preferredOrder"] if "settings" in self.accountProperties else ["TradingView", "GoCharting", "Finviz", "TradingLite", "Bookmap"])
 		elif commandType == "hmap":
 			if self.marketBias == "traditional":
 				return ["Finviz", "Bitgur"]
