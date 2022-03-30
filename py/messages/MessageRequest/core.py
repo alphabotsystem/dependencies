@@ -1,7 +1,7 @@
 from datetime import datetime
 from pytz import utc
 
-class MessageRequest(object):
+class CommandRequest(object):
 	def __init__(self, raw=None, content=None, accountId=None, authorId=None, channelId=None, guildId=None, accountProperties={}, guildProperties={}, autodelete=None):
 		self.raw = raw
 		self.content = content
@@ -15,7 +15,7 @@ class MessageRequest(object):
 		self.guildId = guildId
 
 		self.accountProperties = accountProperties
-		self.guildProperties = MessageRequest.create_guild_settings(guildProperties)
+		self.guildProperties = CommandRequest.create_guild_settings(guildProperties)
 		self.overrides = self.guildProperties.get("overrides", {}).get(str(channelId), {})
 
 		self.autodelete = autodelete
@@ -25,17 +25,6 @@ class MessageRequest(object):
 			self.autodelete = 1
 
 		self.marketBias = self.overrides.get("messageProcessing", {}).get("bias", self.guildProperties["settings"]["messageProcessing"]["bias"])
-
-
-	# -------------------------
-	# Properties
-	# -------------------------
-
-	def is_muted(self):
-		return False
-
-	def get_limit(self):
-		return 30 if self.is_registered() else 10
 
 
 	# -------------------------
@@ -171,7 +160,7 @@ class MessageRequest(object):
 		}
 
 		if settings is None: settings = {}
-		MessageRequest.__recursive_fill(settings, settingsTemplate)
+		CommandRequest.__recursive_fill(settings, settingsTemplate)
 
 		return settings
 
@@ -182,6 +171,6 @@ class MessageRequest(object):
 				if e not in settings:
 					settings[e] = template[e].copy()
 				else:
-					MessageRequest.__recursive_fill(settings[e], template[e])
+					CommandRequest.__recursive_fill(settings[e], template[e])
 			elif e not in settings:
 				settings[e] = template[e]

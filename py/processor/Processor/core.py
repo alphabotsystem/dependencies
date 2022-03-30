@@ -55,16 +55,16 @@ class Processor(object):
 		return payload, responseText
 
 	@staticmethod
-	async def process_chart_arguments(messageRequest, arguments, tickerId=None, platform=None, platformQueue=None, **kwargs):
+	async def process_chart_arguments(commandRequest, arguments, tickerId=None, platform=None, platformQueue=None, **kwargs):
 		if isinstance(tickerId, str): tickerId = tickerId[:25]
 		if platform is not None: platformQueue = [platform]
-		elif platformQueue is None: platformQueue = messageRequest.get_platform_order_for("c")
+		elif platformQueue is None: platformQueue = commandRequest.get_platform_order_for("c")
 
 		for p in kwargs.get("excluded", []):
 			if p in platformQueue:
 				platformQueue.remove(p)
 
-		requestHandler = ChartRequestHandler(tickerId, platformQueue, bias=messageRequest.marketBias, **kwargs)
+		requestHandler = ChartRequestHandler(tickerId, platformQueue, bias=commandRequest.marketBias, **kwargs)
 		for argument in arguments:
 			await requestHandler.parse_argument(argument)
 		if tickerId is not None:
@@ -77,15 +77,15 @@ class Processor(object):
 		return outputMessage, requestHandler.to_dict()
 
 	@staticmethod
-	async def process_heatmap_arguments(messageRequest, arguments, platform=None, platformQueue=None, **kwargs):
+	async def process_heatmap_arguments(commandRequest, arguments, platform=None, platformQueue=None, **kwargs):
 		if platform is not None: platformQueue = [platform]
-		elif platformQueue is None: platformQueue = messageRequest.get_platform_order_for("hmap")
+		elif platformQueue is None: platformQueue = commandRequest.get_platform_order_for("hmap")
 
 		for p in kwargs.get("excluded", []):
 			if p in platformQueue:
 				platformQueue.remove(p)
 
-		requestHandler = HeatmapRequestHandler(platformQueue, bias=messageRequest.marketBias, **kwargs)
+		requestHandler = HeatmapRequestHandler(platformQueue, bias=commandRequest.marketBias, **kwargs)
 		for argument in arguments:
 			await requestHandler.parse_argument(argument)
 
@@ -96,16 +96,16 @@ class Processor(object):
 		return outputMessage, requestHandler.to_dict()
 	
 	@staticmethod
-	async def process_quote_arguments(messageRequest, arguments, tickerId=None, platform=None, platformQueue=None, **kwargs):
+	async def process_quote_arguments(commandRequest, arguments, tickerId=None, platform=None, platformQueue=None, **kwargs):
 		if isinstance(tickerId, str): tickerId = tickerId[:25]
 		if platform is not None: platformQueue = [platform]
-		elif platformQueue is None: platformQueue = messageRequest.get_platform_order_for("p")
+		elif platformQueue is None: platformQueue = commandRequest.get_platform_order_for("p")
 
 		for p in kwargs.get("excluded", []):
 			if p in platformQueue:
 				platformQueue.remove(p)
 
-		requestHandler = PriceRequestHandler(tickerId, platformQueue, bias=messageRequest.marketBias, **kwargs)
+		requestHandler = PriceRequestHandler(tickerId, platformQueue, bias=commandRequest.marketBias, **kwargs)
 		for argument in arguments:
 			await requestHandler.parse_argument(argument)
 		if tickerId is not None:
@@ -118,16 +118,16 @@ class Processor(object):
 		return outputMessage, requestHandler.to_dict()
 
 	@staticmethod
-	async def process_detail_arguments(messageRequest, arguments, tickerId=None, platform=None, platformQueue=None, **kwargs):
+	async def process_detail_arguments(commandRequest, arguments, tickerId=None, platform=None, platformQueue=None, **kwargs):
 		if isinstance(tickerId, str): tickerId = tickerId[:25]
 		if platform is not None: platformQueue = [platform]
-		elif platformQueue is None: platformQueue = messageRequest.get_platform_order_for("info")
+		elif platformQueue is None: platformQueue = commandRequest.get_platform_order_for("info")
 
 		for p in kwargs.get("excluded", []):
 			if p in platformQueue:
 				platformQueue.remove(p)
 
-		requestHandler = DetailRequestHandler(tickerId, platformQueue, bias=messageRequest.marketBias, **kwargs)
+		requestHandler = DetailRequestHandler(tickerId, platformQueue, bias=commandRequest.marketBias, **kwargs)
 		for argument in arguments:
 			await requestHandler.parse_argument(argument)
 		if tickerId is not None:
@@ -140,16 +140,16 @@ class Processor(object):
 		return outputMessage, requestHandler.to_dict()
 
 	@staticmethod
-	async def process_trade_arguments(messageRequest, arguments, tickerId=None, platform=None, platformQueue=None, **kwargs):
+	async def process_trade_arguments(commandRequest, arguments, tickerId=None, platform=None, platformQueue=None, **kwargs):
 		if isinstance(tickerId, str): tickerId = tickerId[:25]
 		if platform is not None: platformQueue = [platform]
-		elif platformQueue is None: platformQueue = messageRequest.get_platform_order_for("x")
+		elif platformQueue is None: platformQueue = commandRequest.get_platform_order_for("x")
 
 		for p in kwargs.get("excluded", []):
 			if p in platformQueue:
 				platformQueue.remove(p)
 
-		requestHandler = TradeRequestHandler(tickerId, platformQueue, bias=messageRequest.marketBias, **kwargs)
+		requestHandler = TradeRequestHandler(tickerId, platformQueue, bias=commandRequest.marketBias, **kwargs)
 		for argument in arguments:
 			await requestHandler.parse_argument(argument)
 		if tickerId is not None:
@@ -162,7 +162,7 @@ class Processor(object):
 		return outputMessage, requestHandler.to_dict()
 
 	@staticmethod
-	async def process_conversion(messageRequest, fromBase, toBase, amount, excluded=["LLD"]):
+	async def process_conversion(commandRequest, fromBase, toBase, amount, excluded=["LLD"]):
 		if amount <= 0 or amount >= 1000000000000000: return None, "Sir?"
 
 		if fromBase == toBase: return None, "Converting into the same asset is trivial."
@@ -171,17 +171,17 @@ class Processor(object):
 		payload2 = {"raw": {"quotePrice": [1]}}
 
 		if fromBase not in ["USD", "USDT", "USDC", "DAI", "HUSD", "TUSD", "PAX", "USDK", "USDN", "BUSD", "GUSD", "USDS"]:
-			outputMessage, request = await Processor.process_quote_arguments(messageRequest, [], tickerId=f"{fromBase}USD", excluded=excluded)
+			outputMessage, request = await Processor.process_quote_arguments(commandRequest, [], tickerId=f"{fromBase}USD", excluded=excluded)
 			if outputMessage is not None: return None, outputMessage
-			payload1, quoteText = await Processor.process_task("quote", messageRequest.authorId, request)
+			payload1, quoteText = await Processor.process_task("quote", commandRequest.authorId, request)
 			if payload1 is None: return None, quoteText
 			fromBase = request.get(payload1.get("platform")).get("ticker").get("base")
 		else:
 			fromBase = "USD"
 		if toBase not in ["USD", "USDT", "USDC", "DAI", "HUSD", "TUSD", "PAX", "USDK", "USDN", "BUSD", "GUSD", "USDS"]:
-			outputMessage, request = await Processor.process_quote_arguments(messageRequest, [], tickerId=f"{toBase}USD", excluded=excluded)
+			outputMessage, request = await Processor.process_quote_arguments(commandRequest, [], tickerId=f"{toBase}USD", excluded=excluded)
 			if outputMessage is not None: return None, outputMessage
-			payload2, quoteText = await Processor.process_task("quote", messageRequest.authorId, request)
+			payload2, quoteText = await Processor.process_task("quote", commandRequest.authorId, request)
 			if payload2 is None: return None, quoteText
 			toBase = request.get(payload2.get("platform")).get("ticker").get("base")
 		else:

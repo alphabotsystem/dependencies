@@ -12,7 +12,7 @@ from shutil import rmtree
 from setuptools import find_packages, setup, Command
 
 # Package meta-data.
-NAME = 'MessageRequest'
+NAME = 'CommandRequest'
 DESCRIPTION = 'Alpha compatibile message handling class.'
 URL = 'https://www.alphabotsystem.com'
 EMAIL = 'matic@alphabotsystem.com'
@@ -62,7 +62,7 @@ setup(
     author_email=EMAIL,
     python_requires=REQUIRES_PYTHON,
     url=URL,
-    packages=["MessageRequest"],
+    packages=["CommandRequest"],
     install_requires=REQUIRED,
     extras_require=EXTRAS,
     include_package_data=True,
