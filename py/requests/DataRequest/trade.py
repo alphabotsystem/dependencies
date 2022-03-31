@@ -34,7 +34,7 @@ class TradeRequestHandler(AbstractRequestHandler):
 			elif success: continue
 
 			if finalOutput is None:
-				request.set_error("`{}` is not a valid argument.".format(argument), isFatal=True)
+				request.set_error("`{}` is not a valid argument.".format(argument[:229]), isFatal=True)
 			elif finalOutput.startswith("`Force Trade"):
 				request.set_error(None, isFatal=True)
 			else:

@@ -140,7 +140,7 @@ class Processor(object):
 		payload2 = {"raw": {"quotePrice": [1]}}
 
 		if fromBase not in ["USD", "USDT", "USDC", "DAI", "HUSD", "TUSD", "PAX", "USDK", "USDN", "BUSD", "GUSD", "USDS"]:
-			outputMessage, request = await Processor.process_quote_arguments(commandRequest, [], platforms, tickerId=f"{fromBase}USD")
+			outputMessage, request = await Processor.process_quote_arguments(commandRequest, [], platforms, tickerId=fromBase)
 			if outputMessage is not None: return None, outputMessage
 			payload1, quoteText = await Processor.process_task("quote", commandRequest.authorId, request)
 			if payload1 is None: return None, quoteText
@@ -148,7 +148,7 @@ class Processor(object):
 		else:
 			fromBase = "USD"
 		if toBase not in ["USD", "USDT", "USDC", "DAI", "HUSD", "TUSD", "PAX", "USDK", "USDN", "BUSD", "GUSD", "USDS"]:
-			outputMessage, request = await Processor.process_quote_arguments(commandRequest, [], platforms, tickerId=f"{toBase}USD")
+			outputMessage, request = await Processor.process_quote_arguments(commandRequest, [], platforms, tickerId=toBase)
 			if outputMessage is not None: return None, outputMessage
 			payload2, quoteText = await Processor.process_task("quote", commandRequest.authorId, request)
 			if payload2 is None: return None, quoteText

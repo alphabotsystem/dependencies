@@ -37,27 +37,48 @@ class CommandRequest(object):
 			else: self.marketBias == "traditional"
 
 		if commandType == "c":
+			chartSettings = self.accountProperties.get("settings", {}).get("charts", {})
 			if self.marketBias == "traditional":
-				return (self.accountProperties["settings"]["charts"]["preferredOrder"] if "settings" in self.accountProperties else ["TradingView", "GoCharting", "Finviz", "TradingLite", "Bookmap"]) + ["Alternative.me"]
+				return chartSettings.get("preferredOrder", ["TradingView", "GoCharting", "Finviz", "TradingLite", "Bookmap"]) + ["Alternative.me"]
 			else:
-				return ["Alternative.me"] + (self.accountProperties["settings"]["charts"]["preferredOrder"] if "settings" in self.accountProperties else ["TradingView", "GoCharting", "Finviz", "TradingLite", "Bookmap"])
+				return ["Alternative.me"] + chartSettings.get("preferredOrder", ["TradingView", "GoCharting", "Finviz", "TradingLite", "Bookmap"])
 		elif commandType == "hmap":
 			if self.marketBias == "traditional":
 				return ["Finviz", "Bitgur"]
 			else:
 				return ["Bitgur", "Finviz"]
+		elif commandType == "flow":
+			return ["Alpha Flow"]
 		elif commandType == "p":
 			if self.marketBias == "traditional":
 				return ["IEXC", "Alternative.me", "CoinGecko", "CCXT", "Serum", "LLD"]
 			else:
 				return ["Alternative.me", "CoinGecko", "CCXT", "Serum", "IEXC", "LLD"]
+		elif commandType == "v":
+			if self.marketBias == "traditional":
+				return ["IEXC", "CoinGecko", "CCXT"]
+			else:
+				return ["CoinGecko", "CCXT", "IEXC"]
+		elif commandType == "d":
+			if self.marketBias == "traditional":
+				return ["IEXC", "CCXT"]
+			else:
+				return ["CCXT", "IEXC"]
 		elif commandType == "info":
 			if self.marketBias == "traditional":
 				return ["IEXC", "CoinGecko"]
 			else:
 				return ["CoinGecko", "IEXC"]
-		elif commandType == "x":
-			return ["CCXT"]
+		elif commandType == "alert" or commandType == "paper":
+			if self.marketBias == "traditional":
+				return ["IEXC", "CCXT"]
+			else:
+				return ["CCXT", "IEXC"]
+		elif commandType == "convert":
+			if self.marketBias == "traditional":
+				return ["IEXC", "CoinGecko", "CCXT", "Serum"]
+			else:
+				return ["CoinGecko", "CCXT", "IEXC", "Serum"]
 		else:
 			raise ValueError("incorrect commant type: {}".format(commandType))
 
