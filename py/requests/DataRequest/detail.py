@@ -24,7 +24,7 @@ DEFAULTS = {
 
 
 class DetailRequestHandler(AbstractRequestHandler):
-	def __init__(self, tickerId, platforms, bias="traditional", **kwargs):
+	def __init__(self, tickerId, platforms, bias="traditional"):
 		super().__init__(platforms)
 		for platform in platforms:
 			self.requests[platform] = DetailRequest(tickerId, platform, bias)

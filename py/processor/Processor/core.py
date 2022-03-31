@@ -55,16 +55,10 @@ class Processor(object):
 		return payload, responseText
 
 	@staticmethod
-	async def process_chart_arguments(commandRequest, arguments, tickerId=None, platform=None, platformQueue=None, **kwargs):
+	async def process_chart_arguments(commandRequest, arguments, platforms, tickerId=None):
 		if isinstance(tickerId, str): tickerId = tickerId[:25]
-		if platform is not None: platformQueue = [platform]
-		elif platformQueue is None: platformQueue = commandRequest.get_platform_order_for("c")
 
-		for p in kwargs.get("excluded", []):
-			if p in platformQueue:
-				platformQueue.remove(p)
-
-		requestHandler = ChartRequestHandler(tickerId, platformQueue, bias=commandRequest.marketBias, **kwargs)
+		requestHandler = ChartRequestHandler(tickerId, platforms, bias=commandRequest.marketBias)
 		for argument in arguments:
 			await requestHandler.parse_argument(argument)
 		if tickerId is not None:
@@ -77,15 +71,8 @@ class Processor(object):
 		return outputMessage, requestHandler.to_dict()
 
 	@staticmethod
-	async def process_heatmap_arguments(commandRequest, arguments, platform=None, platformQueue=None, **kwargs):
-		if platform is not None: platformQueue = [platform]
-		elif platformQueue is None: platformQueue = commandRequest.get_platform_order_for("hmap")
-
-		for p in kwargs.get("excluded", []):
-			if p in platformQueue:
-				platformQueue.remove(p)
-
-		requestHandler = HeatmapRequestHandler(platformQueue, bias=commandRequest.marketBias, **kwargs)
+	async def process_heatmap_arguments(commandRequest, arguments, platforms):
+		requestHandler = HeatmapRequestHandler(platforms, bias=commandRequest.marketBias)
 		for argument in arguments:
 			await requestHandler.parse_argument(argument)
 
@@ -96,16 +83,10 @@ class Processor(object):
 		return outputMessage, requestHandler.to_dict()
 	
 	@staticmethod
-	async def process_quote_arguments(commandRequest, arguments, tickerId=None, platform=None, platformQueue=None, **kwargs):
+	async def process_quote_arguments(commandRequest, arguments, platforms, tickerId=None):
 		if isinstance(tickerId, str): tickerId = tickerId[:25]
-		if platform is not None: platformQueue = [platform]
-		elif platformQueue is None: platformQueue = commandRequest.get_platform_order_for("p")
 
-		for p in kwargs.get("excluded", []):
-			if p in platformQueue:
-				platformQueue.remove(p)
-
-		requestHandler = PriceRequestHandler(tickerId, platformQueue, bias=commandRequest.marketBias, **kwargs)
+		requestHandler = PriceRequestHandler(tickerId, platforms, bias=commandRequest.marketBias)
 		for argument in arguments:
 			await requestHandler.parse_argument(argument)
 		if tickerId is not None:
@@ -118,16 +99,10 @@ class Processor(object):
 		return outputMessage, requestHandler.to_dict()
 
 	@staticmethod
-	async def process_detail_arguments(commandRequest, arguments, tickerId=None, platform=None, platformQueue=None, **kwargs):
+	async def process_detail_arguments(commandRequest, arguments, platforms, tickerId=None):
 		if isinstance(tickerId, str): tickerId = tickerId[:25]
-		if platform is not None: platformQueue = [platform]
-		elif platformQueue is None: platformQueue = commandRequest.get_platform_order_for("info")
 
-		for p in kwargs.get("excluded", []):
-			if p in platformQueue:
-				platformQueue.remove(p)
-
-		requestHandler = DetailRequestHandler(tickerId, platformQueue, bias=commandRequest.marketBias, **kwargs)
+		requestHandler = DetailRequestHandler(tickerId, platforms, bias=commandRequest.marketBias)
 		for argument in arguments:
 			await requestHandler.parse_argument(argument)
 		if tickerId is not None:
@@ -140,16 +115,10 @@ class Processor(object):
 		return outputMessage, requestHandler.to_dict()
 
 	@staticmethod
-	async def process_trade_arguments(commandRequest, arguments, tickerId=None, platform=None, platformQueue=None, **kwargs):
+	async def process_trade_arguments(commandRequest, arguments, platforms, tickerId=None):
 		if isinstance(tickerId, str): tickerId = tickerId[:25]
-		if platform is not None: platformQueue = [platform]
-		elif platformQueue is None: platformQueue = commandRequest.get_platform_order_for("x")
 
-		for p in kwargs.get("excluded", []):
-			if p in platformQueue:
-				platformQueue.remove(p)
-
-		requestHandler = TradeRequestHandler(tickerId, platformQueue, bias=commandRequest.marketBias, **kwargs)
+		requestHandler = TradeRequestHandler(tickerId, platforms, bias=commandRequest.marketBias)
 		for argument in arguments:
 			await requestHandler.parse_argument(argument)
 		if tickerId is not None:
@@ -162,7 +131,7 @@ class Processor(object):
 		return outputMessage, requestHandler.to_dict()
 
 	@staticmethod
-	async def process_conversion(commandRequest, fromBase, toBase, amount, excluded=["LLD"]):
+	async def process_conversion(commandRequest, fromBase, toBase, amount, platforms):
 		if amount <= 0 or amount >= 1000000000000000: return None, "Sir?"
 
 		if fromBase == toBase: return None, "Converting into the same asset is trivial."
@@ -171,7 +140,7 @@ class Processor(object):
 		payload2 = {"raw": {"quotePrice": [1]}}
 
 		if fromBase not in ["USD", "USDT", "USDC", "DAI", "HUSD", "TUSD", "PAX", "USDK", "USDN", "BUSD", "GUSD", "USDS"]:
-			outputMessage, request = await Processor.process_quote_arguments(commandRequest, [], tickerId=f"{fromBase}USD", excluded=excluded)
+			outputMessage, request = await Processor.process_quote_arguments(commandRequest, [], platforms, tickerId=f"{fromBase}USD")
 			if outputMessage is not None: return None, outputMessage
 			payload1, quoteText = await Processor.process_task("quote", commandRequest.authorId, request)
 			if payload1 is None: return None, quoteText
@@ -179,7 +148,7 @@ class Processor(object):
 		else:
 			fromBase = "USD"
 		if toBase not in ["USD", "USDT", "USDC", "DAI", "HUSD", "TUSD", "PAX", "USDK", "USDN", "BUSD", "GUSD", "USDS"]:
-			outputMessage, request = await Processor.process_quote_arguments(commandRequest, [], tickerId=f"{toBase}USD", excluded=excluded)
+			outputMessage, request = await Processor.process_quote_arguments(commandRequest, [], platforms, tickerId=f"{toBase}USD")
 			if outputMessage is not None: return None, outputMessage
 			payload2, quoteText = await Processor.process_task("quote", commandRequest.authorId, request)
 			if payload2 is None: return None, quoteText

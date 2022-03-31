@@ -12,7 +12,7 @@ PARAMETERS = []
 
 
 class TradeRequestHandler(AbstractRequestHandler):
-	def __init__(self, tickerId, platforms, bias="traditional", **kwargs):
+	def __init__(self, tickerId, platforms, bias="traditional"):
 		super().__init__(platforms)
 		for platform in platforms:
 			self.requests[platform] = TradeRequest(tickerId, platform, bias)

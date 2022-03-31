@@ -116,7 +116,7 @@ DEFAULTS = {
 
 
 class HeatmapRequestHandler(AbstractRequestHandler):
-	def __init__(self, platforms, bias="traditional", **kwargs):
+	def __init__(self, platforms, bias="traditional"):
 		super().__init__(platforms)
 		for platform in platforms:
 			self.requests[platform] = HeatmapRequest(platform, bias)

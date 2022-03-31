@@ -31,7 +31,11 @@ class CommandRequest(object):
 	# Charting platforms
 	# -------------------------
 
-	def get_platform_order_for(self, commandType):
+	def get_platform_order_for(self, commandType, assetType=None):
+		if assetType is not None and assetType != "":
+			if assetType == "crypto": self.marketBias == "crypto"
+			else: self.marketBias == "traditional"
+
 		if commandType == "c":
 			if self.marketBias == "traditional":
 				return (self.accountProperties["settings"]["charts"]["preferredOrder"] if "settings" in self.accountProperties else ["TradingView", "GoCharting", "Finviz", "TradingLite", "Bookmap"]) + ["Alternative.me"]

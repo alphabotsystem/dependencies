@@ -46,9 +46,8 @@ DEFAULTS = {
 
 
 class PriceRequestHandler(AbstractRequestHandler):
-	def __init__(self, tickerId, platforms, bias="traditional", **kwargs):
+	def __init__(self, tickerId, platforms, bias="traditional"):
 		super().__init__(platforms)
-		self.isPaperTrade = kwargs.get("isPaperTrade", False)
 		for platform in platforms:
 			self.requests[platform] = PriceRequest(tickerId, platform, bias)
 
