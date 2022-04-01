@@ -402,7 +402,7 @@ class ChartRequestHandler(AbstractRequestHandler):
 						break
 
 				if len(indicators) == 0 and len(parameters) != 0:
-					request.set_error("`{}` is not a valid argument.".format(parameters[0][:229]), isFatal=True)
+					request.set_error("`{}` is not a valid argument.".format(str(parameters[0])[:229]), isFatal=True)
 			
 			elif platform == "Finviz":
 				pass
