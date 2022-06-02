@@ -45,7 +45,7 @@ PARAMETERS = {
 		Parameter("type", "Nasdaq 100", ["nasdaq", "nasdaq100", "stocks"], tradingViewStockHeatmap="&dataset=NASDAQ100"),
 		Parameter("type", "S&P 500", ["s&p500", "s&p", "sp500", "sap500", "sap", "spx", "spx500"], tradingViewStockHeatmap="&dataset=SPX500"),
 		Parameter("type", "Dow Jones Composite Average", ["dji", "dowjones", "dowjonescompositeaverage", "djca"], tradingViewStockHeatmap="&dataset=DJCA"),
-		Parameter("type", "All US companies", ["alluscompanies", "us", "usa" "uscompanies", "allusa"], tradingViewStockHeatmap="&dataset=AllUSA"),
+		Parameter("type", "All US companies", ["alluscompanies", "us", "usa", "uscompanies", "allusa"], tradingViewStockHeatmap="&dataset=AllUSA"),
 		Parameter("type", "S&P/ASX 200", ["s&p/asx200", "asx200", "asx", "spasx", "sapasx", "sp200", "sap200"], tradingViewStockHeatmap="&dataset=ASX200"),
 		Parameter("type", "All Australian companies", ["allaustraliancompanies", "australiancompanies", "au", "allau"], tradingViewStockHeatmap="&dataset=AllAU"),
 		Parameter("type", "BEL 20", ["bel20"], tradingViewStockHeatmap="&dataset=BEL20"),
