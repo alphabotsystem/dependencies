@@ -18,13 +18,15 @@ class CommandRequest(object):
 		self.guildProperties = CommandRequest.create_guild_settings(guildProperties)
 		self.overrides = self.guildProperties.get("overrides", {}).get(str(channelId), {})
 
+		defaultSettings = self.guildProperties["settings"]["messageProcessing"]
+
 		self.autodelete = autodelete
 		if autodelete is not None and autodelete < 0:
 			self.autodelete = None
-		elif autodelete is None and self.overrides.get("messageProcessing", {}).get("autodelete", self.guildProperties["settings"]["messageProcessing"]["autodelete"]):
+		elif autodelete is None and self.overrides.get("messageProcessing", {}).get("autodelete", defaultSettings["autodelete"]):
 			self.autodelete = 1
 
-		self.marketBias = self.overrides.get("messageProcessing", {}).get("bias", self.guildProperties["settings"]["messageProcessing"]["bias"])
+		self.marketBias = self.overrides.get("messageProcessing", {}).get("bias", defaultSettings["bias"])
 
 
 	# -------------------------
@@ -44,9 +46,9 @@ class CommandRequest(object):
 				return ["Alternative.me"] + chartSettings.get("preferredOrder", ["TradingView", "GoCharting", "Finviz", "TradingLite", "Bookmap"])
 		elif commandType == "hmap":
 			if self.marketBias == "traditional":
-				return ["Finviz", "Bitgur"]
+				return ["TradingView Stock Heatmap", "TradingView Crypto Heatmap", "Bitgur"]
 			else:
-				return ["Bitgur", "Finviz"]
+				return ["TradingView Crypto Heatmap", "TradingView Stock Heatmap", "Bitgur"]
 		elif commandType == "flow":
 			return ["Alpha Flow"]
 		elif commandType == "p":
@@ -80,7 +82,7 @@ class CommandRequest(object):
 			else:
 				return ["CoinGecko", "CCXT", "IEXC", "Serum"]
 		else:
-			raise ValueError("incorrect commant type: {}".format(commandType))
+			raise ValueError(f"incorrect commant type: {commandType}")
 
 
 	# -------------------------

@@ -206,7 +206,7 @@ PARAMETERS = {
 		Parameter("wma", "Weighted Moving Average", ["wma", "weightedmovingaverage"], tradingview="MAWeighted@tv-basicstudies", gocharting="WMA"),
 		Parameter("zz", "Zig Zag", ["zz", "zigzag"], tradingview="ZigZag@tv-basicstudies", gocharting="ZIGZAG")
 	],
-	"type": [
+	"types": [
 		Parameter("ta", "advanced TA", ["ta", "advanced"], finviz="&ta=1"),
 		Parameter("nv", "no volume", ["hv", "nv", "novol"], tradingview="&hidevolume=1"),
 		Parameter("np", "no price", ["hp", "np", "nopri"], gocharting="&showmainchart=false"),
@@ -251,49 +251,49 @@ DEFAULTS = {
 	"Alternative.me": {
 		"timeframes": [Parameter(None, None, None)],
 		"indicators": [],
-		"type": [],
+		"types": [],
 		"style": [],
 		"preferences": []
 	},
 	"TradingLite": {
 		"timeframes": [AbstractRequest.find_parameter_with_id(60, type="timeframes", params=PARAMETERS)],
 		"indicators": [],
-		"type": [],
+		"types": [],
 		"style": [AbstractRequest.find_parameter_with_id("theme", name="dark theme", type="style", params=PARAMETERS)],
 		"preferences": [AbstractRequest.find_parameter_with_id("heatmapIntensity", name="normal heatmap intensity", type="preferences", params=PARAMETERS)]
 	},
 	"TradingView": {
 		"timeframes": [AbstractRequest.find_parameter_with_id(60, type="timeframes", params=PARAMETERS)],
 		"indicators": [],
-		"type": [AbstractRequest.find_parameter_with_id("theme", name="dark theme", type="type", params=PARAMETERS), AbstractRequest.find_parameter_with_id("candleStyle", name="candles", type="type", params=PARAMETERS)],
+		"types": [AbstractRequest.find_parameter_with_id("theme", name="dark theme", type="types", params=PARAMETERS), AbstractRequest.find_parameter_with_id("candleStyle", name="candles", type="types", params=PARAMETERS)],
 		"style": [],
 		"preferences": []
 	},
 	"Bookmap": {
 		"timeframes": [AbstractRequest.find_parameter_with_id(60, type="timeframes", params=PARAMETERS)],
 		"indicators": [],
-		"type": [],
+		"types": [],
 		"style": [],
 		"preferences": []
 	},
 	"GoCharting": {
 		"timeframes": [AbstractRequest.find_parameter_with_id(60, type="timeframes", params=PARAMETERS)],
 		"indicators": [],
-		"type": [AbstractRequest.find_parameter_with_id("theme", name="dark theme", type="type", params=PARAMETERS), AbstractRequest.find_parameter_with_id("candleStyle", name="candles", type="type", params=PARAMETERS)],
+		"types": [AbstractRequest.find_parameter_with_id("theme", name="dark theme", type="types", params=PARAMETERS), AbstractRequest.find_parameter_with_id("candleStyle", name="candles", type="types", params=PARAMETERS)],
 		"style": [],
 		"preferences": []
 	},
 	"Finviz": {
 		"timeframes": [AbstractRequest.find_parameter_with_id(1440, type="timeframes", params=PARAMETERS)],
 		"indicators": [],
-		"type": [AbstractRequest.find_parameter_with_id("candleStyle", name="candles", type="type", params=PARAMETERS)],
+		"types": [AbstractRequest.find_parameter_with_id("candleStyle", name="candles", type="types", params=PARAMETERS)],
 		"style": [AbstractRequest.find_parameter_with_id("theme", name="light theme", type="style", params=PARAMETERS)],
 		"preferences": []
 	},
 	"Alpha Flow": {
 		"timeframes": [],
 		"indicators": [],
-		"type": [],
+		"types": [],
 		"style": [],
 		"preferences": []
 	}
@@ -347,7 +347,7 @@ class ChartRequestHandler(AbstractRequestHandler):
 			elif success: continue
 
 			if finalOutput is None:
-				request.set_error("`{}` is not a valid argument.".format(argument[:229]), isFatal=True)
+				request.set_error(f"`{argument[:229]}` is not a valid argument.", isFatal=True)
 			elif finalOutput.startswith("`Force Chart"):
 				request.set_error(None, isFatal=True)
 			else:
@@ -374,9 +374,9 @@ class ChartRequestHandler(AbstractRequestHandler):
 				if not bool(request.exchange):
 					request.set_error("TradingLite currently only supports cryptocurrency markets on supported exchanges.", isFatal=True)
 				elif request.ticker.get("symbol") is None:
-					request.set_error("Requested chart for `{}` is not available.".format(request.ticker.get("id")), isFatal=True)
+					request.set_error(f"Requested chart for `{request.ticker.get('id')}` is not available.", isFatal=True)
 				elif request.exchange.get("id") in ["binanceusdm", "binancecoinm", "ftx", "okex5"]:
-					request.set_error("{} exchange is not available. ||Yet.||".format(request.exchange.get("name")), isFatal=True)
+					request.set_error(f"{request.exchange.get('name')} exchange is not available. ||Yet.||", isFatal=True)
 			
 			elif platform == "TradingView":
 				if "&style=6" in types and "log" in styles:
@@ -398,11 +398,11 @@ class ChartRequestHandler(AbstractRequestHandler):
 					cursor -= 1
 
 					if indicators[i].dynamic is not None and lengths[i] != 0 and len(lengths[i]) > len(indicators[i].dynamic[platform]):
-						request.set_error("{} indicator takes in `{}` {}, but `{}` were given.".format(indicators[i].name, len(indicators[i].dynamic[platform]), "parameters" if len(indicators[i].dynamic[platform]) > 1 else "parameter", len(lengths[i])), isFatal=True)
+						request.set_error(f"{indicators[i].name} indicator takes in `{len(indicators[i].dynamic[platform])}` {'parameters' if len(indicators[i].dynamic[platform]) > 1 else 'parameter'}, but `{len(lengths[i])}` were given.", isFatal=True)
 						break
 
 				if len(indicators) == 0 and len(parameters) != 0:
-					request.set_error("`{}` is not a valid argument.".format(str(parameters[0])[:229]), isFatal=True)
+					request.set_error(f"`{str(parameters[0])[:229]}` is not a valid argument.", isFatal=True)
 			
 			elif platform == "Finviz":
 				pass
@@ -490,7 +490,7 @@ class ChartRequest(AbstractRequest):
 		indicatorSupported, parsedIndicator = self.add_parameter(argument, "indicators")
 		if parsedIndicator is not None and not self.has_parameter(parsedIndicator.id, self.indicators):
 			if not indicatorSupported:
-				outputMessage = "`{}` indicator is not supported on {}.".format(parsedIndicator.name, self.platform)
+				outputMessage = f"`{parsedIndicator.name}` indicator is not supported on {self.platform}."
 				return outputMessage, False
 			self.indicators.append(parsedIndicator)
 			self.numericalParameters.append(-1)
@@ -504,10 +504,10 @@ class ChartRequest(AbstractRequest):
 		return None, None
 
 	async def add_type(self, argument):
-		typeSupported, parsedType = self.add_parameter(argument, "type")
+		typeSupported, parsedType = self.add_parameter(argument, "types")
 		if parsedType is not None and not self.has_parameter(parsedType.id, self.types):
 			if not typeSupported:
-				outputMessage = "`{}` chart style is not supported on {}.".format(parsedType.name.title(), self.platform)
+				outputMessage = f"`{parsedType.name.title()}` chart style is not supported on {self.platform}."
 				return outputMessage, False
 			self.types.append(parsedType)
 			return None, True
@@ -537,7 +537,7 @@ class ChartRequest(AbstractRequest):
 		elif t == "indicators":
 			for parameter in DEFAULTS.get(self.platform, {}).get(t, []):
 				if not self.has_parameter(parameter.id, self.indicators): self.indicators.append(parameter)
-		elif t == "type":
+		elif t == "types":
 			for parameter in DEFAULTS.get(self.platform, {}).get(t, []):
 				if not self.has_parameter(parameter.id, self.types): self.types.append(parameter)
 		elif t == "style":
@@ -572,7 +572,7 @@ class ChartRequest(AbstractRequest):
 						for j in range(len(lengths[i]), len(self.indicators[i].dynamic[self.platform])):
 							lengths[i].append(self.indicators[i].dynamic[self.platform][j])
 
-					indicators.insert(0, "{}_{}".format(self.indicators[i].parsed[self.platform], "_".join([str(l) for l in lengths[i]])))
+					indicators.insert(0, f"{self.indicators[i].parsed[self.platform]}_{'_'.join([str(l) for l in lengths[i]])}")
 
 				indicators = "&studies=" + "-".join(indicators)
 

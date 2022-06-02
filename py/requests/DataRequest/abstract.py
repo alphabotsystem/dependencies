@@ -58,7 +58,7 @@ class AbstractRequest(object):
 		timeframeSupported, parsedTimeframe = self.add_parameter(argument, "timeframes")
 		if parsedTimeframe is not None and not self.has_parameter(parsedTimeframe.id, self.timeframes):
 			if not timeframeSupported:
-				outputMessage = "`{}` timeframe is not supported on {}.".format(argument, self.platform)
+				outputMessage = f"`{argument}` timeframe is not supported on {self.platform}."
 				return outputMessage, False
 			self.timeframes.append(parsedTimeframe)
 			return None, True
@@ -72,7 +72,7 @@ class AbstractRequest(object):
 		except: return "Parser could not process your request. Please try again in a bit.", False
 		if parsedExchange is not None:
 			if not exchangeSupported:
-				outputMessage = "`{}` exchange is not supported by {}.".format(parsedExchange.get("name"), self.platform)
+				outputMessage = f"`{parsedExchange.get('name')}` exchange is not supported by {self.platform}."
 				return outputMessage, False
 			self.exchange = parsedExchange
 			self.hasExchange = True
@@ -83,7 +83,7 @@ class AbstractRequest(object):
 		styleSupported, parsedStyle = self.add_parameter(argument, "style")
 		if parsedStyle is not None and not self.has_parameter(parsedStyle.id, self.styles):
 			if not styleSupported:
-				outputMessage = "`{}` parameter is not supported on {}.".format(parsedStyle.name.title(), self.platform)
+				outputMessage = f"`{parsedStyle.name.title()}` parameter is not supported on {self.platform}."
 				return outputMessage, False
 			self.styles.append(parsedStyle)
 			return None, True
@@ -93,7 +93,7 @@ class AbstractRequest(object):
 		preferenceSupported, parsedPreference = self.add_parameter(argument, "preferences")
 		if parsedPreference is not None and not self.has_parameter(parsedPreference.id, self.preferences):
 			if not preferenceSupported:
-				outputMessage = "`{}` parameter is not supported by {}.".format(parsedPreference.name.title(), self.platform)
+				outputMessage = f"`{parsedPreference.name.title()}` parameter is not supported by {self.platform}."
 				return outputMessage, False
 			self.preferences.append(parsedPreference)
 			return None, True

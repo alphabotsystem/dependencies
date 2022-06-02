@@ -38,7 +38,7 @@ class Exchange(object):
 		return hash(self.id)
 
 	def __str__(self):
-		return "{} [id: {}]".format(self.name, self.id)
+		return f"{self.name} [id: {self.id}]"
 
 class StocksExchange(object):
 	def __init__(self, id):
