@@ -42,7 +42,7 @@ PARAMETERS = {
 		Parameter("ytd", "YTD", ["ytd"], tradingViewStockHeatmap="?color=Perf.Y", tradingViewCryptoHeatmap="?color=Perf.Y"),
 	],
 	"types": [
-		Parameter("type", "Nasdaq 100", ["nasdaq, nasdaq100"], tradingViewStockHeatmap="&dataset=NASDAQ100"),
+		Parameter("type", "Nasdaq 100", ["nasdaq", "nasdaq100", "stocks"], tradingViewStockHeatmap="&dataset=NASDAQ100"),
 		Parameter("type", "S&P 500", ["s&p500", "s&p", "sp500", "sap500", "sap", "spx", "spx500"], tradingViewStockHeatmap="&dataset=SPX500"),
 		Parameter("type", "Dow Jones Composite Average", ["dji", "dowjones", "dowjonescompositeaverage", "djca"], tradingViewStockHeatmap="&dataset=DJCA"),
 		Parameter("type", "All US companies", ["alluscompanies", "us", "usa" "uscompanies", "allusa"], tradingViewStockHeatmap="&dataset=AllUSA"),
