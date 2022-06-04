@@ -248,7 +248,10 @@ class HeatmapRequestHandler(AbstractRequestHandler):
 				_type = [e.get("value") for e in types if e.get("id") == "type"]
 
 				if "performance" not in heatmap and any([e in heatmap for e in ["?color=premarket_change", "?color=postmarket_change", "?color=relative_volume_10d_calc", "?color=gap", "?color=Volatility.D"]]):
-					if request.timeframes[0].id is not None: request.set_error(f"Timeframes are not supported on the {heatmap[:-1]} heat map.")
+					if len(request.timeframes) != 0:
+						if request.timeframes[0].id is not None: request.set_error(f"Timeframes are not supported on the {heatmap[:-1]} heat map."); break
+					else:
+						request.timeframes = [Parameter(None, None, None, bitgur="")]; continue
 				elif len(request.timeframes) == 0:
 					request.timeframes = [AbstractRequest.find_parameter_with_id(1440, type="timeframes", params=PARAMETERS)]
 					if "performance" not in heatmap:
@@ -272,7 +275,10 @@ class HeatmapRequestHandler(AbstractRequestHandler):
 				_type = [e.get("value") for e in types if e.get("id") == "type"]
 
 				if "performance" not in heatmap and any([e in heatmap for e in ["?color=gap", "?color=Volatility.D"]]):
-					if request.timeframes[0].id is not None: request.set_error(f"Timeframes are not supported on the {heatmap[:-1]} heat map.")
+					if len(request.timeframes) != 0:
+						if request.timeframes[0].id is not None: request.set_error(f"Timeframes are not supported on the {heatmap[:-1]} heat map."); break
+					else:
+						request.timeframes = [Parameter(None, None, None, bitgur="")]; continue
 				elif len(request.timeframes) == 0:
 					request.timeframes = [AbstractRequest.find_parameter_with_id(1440, type="timeframes", params=PARAMETERS)]
 					if "performance" not in heatmap:
