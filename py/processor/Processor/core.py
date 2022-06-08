@@ -56,8 +56,6 @@ class Processor(object):
 
 	@staticmethod
 	async def process_chart_arguments(commandRequest, arguments, platforms, tickerId=None):
-		if isinstance(tickerId, str): tickerId = tickerId[:25]
-
 		requestHandler = ChartRequestHandler(tickerId, platforms, bias=commandRequest.marketBias)
 		for argument in arguments:
 			await requestHandler.parse_argument(argument)
@@ -84,8 +82,6 @@ class Processor(object):
 	
 	@staticmethod
 	async def process_quote_arguments(commandRequest, arguments, platforms, tickerId=None):
-		if isinstance(tickerId, str): tickerId = tickerId[:25]
-
 		requestHandler = PriceRequestHandler(tickerId, platforms, bias=commandRequest.marketBias)
 		for argument in arguments:
 			await requestHandler.parse_argument(argument)
@@ -100,8 +96,6 @@ class Processor(object):
 
 	@staticmethod
 	async def process_detail_arguments(commandRequest, arguments, platforms, tickerId=None):
-		if isinstance(tickerId, str): tickerId = tickerId[:25]
-
 		requestHandler = DetailRequestHandler(tickerId, platforms, bias=commandRequest.marketBias)
 		for argument in arguments:
 			await requestHandler.parse_argument(argument)
@@ -116,8 +110,6 @@ class Processor(object):
 
 	@staticmethod
 	async def process_trade_arguments(commandRequest, arguments, platforms, tickerId=None):
-		if isinstance(tickerId, str): tickerId = tickerId[:25]
-
 		requestHandler = TradeRequestHandler(tickerId, platforms, bias=commandRequest.marketBias)
 		for argument in arguments:
 			await requestHandler.parse_argument(argument)
