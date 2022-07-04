@@ -217,7 +217,7 @@ class HeatmapRequestHandler(AbstractRequestHandler):
 					if len(request.timeframes) != 0:
 						if request.timeframes[0].id is not None: request.set_error(f"Timeframes are not supported on the {heatmap[:-1]} heat map."); break
 					else:
-						request.timeframes = [Parameter(None, None, None, tradingViewStockHeatmap="")]; continue
+						request.timeframes = [Parameter(None, None, None, tradingViewStockHeatmap="")]
 				elif len(request.timeframes) == 0:
 					request.timeframes = [AbstractRequest.find_parameter_with_id(1440, type="timeframes", params=PARAMETERS)]
 					if "performance" not in heatmap:
@@ -247,7 +247,7 @@ class HeatmapRequestHandler(AbstractRequestHandler):
 					if len(request.timeframes) != 0:
 						if request.timeframes[0].id is not None: request.set_error(f"Timeframes are not supported on the {heatmap[:-1]} heat map."); break
 					else:
-						request.timeframes = [Parameter(None, None, None, tradingViewCryptoHeatmap="")]; continue
+						request.timeframes = [Parameter(None, None, None, tradingViewCryptoHeatmap="")]
 				elif len(request.timeframes) == 0:
 					request.timeframes = [AbstractRequest.find_parameter_with_id(1440, type="timeframes", params=PARAMETERS)]
 					if "performance" not in heatmap:
