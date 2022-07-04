@@ -288,13 +288,6 @@ DEFAULTS = {
 		"types": [AbstractRequest.find_parameter_with_id("candleStyle", name="candles", type="types", params=PARAMETERS)],
 		"style": [AbstractRequest.find_parameter_with_id("theme", name="light theme", type="style", params=PARAMETERS)],
 		"preferences": []
-	},
-	"Alpha Flow": {
-		"timeframes": [],
-		"indicators": [],
-		"types": [],
-		"style": [],
-		"preferences": []
 	}
 }
 
