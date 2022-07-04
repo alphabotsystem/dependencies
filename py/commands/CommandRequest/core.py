@@ -47,9 +47,9 @@ class CommandRequest(object):
 				return ["Alternative.me"] + chartSettings.get("preferredOrder", ["TradingView", "GoCharting", "Finviz", "TradingLite", "Bookmap"])
 		elif commandType == "hmap":
 			if self.marketBias == "traditional":
-				return ["TradingView Stock Heatmap", "TradingView Crypto Heatmap", "Bitgur"]
+				return ["TradingView Stock Heatmap", "TradingView Crypto Heatmap"]
 			else:
-				return ["TradingView Crypto Heatmap", "TradingView Stock Heatmap", "Bitgur"]
+				return ["TradingView Crypto Heatmap", "TradingView Stock Heatmap"]
 		elif commandType == "flow":
 			return ["Alpha Flow"]
 		elif commandType == "p":

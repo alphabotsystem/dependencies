@@ -56,7 +56,7 @@ class Processor(object):
 
 	@staticmethod
 	async def process_chart_arguments(commandRequest, arguments, platforms, tickerId=None):
-		requestHandler = ChartRequestHandler(tickerId, platforms, bias=commandRequest.marketBias)
+		requestHandler = ChartRequestHandler(tickerId, platforms.copy(), bias=commandRequest.marketBias)
 		for argument in arguments:
 			await requestHandler.parse_argument(argument)
 		if tickerId is not None:
@@ -70,7 +70,7 @@ class Processor(object):
 
 	@staticmethod
 	async def process_heatmap_arguments(commandRequest, arguments, platforms):
-		requestHandler = HeatmapRequestHandler(platforms, bias=commandRequest.marketBias)
+		requestHandler = HeatmapRequestHandler(platforms.copy(), bias=commandRequest.marketBias)
 		for argument in arguments:
 			await requestHandler.parse_argument(argument)
 
@@ -82,7 +82,7 @@ class Processor(object):
 	
 	@staticmethod
 	async def process_quote_arguments(commandRequest, arguments, platforms, tickerId=None):
-		requestHandler = PriceRequestHandler(tickerId, platforms, bias=commandRequest.marketBias)
+		requestHandler = PriceRequestHandler(tickerId, platforms.copy(), bias=commandRequest.marketBias)
 		for argument in arguments:
 			await requestHandler.parse_argument(argument)
 		if tickerId is not None:
@@ -96,7 +96,7 @@ class Processor(object):
 
 	@staticmethod
 	async def process_detail_arguments(commandRequest, arguments, platforms, tickerId=None):
-		requestHandler = DetailRequestHandler(tickerId, platforms, bias=commandRequest.marketBias)
+		requestHandler = DetailRequestHandler(tickerId, platforms.copy(), bias=commandRequest.marketBias)
 		for argument in arguments:
 			await requestHandler.parse_argument(argument)
 		if tickerId is not None:
@@ -110,7 +110,7 @@ class Processor(object):
 
 	@staticmethod
 	async def process_trade_arguments(commandRequest, arguments, platforms, tickerId=None):
-		requestHandler = TradeRequestHandler(tickerId, platforms, bias=commandRequest.marketBias)
+		requestHandler = TradeRequestHandler(tickerId, platforms.copy(), bias=commandRequest.marketBias)
 		for argument in arguments:
 			await requestHandler.parse_argument(argument)
 		if tickerId is not None:

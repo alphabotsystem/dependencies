@@ -62,6 +62,6 @@ class TickerParser(object):
 		return response.decode()
 
 	@staticmethod
-	def get_venues(platforms, tickerId):
-		[response] = TickerParser.execute_parser_request(b"get_venues", [platforms.encode(), tickerId.encode()])
+	def get_venues(platforms):
+		[response] = TickerParser.execute_parser_request(b"get_venues", [platforms.encode()])
 		return loads(response)

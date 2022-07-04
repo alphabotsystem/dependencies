@@ -14,28 +14,28 @@ PARAMETERS = {
 		Parameter(3, "3m", ["3", "3m", "3min", "3mins", "3minute", "3minutes"]),
 		Parameter(5, "5m", ["5", "5m", "5min", "5mins", "5minute", "5minutes"]),
 		Parameter(10, "10m", ["10", "10m", "10min", "10mins", "10minute", "10minutes"]),
-		Parameter(15, "15m", ["15", "15m", "15min", "15mins", "15minute", "15minutes"], bitgur="last_minute15/"),
+		Parameter(15, "15m", ["15", "15m", "15min", "15mins", "15minute", "15minutes"]),
 		Parameter(20, "20m", ["20", "20m", "20min", "20mins", "20minute", "20minutes"]),
 		Parameter(30, "30m", ["30", "30m", "30min", "30mins", "30minute", "30minutes"]),
 		Parameter(45, "45m", ["45", "45m", "45min", "45mins", "45minute", "45minutes"]),
-		Parameter(60, "1H", ["60", "60m", "60min", "60mins", "60minute", "60minutes", "1", "1h", "1hr", "1hour", "1hours", "hourly", "hour", "hr", "h"], bitgur="last_hour/", tradingViewStockHeatmap="?color=change%7C60", tradingViewCryptoHeatmap="?color=change%7C60"),
+		Parameter(60, "1H", ["60", "60m", "60min", "60mins", "60minute", "60minutes", "1", "1h", "1hr", "1hour", "1hours", "hourly", "hour", "hr", "h"], tradingViewStockHeatmap="?color=change%7C60", tradingViewCryptoHeatmap="?color=change%7C60"),
 		Parameter(120, "2H", ["120", "120m", "120min", "120mins", "120minute", "120minutes", "2", "2h", "2hr", "2hrs", "2hour", "2hours"]),
 		Parameter(180, "3H", ["180", "180m", "180min", "180mins", "180minute", "180minutes", "3", "3h", "3hr", "3hrs", "3hour", "3hours"]),
 		Parameter(240, "4H", ["240", "240m", "240min", "240mins", "240minute", "240minutes", "4", "4h", "4hr", "4hrs", "4hour", "4hours"], tradingViewStockHeatmap="?color=change%7C240", tradingViewCryptoHeatmap="?color=change%7C240"),
 		Parameter(360, "6H", ["360", "360m", "360min", "360mins", "360minute", "360minutes", "6", "6h", "6hr", "6hrs", "6hour", "6hours"]),
 		Parameter(480, "8H", ["480", "480m", "480min", "480mins", "480minute", "480minutes", "8", "8h", "8hr", "8hrs", "8hour", "8hours"]),
 		Parameter(720, "12H", ["720", "720m", "720min", "720mins", "720minute", "720minutes", "12", "12h", "12hr", "12hrs", "12hour", "12hours"]),
-		Parameter(1440, "1D", ["24", "24h", "24hr", "24hrs", "24hour", "24hours", "d", "day", "1", "1d", "1day", "daily", "1440", "1440m", "1440min", "1440mins", "1440minute", "1440minutes"], bitgur="last_day/", tradingViewStockHeatmap="?color=change", tradingViewCryptoHeatmap="?color=change"),
+		Parameter(1440, "1D", ["24", "24h", "24hr", "24hrs", "24hour", "24hours", "d", "day", "1", "1d", "1day", "daily", "1440", "1440m", "1440min", "1440mins", "1440minute", "1440minutes"], tradingViewStockHeatmap="?color=change", tradingViewCryptoHeatmap="?color=change"),
 		Parameter(2880, "2D", ["48", "48h", "48hr", "48hrs", "48hour", "48hours", "2", "2d", "2day", "2880", "2880m", "2880min", "2880mins", "2880minute", "2880minutes"]),
 		Parameter(3420, "3D", ["72", "72h", "72hr", "72hrs", "72hour", "72hours", "3", "3d", "3day", "3420", "3420m", "3420min", "3420mins", "3420minute", "3420minutes"]),
-		Parameter(10080, "1W", ["7", "7d", "7day", "7days", "w", "week", "1w", "1week", "weekly"], bitgur="last_week/", tradingViewStockHeatmap="?color=Perf.W", tradingViewCryptoHeatmap="?color=Perf.W"),
+		Parameter(10080, "1W", ["7", "7d", "7day", "7days", "w", "week", "1w", "1week", "weekly"], tradingViewStockHeatmap="?color=Perf.W", tradingViewCryptoHeatmap="?color=Perf.W"),
 		Parameter(20160, "2W", ["14", "14d", "14day", "14days", "2w", "2week"]),
-		Parameter(43829, "1M", ["30d", "30day", "30days", "1", "1m", "m", "mo", "month", "1mo", "1month", "monthly"], bitgur="last_month/", tradingViewStockHeatmap="?color=Perf.1M", tradingViewCryptoHeatmap="?color=Perf.1M"),
+		Parameter(43829, "1M", ["30d", "30day", "30days", "1", "1m", "m", "mo", "month", "1mo", "1month", "monthly"], tradingViewStockHeatmap="?color=Perf.1M", tradingViewCryptoHeatmap="?color=Perf.1M"),
 		Parameter(87658, "2M", ["2", "2m", "2m", "2mo", "2month", "2months"]),
-		Parameter(131487, "3M", ["3", "3m", "3m", "3mo", "3month", "3months"], bitgur="last_month3/", tradingViewStockHeatmap="?color=Perf.3M", tradingViewCryptoHeatmap="?color=Perf.3M"),
+		Parameter(131487, "3M", ["3", "3m", "3m", "3mo", "3month", "3months"], tradingViewStockHeatmap="?color=Perf.3M", tradingViewCryptoHeatmap="?color=Perf.3M"),
 		Parameter(175316, "4M", ["4", "4m", "4m", "4mo", "4month", "4months"]),
-		Parameter(262974, "6M", ["6", "6m", "5m", "6mo", "6month", "6months"], bitgur="last_month6/", tradingViewStockHeatmap="?color=Perf.6M", tradingViewCryptoHeatmap="?color=Perf.6M"),
-		Parameter(525949, "1Y", ["12", "12m", "12mo", "12month", "12months", "year", "yearly", "1year", "1y", "y", "annual", "annually"], bitgur="last_year/", tradingViewStockHeatmap="?color=Perf.Y", tradingViewCryptoHeatmap="?color=Perf.Y"),
+		Parameter(262974, "6M", ["6", "6m", "5m", "6mo", "6month", "6months"], tradingViewStockHeatmap="?color=Perf.6M", tradingViewCryptoHeatmap="?color=Perf.6M"),
+		Parameter(525949, "1Y", ["12", "12m", "12mo", "12month", "12months", "year", "yearly", "1year", "1y", "y", "annual", "annually"], tradingViewStockHeatmap="?color=Perf.Y", tradingViewCryptoHeatmap="?color=Perf.Y"),
 		Parameter(1051898, "2Y", ["24", "24m", "24mo", "24month", "24months", "2year", "2y"]),
 		Parameter(1577847, "3Y", ["36", "36m", "36mo", "36month", "36months", "3year", "3y"]),
 		Parameter(2103796, "4Y", ["48", "48m", "48mo", "48month", "48months", "4year", "4y"]),
@@ -82,31 +82,21 @@ PARAMETERS = {
 		Parameter("type", "All Turkish companies", ["allturkishcompanies", "tr", "alltr", "turkishcompanies"], tradingViewStockHeatmap="&dataset=ALLTR"),
 		Parameter("type", "UK 100 Index", ["uk100"], tradingViewStockHeatmap="&dataset=UK100"),
 		Parameter("type", "All UK companies", ["allukcompanies", "uk", "alluk", "ukcompanies"], tradingViewStockHeatmap="&dataset=AllUK"),
-		Parameter("type", "top100", ["top100", "100top", "100"], bitgur="top100/"),
-		Parameter("type", "top10", ["top10", "10top", "10"], bitgur="top10/"),
-		Parameter("type", "coins", ["coins", "coin"], bitgur="crypto/"),
-		Parameter("type", "token", ["token", "tokens"], bitgur="token/"),
 		Parameter("type", "crypto in USD (excluding Bitcoin)", ["cryptoinusd(excludingbitcoin)"], tradingViewCryptoHeatmap="&dataset=CryptoWithoutBTC"),
 		Parameter("type", "crypto in BTC", ["cryptoinbtc"], tradingViewCryptoHeatmap="&dataset=CryptoInBTC"),
 		Parameter("type", "crypto DeFi", ["cryptodefi"], tradingViewCryptoHeatmap="&dataset=CryptoDeFi"),
-		Parameter("type", "crypto in USD", ["full", "all", "every", "everything", "crypto", "cryptoinusd"], bitgur="all/", tradingViewCryptoHeatmap="&dataset=Crypto"),
+		Parameter("type", "crypto in USD", ["full", "all", "every", "everything", "cryptoinusd"], tradingViewCryptoHeatmap="&dataset=Crypto"),
 		Parameter("theme", "light theme", ["light", "white"], tradingViewStockHeatmap="&theme=light", tradingViewCryptoHeatmap="&theme=light"),
 		Parameter("theme", "dark theme", ["dark", "black"], tradingViewStockHeatmap="&theme=dark", tradingViewCryptoHeatmap="&theme=dark"),
 	],
 	"style": [],
 	"preferences": [
-		Parameter("heatmap", "performance", ["change", "performance"], bitgur="coins/", tradingViewStockHeatmap="performance", tradingViewCryptoHeatmap="performance"),
+		Parameter("heatmap", "performance", ["change", "performance"], tradingViewStockHeatmap="performance", tradingViewCryptoHeatmap="performance"),
 		Parameter("heatmap", "pre-market change", ["pre-marketchange", "premarketchange", "premarketperformance"], tradingViewStockHeatmap="?color=premarket_change"),
 		Parameter("heatmap", "post-market change", ["post-marketchange", "postmarketchange", "postmarketperformance"], tradingViewStockHeatmap="?color=postmarket_change"),
 		Parameter("heatmap", "relative volume", ["relativevolume", "volume"], tradingViewStockHeatmap="?color=relative_volume_10d_calc"),
 		Parameter("heatmap", "gap", ["gap"], tradingViewStockHeatmap="?color=gap", tradingViewCryptoHeatmap="?color=gap"),
-		Parameter("heatmap", "volatility", ["volatility", "vol", "v"], bitgur="volatility/", tradingViewStockHeatmap="?color=Volatility.D", tradingViewCryptoHeatmap="?color=Volatility.D"),
-		Parameter("heatmap", "exchanges", ["exchanges", "exchange", "exc", "e"], bitgur="exchanges/"),
-		Parameter("heatmap", "trend", ["trend", "tre", "t"], bitgur="trend/"),
-		Parameter("heatmap", "category", ["category", "cat", "c"], bitgur="category/"),
-		Parameter("heatmap", "unusual", ["unusual", "volume", "unu", "unv", "uvol", "u"], bitgur="unusual_volume/"),
-		Parameter("side", "gainers", ["gainers", "gainer", "gain", "g"], bitgur="gainers/"),
-		Parameter("side", "losers", ["loosers", "looser", "losers", "loser", "loss", "l"], bitgur="loosers/"),
+		Parameter("heatmap", "volatility", ["volatility", "vol", "v"], tradingViewStockHeatmap="?color=Volatility.D", tradingViewCryptoHeatmap="?color=Volatility.D"),
 		Parameter("size", "market cap", ["marketcap", "mcap"], tradingViewStockHeatmap="&size=market_cap_basic", tradingViewCryptoHeatmap="&size=market_cap_calc"),
 		Parameter("size", "traded volume", ["tradedvolume", "volume"], tradingViewCryptoHeatmap="&size=total_value_traded"),
 		Parameter("size", "number of employees", ["numberofemployees", "employees"], tradingViewStockHeatmap="&size=number_of_employees"),
@@ -115,50 +105,32 @@ PARAMETERS = {
 		Parameter("size", "price to sales (FY)", ["pricetosales(fy)", "pricetosales"], tradingViewStockHeatmap="&size=price_sales_ratio"),
 		Parameter("size", "price to book (FY)", ["pricetobook(fy)", "pricetobook"], tradingViewStockHeatmap="&size=price_book_ratio"),
 		Parameter("size", "price to book (MRQ)", ["pricetoboo(mrq)", "mrq"], tradingViewStockHeatmap="&size=price_book_fq"),
-		Parameter("group", "no group", ["no group"], tradingViewStockHeatmap="&group=no_group", tradingViewCryptoHeatmap="&group=no_group"),
+		Parameter("group", "no group", ["nogroup"], tradingViewStockHeatmap="&group=no_group", tradingViewCryptoHeatmap="&group=no_group"),
 		Parameter("group", "sector", ["sector"], tradingViewStockHeatmap="&group=sector"),
-		Parameter("category", "market cap", ["marketcap", "mcap"], bitgur="cap"),
-		Parameter("category", "cryptocurrency", ["cryptocurrency", "crypto"], bitgur="cryptocurrency"),
-		Parameter("category", "blockchain platforms", ["blockchain", "platforms"], bitgur="blockchain_platforms"),
-		Parameter("category", "commerce and advertising", ["commerce", "advertising"], bitgur="commerce_and_advertising"),
 		Parameter("category", "commercial services", ["commercialservices"], tradingViewStockHeatmap="&activeGroup=Commercial%20Services"),
-		Parameter("category", "commodities", ["commodities"], bitgur="commodities"),
 		Parameter("category", "communications", ["communications"], tradingViewStockHeatmap="&activeGroup=Communications"),
 		Parameter("category", "consumer durables", ["consumerdurables"], tradingViewStockHeatmap="&activeGroup=Consumer%20Durables"),
 		Parameter("category", "consumer non-durables", ["consumernon-durables"], tradingViewStockHeatmap="&activeGroup=Consumer%20Non-Durables"),
 		Parameter("category", "consumer services", ["consumerservices"], tradingViewStockHeatmap="&activeGroup=Consumer%20Services"),
-		Parameter("category", "content management", ["content", "management"], bitgur="content_management"),
-		Parameter("category", "data storage and AI", ["data", "storage", "analytics", "ai"], bitgur="data_storage_analytics_and_ai"),
 		Parameter("category", "distribution services", ["distributionservices"], tradingViewStockHeatmap="&activeGroup=Distribution%20Services"),
-		Parameter("category", "drugs and healthcare", ["health", "drugs", "healthcare"], bitgur="drugs_and_healthcare"),
-		Parameter("category", "energy and utilities", ["energy", "utilities"], bitgur="energy_and_utilities"),
 		Parameter("category", "electronic technology", ["electronictechnology"], tradingViewStockHeatmap="&activeGroup=Electronic%20Technology"),
-		Parameter("category", "events and entertainment", ["events", "entertainment"], bitgur="events_and_entertainment"),
 		Parameter("category", "energy minerals", ["energyminerals"], tradingViewStockHeatmap="&activeGroup=Energy%20Minerals"),
-		Parameter("category", "finance", ["finance", "financialservices"], bitgur="financial_services", tradingViewStockHeatmap="&activeGroup=Finance"),
-		Parameter("category", "gambling and betting", ["gambling", "betting"], bitgur="gambling_and_betting"),
-		Parameter("category", "gaming and VR", ["gaming", "vr"], bitgur="gaming_and_vr"),
+		Parameter("category", "finance", ["finance", "financialservices"], tradingViewStockHeatmap="&activeGroup=Finance"),
 		Parameter("category", "health services", ["healthservices"], tradingViewStockHeatmap="&activeGroup=Health%20Services"),
 		Parameter("category", "health technology", ["health", "healthtechnology", "healthcare"], tradingViewStockHeatmap="&activeGroup=Health%20Technology"),
-		Parameter("category", "identy and reputation", ["identy", "reputation"], bitgur="identy_and_reputation"),
 		Parameter("category", "industrial services", ["industrialservices"], tradingViewStockHeatmap="&activeGroup=Industrial%20Services"),
-		Parameter("category", "legal", ["legal"], bitgur="legal"),
 		Parameter("category", "miscellaneous", ["miscellaneous"], tradingViewStockHeatmap="&activeGroup=Miscellaneous"),
 		Parameter("category", "non-energy minerals", ["non-energyminerals"], tradingViewStockHeatmap="&activeGroup=Non-Energy%20Minerals"),
 		Parameter("category", "process industries", ["processindustries"], tradingViewStockHeatmap="&activeGroup=Process%20Industries"),
 		Parameter("category", "producer manufacturing", ["producermanufacturing"], tradingViewStockHeatmap="&activeGroup=Producer%20Manufacturing"),
-		Parameter("category", "real estate", ["real", "estate"], bitgur="real_estate"),
 		Parameter("category", "retail trade", ["retailtrade"], tradingViewStockHeatmap="&activeGroup=Retail%20Trade"),
-		Parameter("category", "social network", ["social", "network"], bitgur="social_network"),
-		Parameter("category", "software", ["software"], bitgur="software"),
-		Parameter("category", "supply and logistics", ["supply", "logistics"], bitgur="supply_and_logistics"),
 		Parameter("category", "technology services", ["technologyservices"], tradingViewStockHeatmap="&activeGroup=Technology%20Services"),
-		Parameter("category", "trading and investing", ["trading", "investing"], bitgur="trading_and_investing"),
 		Parameter("category", "transportation", ["transportation"], tradingViewStockHeatmap="&activeGroup=Transportation"),
 		Parameter("category", "utilities", ["utilities"], tradingViewStockHeatmap="&activeGroup=Utilities"),
-		Parameter("forcePlatform", "force heat map on Bitgur", ["bg", "bitgur"], bitgur=True),
-		Parameter("force", "force", ["--force"], tradingViewStockHeatmap="force", tradingViewCryptoHeatmap="force", bitgur="force"),
-		Parameter("upload", "upload", ["--upload"], tradingViewStockHeatmap="upload", tradingViewCryptoHeatmap="upload", bitgur="upload")
+		Parameter("forcePlatform", "stocks heatmap", ["stocks"], tradingViewStockHeatmap=True),
+		Parameter("forcePlatform", "crypto heatmap", ["crypto"], tradingViewCryptoHeatmap=True),
+		Parameter("force", "force", ["--force"], tradingViewStockHeatmap="force", tradingViewCryptoHeatmap="force"),
+		Parameter("upload", "upload", ["--upload"], tradingViewStockHeatmap="upload", tradingViewCryptoHeatmap="upload")
 	]
 }
 DEFAULTS = {
@@ -171,12 +143,6 @@ DEFAULTS = {
 	"TradingView Crypto Heatmap": {
 		"timeframes": [],
 		"types": [AbstractRequest.find_parameter_with_id("theme", name="dark theme", type="types", params=PARAMETERS), AbstractRequest.find_parameter_with_id("type", name="crypto in USD", type="types", params=PARAMETERS)],
-		"style": [],
-		"preferences": []
-	},
-	"Bitgur": {
-		"timeframes": [],
-		"types": [],
 		"style": [],
 		"preferences": []
 	}
@@ -251,9 +217,12 @@ class HeatmapRequestHandler(AbstractRequestHandler):
 					if len(request.timeframes) != 0:
 						if request.timeframes[0].id is not None: request.set_error(f"Timeframes are not supported on the {heatmap[:-1]} heat map."); break
 					else:
-						request.timeframes = [Parameter(None, None, None, bitgur="")]; continue
+						request.timeframes = [Parameter(None, None, None, tradingViewStockHeatmap="")]; continue
 				elif len(request.timeframes) == 0:
 					request.timeframes = [AbstractRequest.find_parameter_with_id(1440, type="timeframes", params=PARAMETERS)]
+					if "performance" not in heatmap:
+						request.preferences.append(AbstractRequest.find_parameter_with_id("heatmap", name="performance", type="preferences", params=PARAMETERS))
+				else:
 					if "performance" not in heatmap:
 						request.preferences.append(AbstractRequest.find_parameter_with_id("heatmap", name="performance", type="preferences", params=PARAMETERS))
 
@@ -278,9 +247,12 @@ class HeatmapRequestHandler(AbstractRequestHandler):
 					if len(request.timeframes) != 0:
 						if request.timeframes[0].id is not None: request.set_error(f"Timeframes are not supported on the {heatmap[:-1]} heat map."); break
 					else:
-						request.timeframes = [Parameter(None, None, None, bitgur="")]; continue
+						request.timeframes = [Parameter(None, None, None, tradingViewCryptoHeatmap="")]; continue
 				elif len(request.timeframes) == 0:
 					request.timeframes = [AbstractRequest.find_parameter_with_id(1440, type="timeframes", params=PARAMETERS)]
+					if "performance" not in heatmap:
+						request.preferences.append(AbstractRequest.find_parameter_with_id("heatmap", name="performance", type="preferences", params=PARAMETERS))
+				else:
 					if "performance" not in heatmap:
 						request.preferences.append(AbstractRequest.find_parameter_with_id("heatmap", name="performance", type="preferences", params=PARAMETERS))
 
@@ -293,48 +265,6 @@ class HeatmapRequestHandler(AbstractRequestHandler):
 					request.types.append(AbstractRequest.find_parameter_with_id("theme", name="dark theme", type="types", params=PARAMETERS))
 				if len(_type) == 0:
 					request.types.append(AbstractRequest.find_parameter_with_id("type", name="crypto in USD", type="types", params=PARAMETERS))
-			elif platform == "Bitgur":
-				for _ in range(8):
-					preferences = [{"id": e.id, "value": e.parsed[platform]} for e in request.preferences]
-					heatmap = [e.get("value") for e in preferences if e.get("id") == "heatmap"]
-					side = [e.get("value") for e in preferences if e.get("id") == "side"]
-					category = [e.get("value") for e in preferences if e.get("id") == "category"]
-
-					# Add default heat map style
-					if len(heatmap) == 0:
-						if len(side) != 0: request.preferences.append(AbstractRequest.find_parameter_with_id("heatmap", name="trend", type="preferences", params=PARAMETERS)); continue
-						elif len(category) != 0: request.preferences.append(AbstractRequest.find_parameter_with_id("heatmap", name="category", type="preferences", params=PARAMETERS)); continue
-						else: request.preferences.append(AbstractRequest.find_parameter_with_id("heatmap", name="performance", type="preferences", params=PARAMETERS)); continue
-
-					# Timeframes are not supported on some heat map types
-					[heatmap] = heatmap
-					if heatmap in ["exchanges/", "volatility/", "unusual_volume/"]:
-						if len(request.timeframes) != 0:
-							if request.timeframes[0].id is not None: request.set_error(f"Timeframes are not supported on the {heatmap[:-1]} heat map."); break
-						else:
-							request.timeframes = [Parameter(None, None, None, bitgur="")]; continue
-					elif len(request.timeframes) == 0:
-						request.timeframes = [AbstractRequest.find_parameter_with_id(1440, type="timeframes", params=PARAMETERS)]; continue
-
-					# Category heat map checks
-					if heatmap in ["category/"]:
-						if len(category) == 0: request.set_error("Missing category."); break
-
-					if heatmap in ["coins/", "trend/"]:
-						if len(category) == 0 and len(types) != 0: request.preferences.append(AbstractRequest.find_parameter_with_id("category", name="market cap", type="preferences", params=PARAMETERS)); continue
-
-					if heatmap in ["exchanges/", "category/"]:
-						if len(types) != 0: request.set_error(f"Types are not supported on the {heatmap[:-1]} heat map."); break
-					elif len(types) == 0:
-						request.preferences.append(AbstractRequest.find_parameter_with_id("type", name="crypto in USD", type="types", params=PARAMETERS)); continue
-
-					if heatmap in ["coins/", "exchanges/", "category/", "volatility/", "unusual_volume/"]:
-						if len(side) != 0: request.set_error(f"Top gainers/losers are not supported on the {heatmap[:-1]} heat map."); break
-					elif len(side) == 0:
-						request.preferences.append(AbstractRequest.find_parameter_with_id("side", name="gainers", type="preferences", params=PARAMETERS)); continue
-
-					break
-
 
 	def to_dict(self):
 		d = {
