@@ -258,13 +258,13 @@ DEFAULTS = {
 		"timeframes": [AbstractRequest.find_parameter_with_id(60, type="timeframes", params=PARAMETERS)],
 		"indicators": [],
 		"types": [],
-		"style": [AbstractRequest.find_parameter_with_id("theme", name="dark theme", type="style", params=PARAMETERS)],
-		"preferences": [AbstractRequest.find_parameter_with_id("heatmapIntensity", name="normal heatmap intensity", type="preferences", params=PARAMETERS)]
+		"style": [AbstractRequest.find_parameter_with_id("theme", name="Dark theme", type="style", params=PARAMETERS)],
+		"preferences": [AbstractRequest.find_parameter_with_id("heatmapIntensity", name="Normal heatmap intensity", type="preferences", params=PARAMETERS)]
 	},
 	"TradingView": {
 		"timeframes": [AbstractRequest.find_parameter_with_id(60, type="timeframes", params=PARAMETERS)],
 		"indicators": [],
-		"types": [AbstractRequest.find_parameter_with_id("theme", name="dark theme", type="types", params=PARAMETERS), AbstractRequest.find_parameter_with_id("candleStyle", name="candles", type="types", params=PARAMETERS)],
+		"types": [AbstractRequest.find_parameter_with_id("theme", name="Dark theme", type="types", params=PARAMETERS), AbstractRequest.find_parameter_with_id("candleStyle", name="Candles", type="types", params=PARAMETERS)],
 		"style": [],
 		"preferences": []
 	},
@@ -278,15 +278,15 @@ DEFAULTS = {
 	"GoCharting": {
 		"timeframes": [AbstractRequest.find_parameter_with_id(60, type="timeframes", params=PARAMETERS)],
 		"indicators": [],
-		"types": [AbstractRequest.find_parameter_with_id("theme", name="dark theme", type="types", params=PARAMETERS), AbstractRequest.find_parameter_with_id("candleStyle", name="candles", type="types", params=PARAMETERS)],
+		"types": [AbstractRequest.find_parameter_with_id("theme", name="Dark theme", type="types", params=PARAMETERS), AbstractRequest.find_parameter_with_id("candleStyle", name="Candles", type="types", params=PARAMETERS)],
 		"style": [],
 		"preferences": []
 	},
 	"Finviz": {
 		"timeframes": [AbstractRequest.find_parameter_with_id(1440, type="timeframes", params=PARAMETERS)],
 		"indicators": [],
-		"types": [AbstractRequest.find_parameter_with_id("candleStyle", name="candles", type="types", params=PARAMETERS)],
-		"style": [AbstractRequest.find_parameter_with_id("theme", name="light theme", type="style", params=PARAMETERS)],
+		"types": [AbstractRequest.find_parameter_with_id("candleStyle", name="Candles", type="types", params=PARAMETERS)],
+		"style": [AbstractRequest.find_parameter_with_id("theme", name="Light theme", type="style", params=PARAMETERS)],
 		"preferences": []
 	}
 }
