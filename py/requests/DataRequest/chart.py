@@ -28,13 +28,13 @@ PARAMETERS = {
 		Parameter(360, "6-hour", ["360", "360m", "360min", "360mins", "360minute", "360-minute", "360minutes", "6", "6h", "6hr", "6hrs", "6hour", "6-hour", "6hours"], tradinglite="360"),
 		Parameter(480, "8-hour", ["480", "480m", "480min", "480mins", "480minute", "480-minute", "480minutes", "8", "8h", "8hr", "8hrs", "8hour", "8-hour", "8hours"], tradinglite="480"),
 		Parameter(720, "12-hour", ["720", "720m", "720min", "720mins", "720minute", "720-minute", "720minutes", "12", "12h", "12hr", "12hrs", "12hour", "12-hour", "12hours"], tradinglite="720", gocharting="12h"),
-		Parameter(1440, "1-day", ["24", "24h", "24hr", "24hrs", "24hour", "24-hour", "24hours", "d", "day", "1", "1d", "1day", "1-day", "daily", "1440", "1440m", "1440min", "1440mins", "1440minute", "1440-minute", "1440minutes"], tradinglite="1440", tradingview="D", bookmap="bm-btn-time-frame-1d", gocharting="1D", finviz="d", alphaflow="yesterday"),
+		Parameter(1440, "1-day", ["24", "24h", "24hr", "24hrs", "24hour", "24-hour", "24hours", "d", "day", "1", "1d", "1day", "1-day", "daily", "1440", "1440m", "1440min", "1440mins", "1440minute", "1440-minute", "1440minutes"], tradinglite="1440", tradingview="D", bookmap="bm-btn-time-frame-1d", gocharting="1D", finviz="d"),
 		Parameter(2880, "2-day", ["48", "48h", "48hr", "48hrs", "48hour", "48-hour", "48hours", "2", "2d", "2day", "2-day", "2880", "2880m", "2880min", "2880mins", "2880minute", "2880-minute", "2880minutes"]),
 		Parameter(3420, "3-day", ["72", "72h", "72hr", "72hrs", "72hour", "72-hour", "72hours", "3", "3d", "3day", "3-day", "3420", "3420m", "3420min", "3420mins", "3420minute", "3420-minute", "3420minutes"]),
 		Parameter(5760, "4-day", ["96", "96h", "96hr", "96hrs", "96hour", "96-hour", "96hours", "4", "4d", "4day", "4-day", "5760", "5760m", "5760min", "5760mins", "5760minute", "5760-minute", "5760minutes"]),
 		Parameter(7200, "5-day", ["120", "120h", "120hr", "120hrs", "120hour", "120-hour", "120hours", "5", "5d", "5day", "5-day", "7200", "7200m", "7200min", "7200mins", "7200minute", "7200-minute", "7200minutes"]),
 		Parameter(8640, "6-day", ["144", "144h", "144hr", "144hrs", "144hour", "144-hour", "144hours", "6", "6d", "6day", "6-day", "8640", "8640m", "8640min", "8640mins", "8640minute", "8640-minute", "8640minutes"]),
-		Parameter(10080, "1-week", ["7", "7d", "7day", "7-day", "7days", "w", "week", "1w", "1-week", "1week", "weekly"], tradingview="W", bookmap="bm-btn-time-frame-1W", gocharting="1W", finviz="w", alphaflow="lastweek"),
+		Parameter(10080, "1-week", ["7", "7d", "7day", "7-day", "7days", "w", "week", "1w", "1-week", "1week", "weekly"], tradingview="W", bookmap="bm-btn-time-frame-1W", gocharting="1W", finviz="w"),
 		Parameter(20160, "2-week", ["14", "14d", "14day", "14-day", "14days", "2w", "2-week", "2week"]),
 		Parameter(30240, "3-week", ["21", "21d", "21day", "21-day", "21days", "3w", "3-week", "3week"]),
 		Parameter(43829, "1-month", ["30d", "30day", "30-day", "30days", "1", "1m", "m", "mo", "month", "1mo", "1month", "1-month", "monthly"], tradingview="M", bookmap="bm-btn-time-frame-1Mo", gocharting="1M", finviz="m"),
@@ -207,44 +207,43 @@ PARAMETERS = {
 		Parameter("zz", "Zig Zag", ["zz", "zigzag"], tradingview="ZigZag@tv-basicstudies", gocharting="ZIGZAG")
 	],
 	"types": [
-		Parameter("ta", "advanced TA", ["ta", "advanced"], finviz="&ta=1"),
-		Parameter("nv", "no volume", ["hv", "nv", "novol"], tradingview="&hidevolume=1"),
-		Parameter("np", "no price", ["hp", "np", "nopri"], gocharting="&showmainchart=false"),
-		Parameter("theme", "light theme", ["light", "white"], tradingview="&theme=light", gocharting="&theme=light"),
-		Parameter("theme", "dark theme", ["dark", "black"], tradingview="&theme=dark", gocharting="&theme=dark"),
-		Parameter("candleStyle", "bars", ["bars", "bar"], tradingview="&style=0"),
-		Parameter("candleStyle", "candles", ["candles", "candle"], tradingview="&style=1", gocharting="&charttype=CANDLESTICK", finviz="&ty=c"),
-		Parameter("candleStyle", "hollow candles", ["hollow"], gocharting="&charttype=HOLLOW_CANDLESTICK"),
-		Parameter("candleStyle", "heikin ashi", ["heikin", "heiken", "heikinashi", "heikenashi", "ashi", "ha"], tradingview="&style=8", gocharting="&charttype=HEIKIN_ASHI"),
-		Parameter("candleStyle", "line break", ["break", "linebreak", "lb"], tradingview="&style=7", gocharting="&charttype=LINEBREAK"),
-		Parameter("candleStyle", "line", ["line"], tradingview="&style=2", gocharting="&charttype=LINE", finviz="&ty=l"),
-		Parameter("candleStyle", "area", ["area"], tradingview="&style=3", gocharting="&charttype=AREA"),
-		Parameter("candleStyle", "renko", ["renko"], tradingview="&style=4", gocharting="&charttype=RENKO"),
-		Parameter("candleStyle", "kagi", ["kagi"], tradingview="&style=5", gocharting="&charttype=KAGI"),
-		Parameter("candleStyle", "point&figure", ["point", "figure", "pf", "paf"], tradingview="&style=6", gocharting="&charttype=POINT_FIGURE")
+		Parameter("ta", "Advanced TA", ["ta", "advanced"], finviz="&ta=1"),
+		Parameter("nv", "No volume", ["hv", "nv", "novol"], tradingview="&hidevolume=1"),
+		Parameter("np", "No price", ["hp", "np", "nopri"], gocharting="&showmainchart=false"),
+		Parameter("theme", "Light theme", ["light", "white"], tradingview="&theme=light", gocharting="&theme=light"),
+		Parameter("theme", "Dark theme", ["dark", "black"], tradingview="&theme=dark", gocharting="&theme=dark"),
+		Parameter("candleStyle", "Bars", ["bars", "bar"], tradingview="&style=0"),
+		Parameter("candleStyle", "Candles", ["candles", "candle"], tradingview="&style=1", gocharting="&charttype=CANDLESTICK", finviz="&ty=c"),
+		Parameter("candleStyle", "Hollow candles", ["hollow"], gocharting="&charttype=HOLLOW_CANDLESTICK"),
+		Parameter("candleStyle", "Heikin ashi", ["heikin", "heiken", "heikinashi", "heikenashi", "ashi", "ha"], tradingview="&style=8", gocharting="&charttype=HEIKIN_ASHI"),
+		Parameter("candleStyle", "Line break", ["break", "linebreak", "lb"], tradingview="&style=7", gocharting="&charttype=LINEBREAK"),
+		Parameter("candleStyle", "Line", ["line"], tradingview="&style=2", gocharting="&charttype=LINE", finviz="&ty=l"),
+		Parameter("candleStyle", "Area", ["area"], tradingview="&style=3", gocharting="&charttype=AREA"),
+		Parameter("candleStyle", "Renko", ["renko"], tradingview="&style=4", gocharting="&charttype=RENKO"),
+		Parameter("candleStyle", "Kagi", ["kagi"], tradingview="&style=5", gocharting="&charttype=KAGI"),
+		Parameter("candleStyle", "Point&figure", ["point", "figure", "pf", "paf"], tradingview="&style=6", gocharting="&charttype=POINT_FIGURE")
 	],
 	"style": [
-		Parameter("theme", "light theme", ["light", "white"], tradinglite="light", finviz="light"),
-		Parameter("theme", "dark theme", ["dark", "black"], tradinglite="dark", finviz="dark"),
-		Parameter("log", "log", ["log", "logarithmic"], tradingview="log"),
-		Parameter("wide", "wide", ["wide"], tradinglite="wide", tradingview="wide", bookmap="wide", gocharting="wide"),
-		Parameter("flowlist", "list", ["list", "old", "legacy"], alphaflow="flowlist")
+		Parameter("theme", "Light theme", ["light", "white"], tradinglite="light", finviz="light"),
+		Parameter("theme", "Dark theme", ["dark", "black"], tradinglite="dark", finviz="dark"),
+		Parameter("log", "Log chart", ["log", "logarithmic"], tradingview="log"),
+		Parameter("wide", "Wide chart", ["wide"], tradinglite="wide", tradingview="wide", bookmap="wide", gocharting="wide"),
 	],
 	"preferences": [
-		Parameter("heatmapIntensity", "whales heatmap intensity", ["whale", "whales"], tradinglite=(50,100)),
-		Parameter("heatmapIntensity", "low heatmap intensity", ["low"], tradinglite=(10,100)),
-		Parameter("heatmapIntensity", "normal heatmap intensity", ["normal"], tradinglite=(0,85)),
-		Parameter("heatmapIntensity", "medium heatmap intensity", ["medium", "med"], tradinglite=(0,62)),
-		Parameter("heatmapIntensity", "high heatmap intensity", ["high"], tradinglite=(0,39)),
-		Parameter("heatmapIntensity", "crazy heatmap intensity", ["crazy"], tradinglite=(0,16)),
+		Parameter("heatmapIntensity", "Whales heatmap intensity", ["whale", "whales"], tradinglite=(50,100)),
+		Parameter("heatmapIntensity", "Low heatmap intensity", ["low"], tradinglite=(10,100)),
+		Parameter("heatmapIntensity", "Normal heatmap intensity", ["normal"], tradinglite=(0,85)),
+		Parameter("heatmapIntensity", "Medium heatmap intensity", ["medium", "med"], tradinglite=(0,62)),
+		Parameter("heatmapIntensity", "High heatmap intensity", ["high"], tradinglite=(0,39)),
+		Parameter("heatmapIntensity", "Crazy heatmap intensity", ["crazy"], tradinglite=(0,16)),
 		Parameter("forcePlatform", "force chart on TradingLite", ["tl", "tradinglite"], tradinglite=True),
 		Parameter("forcePlatform", "force chart on TradingView", ["tv", "tradingview"], tradingview=True),
 		Parameter("forcePlatform", "force chart on Bookmap", ["bm", "bookmap"], bookmap=True),
 		Parameter("forcePlatform", "force chart on GoCharting", ["gc", "gocharting"], gocharting=True),
 		Parameter("forcePlatform", "force chart on Finviz", ["fv", "finviz"], finviz=True),
 		Parameter("forcePlatform", "force chart on Alternative.me", ["am", "alternativeme"], alternativeme=True),
-		Parameter("force", "force", ["--force"], tradinglite="force", tradingview="force", bookmap="force", gocharting="force", finviz="force", alternativeme="force", alphaflow="force"),
-		Parameter("upload", "upload", ["--upload"], tradinglite="upload", tradingview="upload", bookmap="upload", gocharting="upload", finviz="upload", alternativeme="upload", alphaflow="upload")
+		Parameter("force", "force", ["--force"], tradinglite="force", tradingview="force", bookmap="force", gocharting="force", finviz="force", alternativeme="force"),
+		Parameter("upload", "upload", ["--upload"], tradinglite="upload", tradingview="upload", bookmap="upload", gocharting="upload", finviz="upload", alternativeme="upload")
 	]
 }
 DEFAULTS = {
@@ -406,17 +405,6 @@ class ChartRequestHandler(AbstractRequestHandler):
 			
 			elif platform == "Finviz":
 				pass
-			
-			elif platform == "Alpha Flow":
-				if request.ticker.get("id") != "OPTIONS":
-					if len(request.timeframes) != 0 and "flowlist" not in styles:
-						request.styles.append(AbstractRequest.find_parameter_with_id("flowlist", name="list", type="style", params=PARAMETERS))
-					elif len(request.timeframes) == 0:
-						request.timeframes.append(AbstractRequest.find_parameter_with_id(10080, type="timeframes", params=PARAMETERS))
-				else:
-					if len(request.timeframes) != 0:
-						request.set_error("Timeframes are not available for options flow overview on Alpha Flow.", isFatal=True)
-					request.timeframes.append(Parameter(None, None, None, alphaflow=None))
 
 
 	def to_dict(self):

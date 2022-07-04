@@ -28,7 +28,7 @@ class AbstractParameter(object):
 		return parameter
 
 class ChartParameter(AbstractParameter):
-	def __init__(self, id, name, parsablePhrases, tradinglite=None, tradingview=None, bookmap=None, gocharting=None, finviz=None, alternativeme=None, alphaflow=None, requiresPro=False, dynamic=None):
+	def __init__(self, id, name, parsablePhrases, tradinglite=None, tradingview=None, bookmap=None, gocharting=None, finviz=None, alternativeme=None, requiresPro=False, dynamic=None):
 		super().__init__(id, name, parsablePhrases, requiresPro)
 		self.parsed = {
 			"Alternative.me": alternativeme,
@@ -36,8 +36,7 @@ class ChartParameter(AbstractParameter):
 			"TradingView": tradingview,
 			"Bookmap": bookmap,
 			"GoCharting": gocharting,
-			"Finviz": finviz,
-			"Alpha Flow": alphaflow
+			"Finviz": finviz
 		}
 		self.dynamic = dynamic
 
