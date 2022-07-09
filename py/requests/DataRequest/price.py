@@ -20,8 +20,7 @@ PARAMETERS = {
 		Parameter("forcePlatform", "force quote on Serum", ["serum", "srm"], serum=True),
 		Parameter("forcePlatform", "force quote on Alternative.me", ["am", "alternativeme"], alternativeme=True),
 		Parameter("forcePlatform", "force quote on CNN Business", ["cnn", "cnnbusiness"], cnnbusiness=True),
-		Parameter("force", "force", ["--force"], ccxt="force", iexc="force"),
-		Parameter("upload", "upload", ["--upload"], ccxt="upload", iexc="upload")
+		Parameter("force", "force", ["--force"], ccxt="force", iexc="force")
 	]
 }
 DEFAULTS = {

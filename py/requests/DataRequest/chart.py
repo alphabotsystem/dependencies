@@ -243,8 +243,7 @@ PARAMETERS = {
 		Parameter("forcePlatform", "force chart on Finviz", ["fv", "finviz"], finviz=True),
 		Parameter("forcePlatform", "force chart on Alternative.me", ["am", "alternativeme"], alternativeme=True),
 		Parameter("forcePlatform", "force chart on CNN Business", ["cnn", "cnnbusiness"], cnnbusiness=True),
-		Parameter("force", "force", ["--force"], tradinglite="force", tradingview="force", bookmap="force", gocharting="force", finviz="force", alternativeme="force", cnnbusiness="force"),
-		Parameter("upload", "upload", ["--upload"], tradinglite="upload", tradingview="upload", bookmap="upload", gocharting="upload", finviz="upload", alternativeme="upload", cnnbusiness="upload")
+		Parameter("force", "force", ["--force"], tradinglite="force", tradingview="force", bookmap="force", gocharting="force", finviz="force", alternativeme="force", cnnbusiness="force")
 	]
 }
 DEFAULTS = {

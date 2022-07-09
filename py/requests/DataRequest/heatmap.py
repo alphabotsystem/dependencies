@@ -129,8 +129,7 @@ PARAMETERS = {
 		Parameter("category", "Utilities", ["utilities"], tradingViewStockHeatmap="&activeGroup=Utilities"),
 		Parameter("forcePlatform", "stocks heatmap", ["stocks"], tradingViewStockHeatmap=True),
 		Parameter("forcePlatform", "crypto heatmap", ["crypto"], tradingViewCryptoHeatmap=True),
-		Parameter("force", "force", ["--force"], tradingViewStockHeatmap="force", tradingViewCryptoHeatmap="force"),
-		Parameter("upload", "upload", ["--upload"], tradingViewStockHeatmap="upload", tradingViewCryptoHeatmap="upload")
+		Parameter("force", "force", ["--force"], tradingViewStockHeatmap="force", tradingViewCryptoHeatmap="force")
 	]
 }
 DEFAULTS = {
