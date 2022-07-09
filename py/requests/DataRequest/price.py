@@ -19,12 +19,16 @@ PARAMETERS = {
 		Parameter("forcePlatform", "force quote on a stock exchange", ["ix", "iexc", "stock", "stocks"], iexc=True),
 		Parameter("forcePlatform", "force quote on Serum", ["serum", "srm"], serum=True),
 		Parameter("forcePlatform", "force quote on Alternative.me", ["am", "alternativeme"], alternativeme=True),
+		Parameter("forcePlatform", "force quote on CNN Business", ["cnn", "cnnbusiness"], cnnbusiness=True),
 		Parameter("force", "force", ["--force"], ccxt="force", iexc="force"),
 		Parameter("upload", "upload", ["--upload"], ccxt="upload", iexc="upload")
 	]
 }
 DEFAULTS = {
 	"Alternative.me": {
+		"preferences": []
+	},
+	"CNN Business": {
 		"preferences": []
 	},
 	"CoinGecko": {
@@ -91,8 +95,10 @@ class PriceRequestHandler(AbstractRequestHandler):
 			preferences = [{"id": e.id, "value": e.parsed[platform]} for e in request.preferences]
 
 			if platform == "Alternative.me":
-				if request.tickerId not in ["FGI"]:
-					request.set_error(None, isFatal=True)
+				if request.tickerId not in ["FGI"]: request.set_error(None, isFatal=True)
+
+			elif platform == "CNN Business":
+				if request.tickerId not in ["FGI"]: request.set_error(None, isFatal=True)
 
 			elif platform == "CoinGecko":
 				if request.couldFail: request.set_error(None, isFatal=True)

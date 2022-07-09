@@ -42,9 +42,9 @@ class CommandRequest(object):
 		if commandType == "c":
 			chartSettings = self.accountProperties.get("settings", {}).get("charts", {})
 			if self.marketBias == "traditional":
-				return chartSettings.get("preferredOrder", ["TradingView", "GoCharting", "Finviz", "TradingLite", "Bookmap"]) + ["Alternative.me"]
+				return ["CNN Business"] + chartSettings.get("preferredOrder", ["TradingView", "GoCharting", "Finviz", "TradingLite", "Bookmap"]) + ["Alternative.me"]
 			else:
-				return ["Alternative.me"] + chartSettings.get("preferredOrder", ["TradingView", "GoCharting", "Finviz", "TradingLite", "Bookmap"])
+				return ["Alternative.me"] + chartSettings.get("preferredOrder", ["TradingView", "GoCharting", "Finviz", "TradingLite", "Bookmap"]) + ["CNN Business"]
 		elif commandType == "hmap":
 			if self.marketBias == "traditional":
 				return ["TradingView Stock Heatmap", "TradingView Crypto Heatmap"]
@@ -54,9 +54,9 @@ class CommandRequest(object):
 			return ["Alpha Flow"]
 		elif commandType == "p":
 			if self.marketBias == "traditional":
-				return ["IEXC", "Alternative.me", "CoinGecko", "CCXT", "Serum", "LLD"]
+				return ["CNN Business", "IEXC", "CoinGecko", "CCXT", "Serum", "LLD", "Alternative.me"]
 			else:
-				return ["Alternative.me", "CoinGecko", "CCXT", "Serum", "IEXC", "LLD"]
+				return ["Alternative.me", "CoinGecko", "CCXT", "Serum", "IEXC", "LLD", "CNN Business"]
 		elif commandType == "v":
 			if self.marketBias == "traditional":
 				return ["IEXC", "CoinGecko", "CCXT"]

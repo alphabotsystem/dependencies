@@ -28,10 +28,11 @@ class AbstractParameter(object):
 		return parameter
 
 class ChartParameter(AbstractParameter):
-	def __init__(self, id, name, parsablePhrases, tradinglite=None, tradingview=None, bookmap=None, gocharting=None, finviz=None, alternativeme=None, requiresPro=False, dynamic=None):
+	def __init__(self, id, name, parsablePhrases, tradinglite=None, tradingview=None, bookmap=None, gocharting=None, finviz=None, alternativeme=None, cnnbusiness=None, requiresPro=False, dynamic=None):
 		super().__init__(id, name, parsablePhrases, requiresPro)
 		self.parsed = {
 			"Alternative.me": alternativeme,
+			"CNN Business": cnnbusiness,
 			"TradingLite": tradinglite,
 			"TradingView": tradingview,
 			"Bookmap": bookmap,
@@ -49,10 +50,11 @@ class HeatmapParameter(AbstractParameter):
 		}
 
 class PriceParameter(AbstractParameter):
-	def __init__(self, id, name, parsablePhrases, coingecko=None, ccxt=None, iexc=None, serum=None, alternativeme=None, lld=None, requiresPro=False):
+	def __init__(self, id, name, parsablePhrases, coingecko=None, ccxt=None, iexc=None, serum=None, alternativeme=None, cnnbusiness=None, lld=None, requiresPro=False):
 		super().__init__(id, name, parsablePhrases, requiresPro)
 		self.parsed = {
 			"Alternative.me": alternativeme,
+			"CNN Business": cnnbusiness,
 			"CoinGecko": coingecko,
 			"CCXT": ccxt,
 			"IEXC": iexc,

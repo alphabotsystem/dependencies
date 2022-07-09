@@ -242,12 +242,20 @@ PARAMETERS = {
 		Parameter("forcePlatform", "force chart on GoCharting", ["gc", "gocharting"], gocharting=True),
 		Parameter("forcePlatform", "force chart on Finviz", ["fv", "finviz"], finviz=True),
 		Parameter("forcePlatform", "force chart on Alternative.me", ["am", "alternativeme"], alternativeme=True),
-		Parameter("force", "force", ["--force"], tradinglite="force", tradingview="force", bookmap="force", gocharting="force", finviz="force", alternativeme="force"),
-		Parameter("upload", "upload", ["--upload"], tradinglite="upload", tradingview="upload", bookmap="upload", gocharting="upload", finviz="upload", alternativeme="upload")
+		Parameter("forcePlatform", "force chart on CNN Business", ["cnn", "cnnbusiness"], cnnbusiness=True),
+		Parameter("force", "force", ["--force"], tradinglite="force", tradingview="force", bookmap="force", gocharting="force", finviz="force", alternativeme="force", cnnbusiness="force"),
+		Parameter("upload", "upload", ["--upload"], tradinglite="upload", tradingview="upload", bookmap="upload", gocharting="upload", finviz="upload", alternativeme="upload", cnnbusiness="upload")
 	]
 }
 DEFAULTS = {
 	"Alternative.me": {
+		"timeframes": [Parameter(None, None, None)],
+		"indicators": [],
+		"types": [],
+		"style": [],
+		"preferences": []
+	},
+	"CNN Business": {
 		"timeframes": [Parameter(None, None, None)],
 		"indicators": [],
 		"types": [],
@@ -360,6 +368,9 @@ class ChartRequestHandler(AbstractRequestHandler):
 			preferences = [{"id": e.id, "value": e.parsed[platform]} for e in request.preferences]
 
 			if platform == "Alternative.me":
+				if request.ticker.get("id") not in ["FGI"]: request.set_error(None, isFatal=True)
+			
+			elif platform == "CNN Business":
 				if request.ticker.get("id") not in ["FGI"]: request.set_error(None, isFatal=True)
 			
 			elif platform == "TradingLite":
