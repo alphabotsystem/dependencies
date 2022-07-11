@@ -28,16 +28,16 @@ PARAMETERS = {
 		Parameter(360, "6-hour", ["360", "360m", "360min", "360mins", "360minute", "360-minute", "360minutes", "6", "6h", "6hr", "6hrs", "6hour", "6-hour", "6hours"], tradinglite="360"),
 		Parameter(480, "8-hour", ["480", "480m", "480min", "480mins", "480minute", "480-minute", "480minutes", "8", "8h", "8hr", "8hrs", "8hour", "8-hour", "8hours"], tradinglite="480"),
 		Parameter(720, "12-hour", ["720", "720m", "720min", "720mins", "720minute", "720-minute", "720minutes", "12", "12h", "12hr", "12hrs", "12hour", "12-hour", "12hours"], tradinglite="720", gocharting="12h"),
-		Parameter(1440, "1-day", ["24", "24h", "24hr", "24hrs", "24hour", "24-hour", "24hours", "d", "day", "1", "1d", "1day", "1-day", "daily", "1440", "1440m", "1440min", "1440mins", "1440minute", "1440-minute", "1440minutes"], tradinglite="1440", tradingview="D", bookmap="bm-btn-time-frame-1d", gocharting="1D", finviz="d"),
+		Parameter(1440, "1-day", ["24", "24h", "24hr", "24hrs", "24hour", "24-hour", "24hours", "d", "day", "1", "1d", "1day", "1-day", "daily", "1440", "1440m", "1440min", "1440mins", "1440minute", "1440-minute", "1440minutes"], tradinglite="1440", tradingview="D", bookmap="bm-btn-time-frame-1d", gocharting="1D", finviz="d", alternativeme="1D", cnnbusiness="1D"),
 		Parameter(2880, "2-day", ["48", "48h", "48hr", "48hrs", "48hour", "48-hour", "48hours", "2", "2d", "2day", "2-day", "2880", "2880m", "2880min", "2880mins", "2880minute", "2880-minute", "2880minutes"]),
 		Parameter(3420, "3-day", ["72", "72h", "72hr", "72hrs", "72hour", "72-hour", "72hours", "3", "3d", "3day", "3-day", "3420", "3420m", "3420min", "3420mins", "3420minute", "3420-minute", "3420minutes"]),
 		Parameter(5760, "4-day", ["96", "96h", "96hr", "96hrs", "96hour", "96-hour", "96hours", "4", "4d", "4day", "4-day", "5760", "5760m", "5760min", "5760mins", "5760minute", "5760-minute", "5760minutes"]),
 		Parameter(7200, "5-day", ["120", "120h", "120hr", "120hrs", "120hour", "120-hour", "120hours", "5", "5d", "5day", "5-day", "7200", "7200m", "7200min", "7200mins", "7200minute", "7200-minute", "7200minutes"]),
 		Parameter(8640, "6-day", ["144", "144h", "144hr", "144hrs", "144hour", "144-hour", "144hours", "6", "6d", "6day", "6-day", "8640", "8640m", "8640min", "8640mins", "8640minute", "8640-minute", "8640minutes"]),
-		Parameter(10080, "1-week", ["7", "7d", "7day", "7-day", "7days", "w", "week", "1w", "1-week", "1week", "weekly"], tradingview="W", bookmap="bm-btn-time-frame-1W", gocharting="1W", finviz="w"),
+		Parameter(10080, "1-week", ["7", "7d", "7day", "7-day", "7days", "w", "week", "1w", "1-week", "1week", "weekly"], tradingview="W", bookmap="bm-btn-time-frame-1W", gocharting="1W", finviz="w", alternativeme="1W", cnnbusiness="1W"),
 		Parameter(20160, "2-week", ["14", "14d", "14day", "14-day", "14days", "2w", "2-week", "2week"]),
 		Parameter(30240, "3-week", ["21", "21d", "21day", "21-day", "21days", "3w", "3-week", "3week"]),
-		Parameter(43829, "1-month", ["30d", "30day", "30-day", "30days", "1", "1m", "m", "mo", "month", "1mo", "1month", "1-month", "monthly"], tradingview="M", bookmap="bm-btn-time-frame-1Mo", gocharting="1M", finviz="m"),
+		Parameter(43829, "1-month", ["30d", "30day", "30-day", "30days", "1", "1m", "m", "mo", "month", "1mo", "1month", "1-month", "monthly"], tradingview="M", bookmap="bm-btn-time-frame-1Mo", gocharting="1M", finviz="m", alternativeme="1M", cnnbusiness="1M"),
 		Parameter(87658, "2-month", ["2", "2m", "2m", "2mo", "2month", "2-month", "2months"]),
 		Parameter(131487, "3-month", ["3", "3m", "3m", "3mo", "3month", "3-month", "3months"]),
 		Parameter(175316, "4-month", ["4", "4m", "4m", "4mo", "4month", "4-month", "4months"]),
@@ -210,8 +210,8 @@ PARAMETERS = {
 		Parameter("ta", "Advanced TA", ["ta", "advanced"], finviz="&ta=1"),
 		Parameter("nv", "No volume", ["hv", "nv", "novol"], tradingview="&hidevolume=1"),
 		Parameter("np", "No price", ["hp", "np", "nopri"], gocharting="&showmainchart=false"),
-		Parameter("theme", "Light theme", ["light", "white"], tradingview="&theme=light", gocharting="&theme=light"),
-		Parameter("theme", "Dark theme", ["dark", "black"], tradingview="&theme=dark", gocharting="&theme=dark"),
+		Parameter("theme", "Light theme", ["light", "white"], tradingview="&theme=light", gocharting="&theme=light", alternativeme="&theme=light", cnnbusiness="&theme=light"),
+		Parameter("theme", "Dark theme", ["dark", "black"], tradingview="&theme=dark", gocharting="&theme=dark", alternativeme="&theme=dark", cnnbusiness="&theme=dark"),
 		Parameter("candleStyle", "Bars", ["bars", "bar"], tradingview="&style=0"),
 		Parameter("candleStyle", "Candles", ["candles", "candle"], tradingview="&style=1", gocharting="&charttype=CANDLESTICK", finviz="&ty=c"),
 		Parameter("candleStyle", "Hollow candles", ["hollow"], gocharting="&charttype=HOLLOW_CANDLESTICK"),
@@ -227,7 +227,7 @@ PARAMETERS = {
 		Parameter("theme", "Light theme", ["light", "white"], tradinglite="light", finviz="light"),
 		Parameter("theme", "Dark theme", ["dark", "black"], tradinglite="dark", finviz="dark"),
 		Parameter("log", "Log chart", ["log", "logarithmic"], tradingview="log"),
-		Parameter("wide", "Wide chart", ["wide"], tradinglite="wide", tradingview="wide", bookmap="wide", gocharting="wide"),
+		Parameter("wide", "Wide chart", ["wide"], tradinglite="wide", tradingview="wide", bookmap="wide", gocharting="wide", alternativeme="wide", cnnbusiness="wide"),
 	],
 	"preferences": [
 		Parameter("heatmapIntensity", "Whales heatmap intensity", ["whale", "whales"], tradinglite=(50,100)),
@@ -248,14 +248,14 @@ PARAMETERS = {
 }
 DEFAULTS = {
 	"Alternative.me": {
-		"timeframes": [Parameter(None, None, None)],
+		"timeframes": [AbstractRequest.find_parameter_with_id(1440, type="timeframes", params=PARAMETERS)],
 		"indicators": [],
 		"types": [],
 		"style": [],
 		"preferences": []
 	},
 	"CNN Business": {
-		"timeframes": [Parameter(None, None, None)],
+		"timeframes": [AbstractRequest.find_parameter_with_id(1440, type="timeframes", params=PARAMETERS)],
 		"indicators": [],
 		"types": [],
 		"style": [],
@@ -378,7 +378,7 @@ class ChartRequestHandler(AbstractRequestHandler):
 				elif request.ticker.get("symbol") is None:
 					request.set_error(f"Requested chart for `{request.ticker.get('id')}` is not available.", isFatal=True)
 				elif request.exchange.get("id") in ["binanceusdm", "binancecoinm", "ftx", "okex5"]:
-					request.set_error(f"{request.exchange.get('name')} exchange is not available. ||Yet.||", isFatal=True)
+					request.set_error(f"{request.exchange.get('name')} exchange is not available. ||Yet? Let TradingLite know you want it!||", isFatal=True)
 			
 			elif platform == "TradingView":
 				if "&style=6" in types and "log" in styles:
