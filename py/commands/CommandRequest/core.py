@@ -154,30 +154,15 @@ class CommandRequest(object):
 				},
 				"marketAlerts": {
 					"enabled": False
-				},
-				"flow": {
-					"enabled": False
-				},
-				"statistics": {
-					"enabled": False
 				}
 			},
 			"settings": {
 				"assistant": {
 					"enabled": True
 				},
-				"channels": {
-					"public": None,
-					"private": None
-				},
-				"cope": {
-					"holding": [],
-					"voting": []
-				},
 				"messageProcessing": {
 					"bias": "traditional",
-					"autodelete": False,
-					"sentiment": True
+					"autodelete": False
 				},
 				"setup": {
 					"completed": False,
