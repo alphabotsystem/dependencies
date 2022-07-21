@@ -93,38 +93,25 @@ class CommandRequest(object):
 	def is_registered(self):
 		return "customer" in self.accountProperties
 
-	def is_pro(self):
-		return self.is_registered() and self.accountProperties["customer"]["personalSubscription"].get("plan", "free") == "price_HLr5Pnrj3yRWOP"
-
-	def is_trialing(self):
-		return self.is_pro() and self.accountProperties["customer"]["personalSubscription"].get("trialing", False)
-
 
 	def personal_price_alerts_available(self):
-		return self.is_registered() and (self.is_trialing() or bool(self.accountProperties["customer"]["addons"].get("marketAlerts", 0)))
+		return False
+		# return self.is_registered() and bool(self.accountProperties["customer"]["addons"].get("marketAlerts", 0))
 
 	def personal_flow_available(self):
-		return self.is_registered() and (self.is_trialing() or bool(self.accountProperties["customer"]["addons"].get("flow", 0)))
-
-	def personal_statistics_available(self):
-		return self.is_registered() and (self.is_trialing() or bool(self.accountProperties["customer"]["addons"].get("statistics", 0)))
+		return False
+		# return self.is_registered() and bool(self.accountProperties["customer"]["addons"].get("flow", 0))
 
 
 	# -------------------------
 	# Server properties
 	# -------------------------
 
-	def is_serverwide_pro_used(self):
-		return self.serverwide_price_alerts_available() or self.serverwide_flow_available() or self.serverwide_statistics_available()
-
 	def serverwide_price_alerts_available(self):
-		return self.guildProperties["addons"]["marketAlerts"]["enabled"]
+		return self.guildProperties.get("connection", {}).get("customer", {}).get("slots", {}).get("priceAlerts", {}).get(self.guildId, 0) == 1
 
 	def serverwide_flow_available(self):
-		return self.guildProperties["addons"]["flow"]["enabled"]
-
-	def serverwide_statistics_available(self):
-		return self.guildProperties["addons"]["statistics"]["enabled"]
+		return self.guildProperties.get("connection", {}).get("customer", {}).get("slots", {}).get("flow", {}).get(self.guildId, 0) == 1
 
 
 	# -------------------------
@@ -132,13 +119,10 @@ class CommandRequest(object):
 	# -------------------------
 
 	def price_alerts_available(self):
-		return self.serverwide_price_alerts_available() or self.personal_price_alerts_available()
+		return self.is_serverwide_price_alerts_available() or self.is_personal_price_alerts_available()
 
 	def flow_available(self):
-		return self.serverwide_flow_available() or self.personal_flow_available()
-
-	def statistics_available(self):
-		return self.serverwide_statistics_available() or self.personal_statistics_available()
+		return self.is_serverwide_flow_available() or self.is_personal_flow_available()
 
 
 	# -------------------------
@@ -149,12 +133,7 @@ class CommandRequest(object):
 	def create_guild_settings(settings):
 		settingsTemplate = {
 			"addons": {
-				"satellites": {
-					"enabled": False
-				},
-				"marketAlerts": {
-					"enabled": False
-				}
+				"satellites": {}
 			},
 			"settings": {
 				"assistant": {
