@@ -87,42 +87,20 @@ class CommandRequest(object):
 
 
 	# -------------------------
-	# User properties
-	# -------------------------
-
-	def is_registered(self):
-		return "customer" in self.accountProperties
-
-
-	def personal_price_alerts_available(self):
-		return False
-		# return self.is_registered() and bool(self.accountProperties["customer"]["addons"].get("marketAlerts", 0))
-
-	def personal_flow_available(self):
-		return False
-		# return self.is_registered() and bool(self.accountProperties["customer"]["addons"].get("flow", 0))
-
-
-	# -------------------------
-	# Server properties
-	# -------------------------
-
-	def serverwide_price_alerts_available(self):
-		return self.guildProperties.get("connection", {}).get("customer", {}).get("slots", {}).get("priceAlerts", {}).get(self.guildId, 0) == 1
-
-	def serverwide_flow_available(self):
-		return self.guildProperties.get("connection", {}).get("customer", {}).get("slots", {}).get("flow", {}).get(self.guildId, 0) == 1
-
-
-	# -------------------------
 	# Global properties
 	# -------------------------
 
 	def price_alerts_available(self):
-		return self.is_serverwide_price_alerts_available() or self.is_personal_price_alerts_available()
+		slots = self.guildProperties.get("connection", {}).get("customer", {}).get("slots", {}).get("priceAlerts", {})
+		subscription = self.guildProperties.get("connection", {}).get("customer", {}).get("subscriptions", {}).get("priceAlerts", 0)
+		filled = sorted(slots.keys())[:subscription]
+		return self.guildId in filled or "personal" in filled
 
 	def flow_available(self):
-		return self.is_serverwide_flow_available() or self.is_personal_flow_available()
+		slots = self.guildProperties.get("connection", {}).get("customer", {}).get("slots", {}).get("flow", {})
+		subscription = self.guildProperties.get("connection", {}).get("customer", {}).get("subscriptions", {}).get("flow", 0)
+		filled = sorted(slots.keys())[:subscription]
+		return self.guildId in filled or "personal" in filled
 
 
 	# -------------------------
@@ -132,9 +110,6 @@ class CommandRequest(object):
 	@staticmethod
 	def create_guild_settings(settings):
 		settingsTemplate = {
-			"addons": {
-				"satellites": {}
-			},
 			"settings": {
 				"assistant": {
 					"enabled": True
