@@ -90,6 +90,9 @@ class CommandRequest(object):
 	# Global properties
 	# -------------------------
 
+	def is_registered(self):
+		return "customer" in self.accountProperties
+
 	def price_alerts_available(self):
 		slots = self.guildProperties.get("connection", {}).get("customer", {}).get("slots", {}).get("priceAlerts", {})
 		subscription = self.guildProperties.get("connection", {}).get("customer", {}).get("subscriptions", {}).get("priceAlerts", 0)
