@@ -54,9 +54,9 @@ class CommandRequest(object):
 			return ["Alpha Flow"]
 		elif commandType == "p":
 			if self.marketBias == "traditional":
-				return ["CNN Business", "IEXC", "CoinGecko", "CCXT", "Serum", "LLD", "Alternative.me"]
+				return ["CNN Business", "IEXC", "CCXT", "CoinGecko", "Serum", "LLD", "Alternative.me"]
 			else:
-				return ["Alternative.me", "CoinGecko", "CCXT", "Serum", "IEXC", "LLD", "CNN Business"]
+				return ["Alternative.me", "CCXT", "CoinGecko", "IEXC", "Serum", "LLD", "CNN Business"]
 		elif commandType == "v":
 			if self.marketBias == "traditional":
 				return ["IEXC", "CoinGecko", "CCXT"]
@@ -79,9 +79,9 @@ class CommandRequest(object):
 				return ["CCXT", "IEXC"]
 		elif commandType == "convert":
 			if self.marketBias == "traditional":
-				return ["IEXC", "CoinGecko", "CCXT", "Serum"]
+				return ["IEXC", "CCXT", "CoinGecko", "Serum"]
 			else:
-				return ["CoinGecko", "CCXT", "IEXC", "Serum"]
+				return ["CCXT", "CoinGecko", "IEXC", "Serum"]
 		else:
 			raise ValueError(f"incorrect commant type: {commandType}")
 

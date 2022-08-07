@@ -1,6 +1,6 @@
-const ccxt = require("ccxt")
+import ccxt from "ccxt"
 
-class Exchange {
+export class Exchange {
 	constructor(id, marketType, name, region) {
 		this.id = id
 		this.name = null
@@ -48,5 +48,3 @@ class StocksExchange {
 		return Date.now()
 	}
 }
-
-module.exports = { Exchange }

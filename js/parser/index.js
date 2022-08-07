@@ -1,3 +1,1 @@
-const { Exchange } = require("./exchange.js")
-
-module.exports = { Exchange }
+export { Exchange } from "./exchange.js"
