@@ -97,13 +97,13 @@ class CommandRequest(object):
 		slots = self.guildProperties.get("connection", {}).get("customer", {}).get("slots", {}).get("priceAlerts", {})
 		subscription = self.guildProperties.get("connection", {}).get("customer", {}).get("subscriptions", {}).get("priceAlerts", 0)
 		filled = sorted(slots.keys())[:subscription]
-		return self.guildId in filled or "personal" in filled
+		return str(self.guildId) in filled or "personal" in filled
 
 	def flow_available(self):
 		slots = self.guildProperties.get("connection", {}).get("customer", {}).get("slots", {}).get("flow", {})
 		subscription = self.guildProperties.get("connection", {}).get("customer", {}).get("subscriptions", {}).get("flow", 0)
 		filled = sorted(slots.keys())[:subscription]
-		return self.guildId in filled or "personal" in filled
+		return str(self.guildId) in filled or "personal" in filled
 
 
 	# -------------------------
