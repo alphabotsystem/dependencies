@@ -24,14 +24,14 @@ class Processor(object):
 
 	zmqEndpoints = {
 		"chart": "tcp://image-server:6900",
-		"depth": "tcp://quote-server:6900",
-		"detail": "tcp://detail-server:6900",
 		"heatmap": "tcp://image-server:6900",
-		"quote": "tcp://quote-server:6900",
 		"ichibot": "tcp://ichibot-server:6900"
 	}
 	httpEndpoints = {
 		"candle": "https://candle-server-yzrdox65bq-uc.a.run.app/" if environ['PRODUCTION_MODE'] else "http://candle-server:6900/",
+		"depth": "https://quote-server-yzrdox65bq-uc.a.run.app/" if environ['PRODUCTION_MODE'] else "http://quote-server:6900/",
+		"detail": "https://quote-server-yzrdox65bq-uc.a.run.app/" if environ['PRODUCTION_MODE'] else "http://quote-server:6900/",
+		"quote": "https://quote-server-yzrdox65bq-uc.a.run.app/" if environ['PRODUCTION_MODE'] else "http://quote-server:6900/",
 	}
 
 	@staticmethod
@@ -76,7 +76,7 @@ class Processor(object):
 		request["timestamp"] = time()
 		request["authorId"] = authorId
 		async with aiohttp.ClientSession(headers=headers) as session:
-			async with session.post(url, json=request) as response:
+			async with session.post(url + service, json=request) as response:
 				if response.status == 200:
 					data = await response.json()
 					payload, message = data.get("response"), data.get("message")
@@ -165,7 +165,7 @@ class Processor(object):
 		if fromBase not in ["USD", "USDT", "USDC", "DAI", "HUSD", "TUSD", "PAX", "USDK", "USDN", "BUSD", "GUSD", "USDS"]:
 			outputMessage, request = await Processor.process_quote_arguments(commandRequest, [], platforms, tickerId=fromBase)
 			if outputMessage is not None: return None, outputMessage
-			payload1, quoteText = await Processor.process_zmq_task("quote", commandRequest.authorId, request)
+			payload1, quoteText = await Processor.process_http_task("quote", commandRequest.authorId, request)
 			if payload1 is None: return None, quoteText
 			fromBase = request.get(payload1.get("platform")).get("ticker").get("base")
 		else:
@@ -173,7 +173,7 @@ class Processor(object):
 		if toBase not in ["USD", "USDT", "USDC", "DAI", "HUSD", "TUSD", "PAX", "USDK", "USDN", "BUSD", "GUSD", "USDS"]:
 			outputMessage, request = await Processor.process_quote_arguments(commandRequest, [], platforms, tickerId=toBase)
 			if outputMessage is not None: return None, outputMessage
-			payload2, quoteText = await Processor.process_zmq_task("quote", commandRequest.authorId, request)
+			payload2, quoteText = await Processor.process_http_task("quote", commandRequest.authorId, request)
 			if payload2 is None: return None, quoteText
 			toBase = request.get(payload2.get("platform")).get("ticker").get("base")
 		else:
@@ -200,6 +200,6 @@ class Processor(object):
 	def get_direct_ichibot_socket(identity):
 		socket = Processor.zmqContext.socket(DEALER)
 		socket.identity = identity.encode("ascii")
-		socket.connect(Processor.services["ichibot"])
+		socket.connect(Processor.zmqEndpoints["ichibot"])
 		socket.setsockopt(LINGER, 0)
 		return socket
