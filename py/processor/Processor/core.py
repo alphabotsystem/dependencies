@@ -35,7 +35,7 @@ class Processor(object):
 	}
 
 	@staticmethod
-	async def process_zqm_task(service, authorId, request, timeout=60, retries=3):
+	async def process_zmq_task(service, authorId, request, timeout=60, retries=3):
 		socket = Processor.zmqContext.socket(REQ)
 		payload, message = None, None
 		socket.connect(Processor.zmqEndpoints[service])
