@@ -1,9 +1,14 @@
+from os import environ
 from time import time
 from base64 import decodebytes
+import aiohttp
 from zmq.asyncio import Context, Poller
 from zmq import REQ, DEALER, LINGER, POLLIN
 from orjson import dumps, loads
 from io import BytesIO
+
+import google.auth.transport.requests
+import google.oauth2.id_token
 
 from DataRequest import ChartRequestHandler
 from DataRequest import HeatmapRequestHandler
@@ -14,8 +19,10 @@ from DataRequest import TradeRequestHandler
 
 class Processor(object):
 	clientId = b"public"
-	services = {
-		"candle": "tcp://candle-server:6900",
+
+	zmqContext = Context.instance()
+
+	zmqEndpoints = {
 		"chart": "tcp://image-server:6900",
 		"depth": "tcp://quote-server:6900",
 		"detail": "tcp://detail-server:6900",
@@ -23,13 +30,15 @@ class Processor(object):
 		"quote": "tcp://quote-server:6900",
 		"ichibot": "tcp://ichibot-server:6900"
 	}
-	zmqContext = Context.instance()
+	httpEndpoints = {
+		"candle": "https://candle-server-yzrdox65bq-uc.a.run.app/" if environ['PRODUCTION_MODE'] else "http://candle-server:6900/",
+	}
 
 	@staticmethod
-	async def process_task(service, authorId, request, timeout=60, retries=3):
+	async def process_zqm_task(service, authorId, request, timeout=60, retries=3):
 		socket = Processor.zmqContext.socket(REQ)
-		payload, responseText = None, None
-		socket.connect(Processor.services[service])
+		payload, message = None, None
+		socket.connect(Processor.zmqEndpoints[service])
 		socket.setsockopt(LINGER, 0)
 		poller = Poller()
 		poller.register(socket, POLLIN)
@@ -40,19 +49,41 @@ class Processor(object):
 		responses = await poller.poll(timeout * 1000)
 
 		if len(responses) != 0:
-			payload, responseText = await socket.recv_multipart()
+			payload, message = await socket.recv_multipart()
 			socket.close()
 			payload = loads(payload)
 			payload = payload if bool(payload) else None
-			responseText = None if responseText == b"" else responseText.decode()
+			message = None if message == b"" else message.decode()
 			if service in ["chart", "heatmap", "depth"] and payload is not None:
 				payload["data"] = BytesIO(decodebytes(payload["data"].encode()))
 		else:
 			socket.close()
 			if retries == 1: raise Exception("time out")
-			else: payload, responseText = await Processor.process_task(service, authorId, request, retries=retries-1)
+			else: payload, message = await Processor.process_zmq_task(service, authorId, request, retries=retries-1)
 
-		return payload, responseText
+		return payload, message
+
+	async def process_http_task(service, authorId, request, timeout=60, retries=3):
+		url = Processor.httpEndpoints[service]
+		authReq = google.auth.transport.requests.Request()
+		token = google.oauth2.id_token.fetch_id_token(authReq, url)
+		headers = {
+			"Authorization": "Bearer " + token,
+			"content-type": "application/json",
+			"accept": "application/json"
+		}
+
+		request["timestamp"] = time()
+		request["authorId"] = authorId
+		async with aiohttp.ClientSession(headers=headers) as session:
+			async with session.post(url, json=request) as response:
+				if response.status == 200:
+					data = await response.json()
+					payload, message = data.get("response"), data.get("message")
+					return payload, message
+
+		if retries == 1: raise Exception("time out")
+		else: return await Processor.process_http_task(service, authorId, request, retries=retries-1)
 
 	@staticmethod
 	async def process_chart_arguments(commandRequest, arguments, platforms, tickerId=None):
@@ -134,7 +165,7 @@ class Processor(object):
 		if fromBase not in ["USD", "USDT", "USDC", "DAI", "HUSD", "TUSD", "PAX", "USDK", "USDN", "BUSD", "GUSD", "USDS"]:
 			outputMessage, request = await Processor.process_quote_arguments(commandRequest, [], platforms, tickerId=fromBase)
 			if outputMessage is not None: return None, outputMessage
-			payload1, quoteText = await Processor.process_task("quote", commandRequest.authorId, request)
+			payload1, quoteText = await Processor.process_zmq_task("quote", commandRequest.authorId, request)
 			if payload1 is None: return None, quoteText
 			fromBase = request.get(payload1.get("platform")).get("ticker").get("base")
 		else:
@@ -142,7 +173,7 @@ class Processor(object):
 		if toBase not in ["USD", "USDT", "USDC", "DAI", "HUSD", "TUSD", "PAX", "USDK", "USDN", "BUSD", "GUSD", "USDS"]:
 			outputMessage, request = await Processor.process_quote_arguments(commandRequest, [], platforms, tickerId=toBase)
 			if outputMessage is not None: return None, outputMessage
-			payload2, quoteText = await Processor.process_task("quote", commandRequest.authorId, request)
+			payload2, quoteText = await Processor.process_zmq_task("quote", commandRequest.authorId, request)
 			if payload2 is None: return None, quoteText
 			toBase = request.get(payload2.get("platform")).get("ticker").get("base")
 		else:
