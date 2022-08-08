@@ -21,7 +21,7 @@ export class Exchange {
 		}
 	}
 
-	to_dict() {
+	toDict() {
 		return {
 			id: this.id,
 			name: this.name,
@@ -30,7 +30,7 @@ export class Exchange {
 		}
 	}
 
-	static from_dict(d) {
+	static fromDict(d) {
 		if (!d || Object.keys(d).length == 0) return null
 		return new Exchange(d.id, d.type, d.name, d.region)
 	}

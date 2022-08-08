@@ -23,14 +23,14 @@ class Processor(object):
 	zmqContext = Context.instance()
 
 	zmqEndpoints = {
-		"chart": "tcp://image-server:6900",
-		"heatmap": "tcp://image-server:6900",
 		"ichibot": "tcp://ichibot-server:6900"
 	}
 	httpEndpoints = {
 		"candle": "https://candle-server-yzrdox65bq-uc.a.run.app/" if environ['PRODUCTION_MODE'] else "http://candle-server:6900/",
+		"chart": "" if environ['PRODUCTION_MODE'] else "http://image-server:6900/",
 		"depth": "https://quote-server-yzrdox65bq-uc.a.run.app/" if environ['PRODUCTION_MODE'] else "http://quote-server:6900/",
 		"detail": "https://quote-server-yzrdox65bq-uc.a.run.app/" if environ['PRODUCTION_MODE'] else "http://quote-server:6900/",
+		"heatmap": "" if environ['PRODUCTION_MODE'] else "http://image-server:6900/",
 		"quote": "https://quote-server-yzrdox65bq-uc.a.run.app/" if environ['PRODUCTION_MODE'] else "http://quote-server:6900/",
 	}
 
