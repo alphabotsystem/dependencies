@@ -80,6 +80,8 @@ class Processor(object):
 				if response.status == 200:
 					data = await response.json()
 					payload, message = data.get("response"), data.get("message")
+					if service in ["chart", "heatmap", "depth"] and payload is not None:
+						payload["data"] = BytesIO(decodebytes(payload["data"].encode()))
 					return payload, message
 
 		if retries == 1: raise Exception("time out")
