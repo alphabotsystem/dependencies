@@ -27,10 +27,10 @@ class Processor(object):
 	}
 	httpEndpoints = {
 		"candle": "https://candle-server-yzrdox65bq-uc.a.run.app/" if environ['PRODUCTION_MODE'] else "http://candle-server:6900/",
-		"chart": "" if environ['PRODUCTION_MODE'] else "http://image-server:6900/",
+		"chart": "https://image-server-yzrdox65bq-uc.a.run.app/" if environ['PRODUCTION_MODE'] else "http://image-server:6900/",
 		"depth": "https://quote-server-yzrdox65bq-uc.a.run.app/" if environ['PRODUCTION_MODE'] else "http://quote-server:6900/",
 		"detail": "https://quote-server-yzrdox65bq-uc.a.run.app/" if environ['PRODUCTION_MODE'] else "http://quote-server:6900/",
-		"heatmap": "" if environ['PRODUCTION_MODE'] else "http://image-server:6900/",
+		"heatmap": "https://image-server-yzrdox65bq-uc.a.run.app/" if environ['PRODUCTION_MODE'] else "http://image-server:6900/",
 		"quote": "https://quote-server-yzrdox65bq-uc.a.run.app/" if environ['PRODUCTION_MODE'] else "http://quote-server:6900/",
 	}
 
@@ -80,7 +80,7 @@ class Processor(object):
 				if response.status == 200:
 					data = await response.json()
 					payload, message = data.get("response"), data.get("message")
-					if service in ["chart", "heatmap", "depth"] and payload is not None:
+					if service in ["chart", "heatmap", "depth"] and payload is not None and payload["data"] is not None:
 						payload["data"] = BytesIO(decodebytes(payload["data"].encode()))
 					return payload, message
 
