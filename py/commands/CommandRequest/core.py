@@ -42,9 +42,15 @@ class CommandRequest(object):
 		if commandType == "c":
 			chartSettings = self.accountProperties.get("settings", {}).get("charts", {})
 			if self.marketBias == "traditional":
-				return ["CNN Business"] + chartSettings.get("preferredOrder", ["TradingView", "GoCharting", "Finviz", "TradingLite", "Bookmap"]) + ["Alternative.me"]
+				order = ["CNN Business"] + chartSettings.get("preferredOrder", ["TradingView", "GoCharting", "Finviz", "TradingLite", "Bookmap"]) + ["Alternative.me"]
+				if self.live_charting_available():
+					order.insert(order.index("TradingView"), "TradingView Premium")
+				return order
 			else:
-				return ["Alternative.me"] + chartSettings.get("preferredOrder", ["TradingView", "GoCharting", "Finviz", "TradingLite", "Bookmap"]) + ["CNN Business"]
+				order = ["Alternative.me"] + chartSettings.get("preferredOrder", ["TradingView", "GoCharting", "Finviz", "TradingLite", "Bookmap"]) + ["CNN Business"]
+				if self.live_charting_available():
+					order.insert(order.index("TradingView"), "TradingView Premium")
+				return order
 		elif commandType == "hmap":
 			if self.marketBias == "traditional":
 				return ["TradingView Stock Heatmap", "TradingView Crypto Heatmap"]
@@ -96,6 +102,12 @@ class CommandRequest(object):
 	def price_alerts_available(self):
 		slots = self.guildProperties.get("connection", {}).get("customer", {}).get("slots", {}).get("priceAlerts", {})
 		subscription = self.guildProperties.get("connection", {}).get("customer", {}).get("subscriptions", {}).get("priceAlerts", 0)
+		filled = sorted(slots.keys())[:subscription]
+		return str(self.guildId) in filled or "personal" in filled
+
+	def live_charting_available(self):
+		slots = self.guildProperties.get("connection", {}).get("customer", {}).get("slots", {}).get("liveCharting", {})
+		subscription = self.guildProperties.get("connection", {}).get("customer", {}).get("subscriptions", {}).get("liveCharting", 0)
 		filled = sorted(slots.keys())[:subscription]
 		return str(self.guildId) in filled or "personal" in filled
 
