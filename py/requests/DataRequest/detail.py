@@ -9,8 +9,8 @@ from .abstract import AbstractRequestHandler, AbstractRequest
 
 PARAMETERS = {
 	"preferences": [
-		Parameter("forcePlatform", "force quote on CoinGecko", ["cg", "coingecko", "crypto"], coingecko=True),
-		Parameter("forcePlatform", "force quote on a stock exchange", ["ix", "iexc", "stock", "stocks"], iexc=True),
+		Parameter("forcePlatform", "request quote on CoinGecko", ["cg", "coingecko", "crypto"], coingecko=True),
+		Parameter("forcePlatform", "request quote on a stock exchange", ["ix", "iexc", "stock", "stocks"], iexc=True),
 	]
 }
 DEFAULTS = {

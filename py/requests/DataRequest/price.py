@@ -14,13 +14,12 @@ PARAMETERS = {
 		Parameter("lld", "longs/shorts ratio", ["ls", "l/s", "longs/shorts", "long/short"], lld="ls"),
 		Parameter("lld", "shorts/longs ratio", ["sl", "s/l", "shorts/longs", "short/long"], lld="sl"),
 		Parameter("lld", "dominance", ["dom", "dominance"], lld="dom"),
-		Parameter("forcePlatform", "force quote on CoinGecko", ["cg", "coingecko"], coingecko=True),
-		Parameter("forcePlatform", "force quote on a crypto exchange", ["cx", "ccxt", "crypto", "exchange"], ccxt=True),
-		Parameter("forcePlatform", "force quote on a stock exchange", ["ix", "iexc", "stock", "stocks"], iexc=True),
-		Parameter("forcePlatform", "force quote on Serum", ["serum", "srm"], serum=True),
-		Parameter("forcePlatform", "force quote on Alternative.me", ["am", "alternativeme"], alternativeme=True),
-		Parameter("forcePlatform", "force quote on CNN Business", ["cnn", "cnnbusiness"], cnnbusiness=True),
-		Parameter("force", "force", ["--force"], ccxt="force", iexc="force")
+		Parameter("forcePlatform", "request quote on CoinGecko", ["cg", "coingecko"], coingecko=True),
+		Parameter("forcePlatform", "request quote on a crypto exchange", ["cx", "ccxt", "crypto", "exchange"], ccxt=True),
+		Parameter("forcePlatform", "request quote on a stock exchange", ["ix", "iexc", "stock", "stocks"], iexc=True),
+		Parameter("forcePlatform", "request quote on Serum", ["serum", "srm"], serum=True),
+		Parameter("forcePlatform", "request quote on Alternative.me", ["am", "alternativeme"], alternativeme=True),
+		Parameter("forcePlatform", "request quote on CNN Business", ["cnn", "cnnbusiness"], cnnbusiness=True),
 	]
 }
 DEFAULTS = {

@@ -19,13 +19,8 @@ from DataRequest import TradeRequestHandler
 
 class Processor(object):
 	clientId = b"public"
-
 	zmqContext = Context.instance()
-
-	zmqEndpoints = {
-		"ichibot": "tcp://ichibot-server:6900"
-	}
-	httpEndpoints = {
+	endpoints = {
 		"candle": "https://candle-server-yzrdox65bq-uc.a.run.app/" if environ['PRODUCTION_MODE'] else "http://candle-server:6900/",
 		"chart": "https://image-server-yzrdox65bq-uc.a.run.app/" if environ['PRODUCTION_MODE'] else "http://image-server:6900/",
 		"depth": "https://quote-server-yzrdox65bq-uc.a.run.app/" if environ['PRODUCTION_MODE'] else "http://quote-server:6900/",
@@ -34,37 +29,8 @@ class Processor(object):
 		"quote": "https://quote-server-yzrdox65bq-uc.a.run.app/" if environ['PRODUCTION_MODE'] else "http://quote-server:6900/",
 	}
 
-	@staticmethod
-	async def process_zmq_task(service, authorId, request, timeout=60, retries=3):
-		socket = Processor.zmqContext.socket(REQ)
-		payload, message = None, None
-		socket.connect(Processor.zmqEndpoints[service])
-		socket.setsockopt(LINGER, 0)
-		poller = Poller()
-		poller.register(socket, POLLIN)
-
-		request["timestamp"] = time()
-		request["authorId"] = authorId
-		await socket.send_multipart([Processor.clientId, service.encode(), dumps(request)])
-		responses = await poller.poll(timeout * 1000)
-
-		if len(responses) != 0:
-			payload, message = await socket.recv_multipart()
-			socket.close()
-			payload = loads(payload)
-			payload = payload if bool(payload) else None
-			message = None if message == b"" else message.decode()
-			if service in ["chart", "heatmap", "depth"] and payload is not None:
-				payload["data"] = BytesIO(decodebytes(payload["data"].encode()))
-		else:
-			socket.close()
-			if retries == 1: raise Exception("time out")
-			else: payload, message = await Processor.process_zmq_task(service, authorId, request, retries=retries-1)
-
-		return payload, message
-
-	async def process_http_task(service, authorId, request, timeout=60, retries=3):
-		url = Processor.httpEndpoints[service]
+	async def process_task(service, authorId, request, timeout=60, retries=3):
+		url = Processor.endpoints[service]
 		authReq = google.auth.transport.requests.Request()
 		token = google.oauth2.id_token.fetch_id_token(authReq, url)
 		headers = {
@@ -85,7 +51,7 @@ class Processor(object):
 					return payload, message
 
 		if retries == 1: raise Exception("time out")
-		else: return await Processor.process_http_task(service, authorId, request, retries=retries-1)
+		else: return await Processor.process_task(service, authorId, request, retries=retries-1)
 
 	@staticmethod
 	async def process_chart_arguments(commandRequest, arguments, platforms, tickerId=None):
@@ -167,7 +133,7 @@ class Processor(object):
 		if fromBase not in ["USD", "USDT", "USDC", "DAI", "HUSD", "TUSD", "PAX", "USDK", "USDN", "BUSD", "GUSD", "USDS"]:
 			outputMessage, request = await Processor.process_quote_arguments(commandRequest, [], platforms, tickerId=fromBase)
 			if outputMessage is not None: return None, outputMessage
-			payload1, quoteText = await Processor.process_http_task("quote", commandRequest.authorId, request)
+			payload1, quoteText = await Processor.process_task("quote", commandRequest.authorId, request)
 			if payload1 is None: return None, quoteText
 			fromBase = request.get(payload1.get("platform")).get("ticker").get("base")
 		else:
@@ -175,7 +141,7 @@ class Processor(object):
 		if toBase not in ["USD", "USDT", "USDC", "DAI", "HUSD", "TUSD", "PAX", "USDK", "USDN", "BUSD", "GUSD", "USDS"]:
 			outputMessage, request = await Processor.process_quote_arguments(commandRequest, [], platforms, tickerId=toBase)
 			if outputMessage is not None: return None, outputMessage
-			payload2, quoteText = await Processor.process_http_task("quote", commandRequest.authorId, request)
+			payload2, quoteText = await Processor.process_task("quote", commandRequest.authorId, request)
 			if payload2 is None: return None, quoteText
 			toBase = request.get(payload2.get("platform")).get("ticker").get("base")
 		else:
@@ -202,6 +168,6 @@ class Processor(object):
 	def get_direct_ichibot_socket(identity):
 		socket = Processor.zmqContext.socket(DEALER)
 		socket.identity = identity.encode("ascii")
-		socket.connect(Processor.zmqEndpoints["ichibot"])
+		socket.connect("tcp://ichibot-server:6900")
 		socket.setsockopt(LINGER, 0)
 		return socket
