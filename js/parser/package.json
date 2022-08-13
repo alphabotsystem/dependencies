@@ -1,6 +1,6 @@
 {
 	"dependencies": {
-		"ccxt": "^1.91.91"
+		"ccxt": "^1.92.19"
 	},
 	"name": "ticker-parser",
 	"version": "1.0.0",
