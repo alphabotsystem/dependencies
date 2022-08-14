@@ -263,7 +263,7 @@ PARAMETERS = {
 	"style": [
 		Parameter("theme", "Light theme", ["light", "white"], tradinglite="light", finviz="light"),
 		Parameter("theme", "Dark theme", ["dark", "black"], tradinglite="dark", finviz="dark"),
-		Parameter("log", "Log chart", ["log", "logarithmic"], tradingview="log", premium="log"),
+		Parameter("log", "Log chart", ["log", "logarithmic"], tradingview="log", premium="log", alternativeme="log", cnnbusiness="log"),
 		Parameter("wide", "Wide chart", ["wide"], tradinglite="wide", tradingview="wide", premium="wide", bookmap="wide", gocharting="wide", alternativeme="wide", cnnbusiness="wide"),
 	],
 	"preferences": [
@@ -275,7 +275,7 @@ PARAMETERS = {
 		Parameter("heatmapIntensity", "Crazy heatmap intensity", ["crazy"], tradinglite=(0,16)),
 		Parameter("forcePlatform", "request chart on TradingLite", ["tl", "tradinglite"], tradinglite=True),
 		Parameter("forcePlatform", "request chart on TradingView", ["tv", "tradingview"], tradingview=True),
-		Parameter("forcePlatform", "request chart on TradingView Premium", ["prem", "premium", "tvp", "tradingviewpremium"], premium=True),
+		Parameter("forcePlatform", "request chart on TradingView Premium", ["tv", "prem", "premium", "tvp", "tradingviewpremium"], premium=True),
 		Parameter("forcePlatform", "request chart on Bookmap", ["bm", "bookmap"], bookmap=True),
 		Parameter("forcePlatform", "request chart on GoCharting", ["gc", "gocharting"], gocharting=True),
 		Parameter("forcePlatform", "request chart on Finviz", ["fv", "finviz"], finviz=True),
@@ -590,6 +590,12 @@ class ChartRequest(AbstractRequest):
 				indicators = ""
 			else:
 				indicators = "&studies=" + "%1F".join([e.parsed[self.platform] for e in self.indicators])
+
+		elif self.platform == "TradingView Premium":
+			if len(self.indicators) == 0:
+				indicators = ""
+			else:
+				indicators = "&studies=" + ",".join([e.parsed[self.platform] for e in self.indicators])
 
 		elif self.platform == "GoCharting":
 			if len(self.indicators) == 0:

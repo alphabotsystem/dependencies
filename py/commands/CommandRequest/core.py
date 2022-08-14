@@ -100,22 +100,31 @@ class CommandRequest(object):
 		return "customer" in self.accountProperties
 
 	def price_alerts_available(self):
-		slots = self.guildProperties.get("connection", {}).get("customer", {}).get("slots", {}).get("priceAlerts", {})
-		subscription = self.guildProperties.get("connection", {}).get("customer", {}).get("subscriptions", {}).get("priceAlerts", 0)
-		filled = sorted(slots.keys())[:subscription]
-		return str(self.guildId) in filled or "personal" in filled
+		ownerSlots = self.guildProperties.get("connection", {}).get("customer", {}).get("slots", {}).get("priceAlerts", {})
+		ownerSubscription = self.guildProperties.get("connection", {}).get("customer", {}).get("subscriptions", {}).get("priceAlerts", 0)
+		ownerFilledSlots = sorted(ownerSlots.keys())[:ownerSubscription]
+		userSlots = self.accountProperties.get("customer", {}).get("slots", {}).get("priceAlerts", {})
+		userSubscription = self.accountProperties.get("customer", {}).get("subscriptions", {}).get("priceAlerts", 0)
+		userFilledSlots = sorted(userSlots.keys())[:userSubscription]
+		return str(self.guildId) in ownerFilledSlots or "personal" in userFilledSlots
 
 	def live_charting_available(self):
-		slots = self.guildProperties.get("connection", {}).get("customer", {}).get("slots", {}).get("liveCharting", {})
-		subscription = self.guildProperties.get("connection", {}).get("customer", {}).get("subscriptions", {}).get("liveCharting", 0)
-		filled = sorted(slots.keys())[:subscription]
-		return str(self.guildId) in filled or "personal" in filled
+		ownerSlots = self.guildProperties.get("connection", {}).get("customer", {}).get("slots", {}).get("liveCharting", {})
+		ownerSubscription = self.guildProperties.get("connection", {}).get("customer", {}).get("subscriptions", {}).get("liveCharting", 0)
+		ownerFilledSlots = sorted(ownerSlots.keys())[:ownerSubscription]
+		userSlots = self.accountProperties.get("customer", {}).get("slots", {}).get("liveCharting", {})
+		userSubscription = self.accountProperties.get("customer", {}).get("subscriptions", {}).get("liveCharting", 0)
+		userFilledSlots = sorted(userSlots.keys())[:userSubscription]
+		return str(self.guildId) in ownerFilledSlots or "personal" in userFilledSlots
 
 	def flow_available(self):
-		slots = self.guildProperties.get("connection", {}).get("customer", {}).get("slots", {}).get("flow", {})
-		subscription = self.guildProperties.get("connection", {}).get("customer", {}).get("subscriptions", {}).get("flow", 0)
-		filled = sorted(slots.keys())[:subscription]
-		return str(self.guildId) in filled or "personal" in filled
+		ownerSlots = self.guildProperties.get("connection", {}).get("customer", {}).get("slots", {}).get("flow", {})
+		ownerSubscription = self.guildProperties.get("connection", {}).get("customer", {}).get("subscriptions", {}).get("flow", 0)
+		ownerFilledSlots = sorted(ownerSlots.keys())[:ownerSubscription]
+		userSlots = self.accountProperties.get("customer", {}).get("slots", {}).get("flow", {})
+		userSubscription = self.accountProperties.get("customer", {}).get("subscriptions", {}).get("flow", 0)
+		userFilledSlots = sorted(userSlots.keys())[:userSubscription]
+		return str(self.guildId) in filled or "personal" in userFilledSlots
 
 
 	# -------------------------
