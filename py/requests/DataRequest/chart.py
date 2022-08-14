@@ -260,6 +260,7 @@ PARAMETERS = {
 		Parameter("theme", "Light theme", ["light", "white"], tradinglite="light", finviz="light"),
 		Parameter("theme", "Dark theme", ["dark", "black"], tradinglite="dark", finviz="dark"),
 		Parameter("log", "Log chart", ["log", "logarithmic"], tradingview="log", premium="log", alternativeme="log", cnnbusiness="log"),
+		Parameter("extended", "Extended hours", ["extended", "post", "pre", "extendedhours"], premium="extended"),
 		Parameter("wide", "Wide chart", ["wide"], tradinglite="wide", tradingview="wide", premium="wide", bookmap="wide", gocharting="wide", alternativeme="wide", cnnbusiness="wide"),
 	],
 	"preferences": [
