@@ -77,8 +77,7 @@ PARAMETERS = {
 		Parameter("bullishmarubozu", "Bullish Marubozu Pattern", ["bullishmarubozu", "bullishmarubozupattern"], gocharting="BULLISHMARUBOZU"),
 		Parameter("bullishspinningtop", "Bullish Spinning Top Pattern", ["bullishspinningtop", "bullishspinningtoppattern"], gocharting="BULLISHSPINNINGTOP"),
 		Parameter("bollinger", "Bollinger Bands", ["bollinger", "bbands", "bb", "bollingerbands"], tradingview="BB@tv-basicstudies", premium="Bollinger Bands", gocharting="BOLLINGERBAND", dynamic={"GoCharting": [14, 2]}),
-		Parameter("bbr", "Bollinger Bands R", ["bbr", "bollingerbandsr"], tradingview="BollingerBandsR@tv-basicstudies"),
-		Parameter("bbb", "Bollinger Bands %B", ["%b", "bollingerbandsb", "bollingerbands%b", "percentbandwidth"], premium="Bollinger Bands %B"),
+		Parameter("bbb", "Bollinger Bands %B", ["%b", "bollingerbandsb", "bollingerbands%b", "bbb"], tradingview="BollingerBandsR@tv-basicstudies", premium="Bollinger Bands %B"),
 		Parameter("width", "Bollinger Bands Width", ["width", "bbw", "bollingerbandswidth"], tradingview="BollingerBandsWidth@tv-basicstudies", premium="Bollinger Bands Width"),
 		Parameter("cmf", "Chaikin Money Flow Index", ["cmf", "chaikinmoneyflow", "chaikinmoneyflowindex"], tradingview="CMF@tv-basicstudies", premium="Chaikin Money Flow", gocharting="CHAIKINMFI", dynamic={"GoCharting": [20]}),
 		Parameter("chaikin", "Chaikin Oscillator", ["chaikin", "co", "chaikinoscillator"], tradingview="ChaikinOscillator@tv-basicstudies", premium="Chaikin Oscillator"),
@@ -429,6 +428,8 @@ class ChartRequestHandler(AbstractRequestHandler):
 					request.set_error("Bookmap currently only supports cryptocurrency markets on supported exchanges.", isFatal=True)
 			
 			elif platform == "GoCharting":
+				request.set_error("GoCharting charts are temporarily unavailable.", isFatal=True)
+
 				indicators = request.indicators
 				parameters = request.numericalParameters
 				lengths = {i: [] for i in range(len(indicators))}
@@ -503,12 +504,15 @@ class ChartRequest(AbstractRequest):
 	def add_parameter(self, argument, type):
 		isSupported = None
 		parsedParameter = None
+		requiresPro = None
 		for param in PARAMETERS[type]:
 			if argument in param.parsablePhrases:
 				parsedParameter = param
 				isSupported = param.supports(self.platform)
 				if isSupported: break
-		return isSupported, parsedParameter
+				if self.platform == "TradingView" and param.supports("TradingView Premium"):
+					requiresPro = "Live Charting Data"
+		return isSupported, parsedParameter, requiresPro
 
 	# async def add_timeframe(self, argument) -- inherited
 
@@ -518,10 +522,10 @@ class ChartRequest(AbstractRequest):
 		if argument in ["oscillator", "bands", "band", "ta"]: return None, False
 		length = search("(\d+)$", argument)
 		if length is not None and int(length.group()) > 0: argument = argument[:-len(length.group())]
-		indicatorSupported, parsedIndicator = self.add_parameter(argument, "indicators")
+		indicatorSupported, parsedIndicator, requiresPro = self.add_parameter(argument, "indicators")
 		if parsedIndicator is not None and not self.has_parameter(parsedIndicator.id, self.indicators):
 			if not indicatorSupported:
-				outputMessage = f"`{parsedIndicator.name}` indicator is not supported on {self.platform}."
+				outputMessage = f"`{parsedIndicator.name}` indicator is " + (f"only available with the {requiresPro} add-on." if requiresPro else f"not supported on {self.platform}.")
 				return outputMessage, False
 			self.indicators.append(parsedIndicator)
 			self.numericalParameters.append(-1)
@@ -535,10 +539,10 @@ class ChartRequest(AbstractRequest):
 		return None, None
 
 	async def add_type(self, argument):
-		typeSupported, parsedType = self.add_parameter(argument, "types")
+		typeSupported, parsedType, requiresPro = self.add_parameter(argument, "types")
 		if parsedType is not None and not self.has_parameter(parsedType.id, self.types):
 			if not typeSupported:
-				outputMessage = f"`{parsedType.name.title()}` chart style is not supported on {self.platform}."
+				outputMessage = f"`{parsedType.name.title()}` chart style is " + (f"only available with the {requiresPro} add-on." if requiresPro else f"not supported on {self.platform}.")
 				return outputMessage, False
 			self.types.append(parsedType)
 			return None, True

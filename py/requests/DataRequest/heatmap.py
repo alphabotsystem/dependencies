@@ -183,7 +183,7 @@ class HeatmapRequestHandler(AbstractRequestHandler):
 
 			if finalOutput is None:
 				request.set_error(f"`{argument[:229]}` is not a valid argument.", isFatal=True)
-			elif finalOutput.startswith("`Force Heat Map"):
+			elif finalOutput.startswith("`Force heatmap"):
 				request.set_error(None, isFatal=True)
 			else:
 				request.set_error(finalOutput)
@@ -213,7 +213,7 @@ class HeatmapRequestHandler(AbstractRequestHandler):
 
 				if "performance" not in heatmap and any([e in heatmap for e in ["?color=premarket_change", "?color=postmarket_change", "?color=relative_volume_10d_calc", "?color=gap", "?color=Volatility.D"]]):
 					if len(request.timeframes) != 0:
-						if request.timeframes[0].id is not None: request.set_error(f"Timeframes are not supported on the {heatmap[:-1]} heat map."); break
+						if request.timeframes[0].id is not None: request.set_error(f"Timeframes are not supported on the {heatmap[:-1]} heatmap."); break
 					else:
 						request.timeframes = [Parameter(None, None, None, tradingViewStockHeatmap="")]
 				elif len(request.timeframes) == 0:
@@ -243,7 +243,7 @@ class HeatmapRequestHandler(AbstractRequestHandler):
 
 				if "performance" not in heatmap and any([e in heatmap for e in ["?color=gap", "?color=Volatility.D"]]):
 					if len(request.timeframes) != 0:
-						if request.timeframes[0].id is not None: request.set_error(f"Timeframes are not supported on the {heatmap[:-1]} heat map."); break
+						if request.timeframes[0].id is not None: request.set_error(f"Timeframes are not supported on the {heatmap[:-1]} heatmap."); break
 					else:
 						request.timeframes = [Parameter(None, None, None, tradingViewCryptoHeatmap="")]
 				elif len(request.timeframes) == 0:
@@ -297,22 +297,23 @@ class HeatmapRequest(AbstractRequest):
 	def add_parameter(self, argument, type):
 		isSupported = None
 		parsedParameter = None
+		requiresPro = None
 		for param in PARAMETERS[type]:
 			if argument in param.parsablePhrases:
 				parsedParameter = param
 				isSupported = param.supports(self.platform)
 				if isSupported: break
-		return isSupported, parsedParameter
+		return isSupported, parsedParameter, requiresPro
 
 	# async def add_timeframe(self, argument) -- inherited
 
 	async def add_exchange(self, argument): raise NotImplementedError
 
 	async def add_type(self, argument):
-		heatmapStyleSupported, parsedHeatmapStyle = self.add_parameter(argument, "types")
+		heatmapStyleSupported, parsedHeatmapStyle, requiresPro = self.add_parameter(argument, "types")
 		if parsedHeatmapStyle is not None and not self.has_parameter(parsedHeatmapStyle.id, self.types):
 			if not heatmapStyleSupported:
-				outputMessage = f"`{parsedHeatmapStyle.name.title()}` heat map style is not supported on {self.platform}."
+				outputMessage = f"`{parsedHeatmapStyle.name.title()}` heatmap style is " + (f"only available with the {requiresPro} add-on." if requiresPro else f"`not supported on {self.platform}.")
 				return outputMessage, False
 			self.types.append(parsedHeatmapStyle)
 			return None, True

@@ -107,12 +107,13 @@ class DetailRequest(AbstractRequest):
 	def add_parameter(self, argument, type):
 		isSupported = None
 		parsedParameter = None
+		requiresPro = None
 		for param in PARAMETERS[type]:
 			if argument in param.parsablePhrases:
 				parsedParameter = param
 				isSupported = param.supports(self.platform)
 				if isSupported: break
-		return isSupported, parsedParameter
+		return isSupported, parsedParameter, requiresPro
 
 	async def add_timeframe(self, argument): raise NotImplementedError
 
