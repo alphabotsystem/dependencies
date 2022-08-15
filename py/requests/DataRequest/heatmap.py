@@ -313,7 +313,7 @@ class HeatmapRequest(AbstractRequest):
 		heatmapStyleSupported, parsedHeatmapStyle, requiresPro = self.add_parameter(argument, "types")
 		if parsedHeatmapStyle is not None and not self.has_parameter(parsedHeatmapStyle.id, self.types):
 			if not heatmapStyleSupported:
-				outputMessage = f"`{parsedHeatmapStyle.name.title()}` heatmap style is " + (f"only available with the {requiresPro} add-on." if requiresPro else f"`not supported on {self.platform}.")
+				outputMessage = f"`{parsedHeatmapStyle.name.title()}` heatmap style is " + (f"only available with the {requiresPro} add-on." if requiresPro else f"not supported on {self.platform}.")
 				return outputMessage, False
 			self.types.append(parsedHeatmapStyle)
 			return None, True

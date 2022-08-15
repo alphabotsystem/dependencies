@@ -58,7 +58,7 @@ class AbstractRequest(object):
 		timeframeSupported, parsedTimeframe, requiresPro = self.add_parameter(argument, "timeframes")
 		if parsedTimeframe is not None and not self.has_parameter(parsedTimeframe.id, self.timeframes):
 			if not timeframeSupported:
-				outputMessage = f"`{parsedTimeframe.name}` timeframe is " + (f"only available with the {requiresPro} add-on." if requiresPro else f"`not supported on {self.platform}.")
+				outputMessage = f"{parsedTimeframe.name} timeframe is " + (f"only available with the {requiresPro} add-on." if requiresPro else f"not supported on {self.platform}.")
 				return outputMessage, False
 			self.timeframes.append(parsedTimeframe)
 			return None, True
@@ -72,7 +72,7 @@ class AbstractRequest(object):
 		except: return "Parser could not process your request. Please try again in a bit.", False
 		if parsedExchange is not None:
 			if not exchangeSupported:
-				outputMessage = f"`{parsedExchange.get('name')}` exchange is not supported by {self.platform}."
+				outputMessage = f"{parsedExchange.get('name')} exchange is not supported by {self.platform}."
 				return outputMessage, False
 			self.exchange = parsedExchange
 			self.hasExchange = True
@@ -83,7 +83,7 @@ class AbstractRequest(object):
 		styleSupported, parsedStyle, requiresPro = self.add_parameter(argument, "style")
 		if parsedStyle is not None and not self.has_parameter(parsedStyle.id, self.styles):
 			if not styleSupported:
-				outputMessage = f"`{parsedStyle.name.title()}` parameter is " + (f"only available with the {requiresPro} add-on." if requiresPro else f"`not supported on {self.platform}.")
+				outputMessage = f"`{parsedStyle.name.title()}` parameter is " + (f"only available with the {requiresPro} add-on." if requiresPro else f"not supported on {self.platform}.")
 				return outputMessage, False
 			self.styles.append(parsedStyle)
 			return None, True
@@ -93,7 +93,7 @@ class AbstractRequest(object):
 		preferenceSupported, parsedPreference, requiresPro = self.add_parameter(argument, "preferences")
 		if parsedPreference is not None and not self.has_parameter(parsedPreference.id, self.preferences):
 			if not preferenceSupported:
-				outputMessage = f"`{parsedPreference.name.title()}` parameter is " + (f"only available with the {requiresPro} add-on." if requiresPro else f"`not supported by {self.platform}.")
+				outputMessage = f"`{parsedPreference.name.title()}` parameter is " + (f"only available with the {requiresPro} add-on." if requiresPro else f"not supported by {self.platform}.")
 				return outputMessage, False
 			self.preferences.append(parsedPreference)
 			return None, True

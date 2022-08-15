@@ -525,7 +525,7 @@ class ChartRequest(AbstractRequest):
 		indicatorSupported, parsedIndicator, requiresPro = self.add_parameter(argument, "indicators")
 		if parsedIndicator is not None and not self.has_parameter(parsedIndicator.id, self.indicators):
 			if not indicatorSupported:
-				outputMessage = f"`{parsedIndicator.name}` indicator is " + (f"only available with the {requiresPro} add-on." if requiresPro else f"not supported on {self.platform}.")
+				outputMessage = f"{parsedIndicator.name} indicator is " + (f"only available with the {requiresPro} add-on." if requiresPro else f"not supported on {self.platform}.")
 				return outputMessage, False
 			self.indicators.append(parsedIndicator)
 			self.numericalParameters.append(-1)
