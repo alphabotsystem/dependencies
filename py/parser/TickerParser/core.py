@@ -20,7 +20,6 @@ class TickerParser(object):
 
 		async with ClientSession(headers=headers) as session:
 			async with session.post(TickerParser.endpoint + service, json=data) as response:
-				print(response.status)
 				if response.status == 200:
 					return await response.json()
 
