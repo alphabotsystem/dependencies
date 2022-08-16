@@ -14,7 +14,7 @@ class Exchange(object):
 
 		if self.type == "crypto":
 			self.properties = getattr(ccxt, id)() if cache is None else cache
-			self.properties.load_markets()
+			if cache is None: self.properties.load_markets()
 			if id == "binanceusdm": self.name = "Binance Futures" # USDⓈ-M
 			elif id == "binancecoinm": self.name = "Binance Futures COIN-M"
 			else: self.name = self.properties.name
