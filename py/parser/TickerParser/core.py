@@ -7,7 +7,7 @@ import google.oauth2.id_token
 
 
 class TickerParser(object):
-	endpoint = "" if environ['PRODUCTION'] else "http://parser:6900/"
+	endpoint = "http://parser:6900/" if environ['PRODUCTION'] else "http://parser:6900/"
 
 	async def process_task(service, data, retries=3):
 		authReq = google.auth.transport.requests.Request()
