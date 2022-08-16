@@ -7,10 +7,13 @@ export class Exchange {
 		this.region = region
 		this.properties = null
 		this.type = marketType
+		this.stale = false
 
 		if (marketType === "crypto") {
 			this.properties = cache ? cache : new ccxt[id]()
-			if (!cache) this.properties.loadMarkets()
+			if (!cache) {
+				try { this.properties.loadMarkets() } catch (e) { this.stale = false }
+			}
 			// USDⓈ-M
 			if (id == "binanceusdm") this.name = "Binance Futures"
 			// COIN-M
