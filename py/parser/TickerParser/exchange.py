@@ -1,6 +1,4 @@
 from time import time
-from requests import post, get
-from json import dumps
 import ccxt
 
 

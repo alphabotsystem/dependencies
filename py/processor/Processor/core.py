@@ -1,10 +1,9 @@
 from os import environ
 from time import time
 from base64 import decodebytes
-import aiohttp
+from aiohttp import ClientSession
 from zmq.asyncio import Context, Poller
-from zmq import REQ, DEALER, LINGER, POLLIN
-from orjson import dumps, loads
+from zmq import DEALER, LINGER
 from io import BytesIO
 
 import google.auth.transport.requests
@@ -21,15 +20,15 @@ class Processor(object):
 	clientId = b"public"
 	zmqContext = Context.instance()
 	endpoints = {
-		"candle": "https://candle-server-yzrdox65bq-uc.a.run.app/" if environ['PRODUCTION_MODE'] else "http://candle-server:6900/",
-		"chart": "https://image-server-yzrdox65bq-uc.a.run.app/" if environ['PRODUCTION_MODE'] else "http://image-server:6900/",
-		"depth": "https://quote-server-yzrdox65bq-uc.a.run.app/" if environ['PRODUCTION_MODE'] else "http://quote-server:6900/",
-		"detail": "https://quote-server-yzrdox65bq-uc.a.run.app/" if environ['PRODUCTION_MODE'] else "http://quote-server:6900/",
-		"heatmap": "https://image-server-yzrdox65bq-uc.a.run.app/" if environ['PRODUCTION_MODE'] else "http://image-server:6900/",
-		"quote": "https://quote-server-yzrdox65bq-uc.a.run.app/" if environ['PRODUCTION_MODE'] else "http://quote-server:6900/",
+		"candle": "https://candle-server-yzrdox65bq-uc.a.run.app/" if environ['PRODUCTION'] else "http://candle-server:6900/",
+		"chart": "https://image-server-yzrdox65bq-uc.a.run.app/" if environ['PRODUCTION'] else "http://image-server:6900/",
+		"depth": "https://quote-server-yzrdox65bq-uc.a.run.app/" if environ['PRODUCTION'] else "http://quote-server:6900/",
+		"detail": "https://quote-server-yzrdox65bq-uc.a.run.app/" if environ['PRODUCTION'] else "http://quote-server:6900/",
+		"heatmap": "https://image-server-yzrdox65bq-uc.a.run.app/" if environ['PRODUCTION'] else "http://image-server:6900/",
+		"quote": "https://quote-server-yzrdox65bq-uc.a.run.app/" if environ['PRODUCTION'] else "http://quote-server:6900/",
 	}
 
-	async def process_task(service, authorId, request, timeout=60, retries=3):
+	async def process_task(service, authorId, request, retries=3):
 		url = Processor.endpoints[service]
 		authReq = google.auth.transport.requests.Request()
 		token = google.oauth2.id_token.fetch_id_token(authReq, url)
@@ -41,7 +40,7 @@ class Processor(object):
 
 		request["timestamp"] = time()
 		request["authorId"] = authorId
-		async with aiohttp.ClientSession(headers=headers) as session:
+		async with ClientSession(headers=headers) as session:
 			async with session.post(url + service, json=request) as response:
 				if response.status == 200:
 					data = await response.json()

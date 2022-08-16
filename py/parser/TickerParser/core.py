@@ -1,68 +1,64 @@
-from zmq.asyncio import Context, Poller
-from zmq import REQ, LINGER, POLLIN
+from os import environ
 from orjson import loads
-from io import BytesIO
+from aiohttp import ClientSession
+
+import google.auth.transport.requests
+import google.oauth2.id_token
 
 
 class TickerParser(object):
-	zmqContext = Context.instance()
+	endpoint = "" if environ['PRODUCTION'] else "http://parser:6900/"
 
-	@staticmethod
-	async def execute_parser_request(endpoint, parameters, timeout=5):
-		socket = TickerParser.zmqContext.socket(REQ)
-		socket.connect("tcp://parser:6900")
-		socket.setsockopt(LINGER, 0)
-		poller = Poller()
-		poller.register(socket, POLLIN)
+	async def process_task(service, data, retries=3):
+		authReq = google.auth.transport.requests.Request()
+		token = google.oauth2.id_token.fetch_id_token(authReq, TickerParser.endpoint)
+		headers = {
+			"Authorization": "Bearer " + token,
+			"content-type": "application/json",
+			"accept": "application/json"
+		}
 
-		await socket.send_multipart([endpoint] + parameters)
-		responses = await poller.poll(timeout * 1000)
+		async with ClientSession(headers=headers) as session:
+			async with session.post(TickerParser.endpoint + service, json=data) as response:
+				print(response.status)
+				if response.status == 200:
+					return await response.json()
 
-		if len(responses) != 0:
-			response = await socket.recv_multipart()
-			socket.close()
-			return response
-		else:
-			socket.close()
-			raise Exception("time out")
-		return None
+		if retries == 1: raise Exception("time out")
+		else: return await TickerParser.process_task(service, data, retries=retries-1)
 
 	@staticmethod
 	async def find_exchange(raw, platform, bias):
-		[success, exchange] = await TickerParser.execute_parser_request(b"find_exchange", [raw.encode(), platform.encode(), bias.encode()])
-		exchange = None if exchange == b"" else loads(exchange)
-		return bool(int(success)), exchange
+		payload = await TickerParser.process_task("find_exchange", {"raw": raw, "platform": platform, "bias": bias})
+		return payload.get("success"), payload.get("match")
 
 	@staticmethod
 	async def match_ticker(tickerId, exchange, platform, bias):
 		exchangeId = exchange.get("id").lower() if bool(exchange) else ""
-		[ticker, error] = await TickerParser.execute_parser_request(b"match_ticker", [tickerId.encode(), exchangeId.encode(), platform.encode(), bias.encode()])
-		ticker = None if ticker == b"" else loads(ticker)
-		error = None if error == b"" else error.decode()
-		return ticker, error
+		payload = await TickerParser.process_task("match_ticker", {"tickerId": tickerId, "exchangeId": exchangeId, "platform": platform, "bias": bias})
+		return payload.get("response"), payload.get("message")
 
 	@staticmethod
 	async def check_if_fiat(tickerId):
-		[success, fiat] = await TickerParser.execute_parser_request(b"check_if_fiat", [tickerId.encode()])
-		fiat = None if fiat == b"" else fiat.decode()
-		return bool(int(success)), fiat
+		payload = await TickerParser.process_task("check_if_fiat", {"tickerId": tickerId})
+		return payload.get("isFiat"), payload.get("asset")
 
 	@staticmethod
 	async def get_listings(tickerBase, tickerQuote):
-		[listings, total] = await TickerParser.execute_parser_request(b"get_listings", [tickerBase.encode(), tickerQuote.encode()])
-		return loads(listings), int(total)
+		payload = await TickerParser.process_task("get_listings", {"tickerBase": tickerBase, "tickerQuote": tickerQuote})
+		return payload.get("response"), payload.get("total")
 
 	@staticmethod
 	async def get_formatted_price_ccxt(exchangeId, symbol, price):
-		[response] = await TickerParser.execute_parser_request(b"get_formatted_price_ccxt", [exchangeId.encode(), symbol.encode(), str(price).encode()])
-		return response.decode()
+		payload = await TickerParser.process_task("get_formatted_price_ccxt", {"exchangeId": exchangeId, "symbol": symbol, "price": price})
+		return payload.get("response")
 
 	@staticmethod
 	async def get_formatted_amount_ccxt(exchangeId, symbol, amount):
-		[response] = await TickerParser.execute_parser_request(b"get_formatted_amount_ccxt", [exchangeId.encode(), symbol.encode(), str(amount).encode()])
-		return response.decode()
+		payload = await TickerParser.process_task("get_formatted_amount_ccxt", {"exchangeId": exchangeId, "symbol": symbol, "amount": amount})
+		return payload.get("response")
 
 	@staticmethod
 	async def get_venues(platforms):
-		[response] = await TickerParser.execute_parser_request(b"get_venues", [platforms.encode()])
-		return loads(response)
+		payload = await TickerParser.process_task("get_venues", {"platforms": platforms})
+		return payload.get("response")
