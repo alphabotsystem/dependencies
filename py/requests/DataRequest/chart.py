@@ -386,7 +386,7 @@ class ChartRequestHandler(AbstractRequestHandler):
 
 			if finalOutput is None:
 				request.set_error(f"`{argument[:229]}` is not a valid argument.", isFatal=True)
-			elif finalOutput.startswith("`Force Chart"):
+			elif finalOutput.startswith("`Request Chart"):
 				request.set_error(None, isFatal=True)
 			else:
 				request.set_error(finalOutput)
