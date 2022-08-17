@@ -440,7 +440,7 @@ class ChartRequestHandler(AbstractRequestHandler):
 						cursor -= 1
 					cursor -= 1
 
-					if indicators[i].dynamic is not None and lengths[i] != 0 and len(lengths[i]) > len(indicators[i].dynamic[platform]):
+					if indicators[i].dynamic is not None and len(lengths[i]) > len(indicators[i].dynamic[platform]):
 						request.set_error(f"{indicators[i].name} indicator takes in `{len(indicators[i].dynamic[platform])}` {'parameters' if len(indicators[i].dynamic[platform]) > 1 else 'parameter'}, but `{len(lengths[i])}` were given.", isFatal=True)
 						break
 

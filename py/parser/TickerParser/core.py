@@ -28,36 +28,36 @@ class TickerParser(object):
 
 	@staticmethod
 	async def find_exchange(raw, platform, bias):
-		payload = await TickerParser.process_task("find_exchange", {"raw": raw, "platform": platform, "bias": bias})
+		payload = await TickerParser.process_task("parser/find_exchange", {"raw": raw, "platform": platform, "bias": bias})
 		return payload.get("success"), payload.get("match")
 
 	@staticmethod
 	async def match_ticker(tickerId, exchange, platform, bias):
 		exchangeId = exchange.get("id").lower() if bool(exchange) else ""
-		payload = await TickerParser.process_task("match_ticker", {"tickerId": tickerId, "exchangeId": exchangeId, "platform": platform, "bias": bias})
+		payload = await TickerParser.process_task("parser/match_ticker", {"tickerId": tickerId, "exchangeId": exchangeId, "platform": platform, "bias": bias})
 		return payload.get("response"), payload.get("message")
 
 	@staticmethod
 	async def check_if_fiat(tickerId):
-		payload = await TickerParser.process_task("check_if_fiat", {"tickerId": tickerId})
+		payload = await TickerParser.process_task("parser/check_if_fiat", {"tickerId": tickerId})
 		return payload.get("isFiat"), payload.get("asset")
 
 	@staticmethod
 	async def get_listings(tickerBase, tickerQuote):
-		payload = await TickerParser.process_task("get_listings", {"tickerBase": tickerBase, "tickerQuote": tickerQuote})
+		payload = await TickerParser.process_task("parser/get_listings", {"tickerBase": tickerBase, "tickerQuote": tickerQuote})
 		return payload.get("response"), payload.get("total")
 
 	@staticmethod
 	async def get_formatted_price_ccxt(exchangeId, symbol, price):
-		payload = await TickerParser.process_task("get_formatted_price_ccxt", {"exchangeId": exchangeId, "symbol": symbol, "price": price})
+		payload = await TickerParser.process_task("parser/get_formatted_price_ccxt", {"exchangeId": exchangeId, "symbol": symbol, "price": price})
 		return payload.get("response")
 
 	@staticmethod
 	async def get_formatted_amount_ccxt(exchangeId, symbol, amount):
-		payload = await TickerParser.process_task("get_formatted_amount_ccxt", {"exchangeId": exchangeId, "symbol": symbol, "amount": amount})
+		payload = await TickerParser.process_task("parser/get_formatted_amount_ccxt", {"exchangeId": exchangeId, "symbol": symbol, "amount": amount})
 		return payload.get("response")
 
 	@staticmethod
 	async def get_venues(platforms):
-		payload = await TickerParser.process_task("get_venues", {"platforms": platforms})
+		payload = await TickerParser.process_task("parser/get_venues", {"platforms": platforms})
 		return payload.get("response")

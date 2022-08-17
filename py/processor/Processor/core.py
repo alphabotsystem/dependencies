@@ -17,7 +17,6 @@ from DataRequest import TradeRequestHandler
 
 
 class Processor(object):
-	clientId = b"public"
 	zmqContext = Context.instance()
 	endpoints = {
 		"candle": "https://candle-server-yzrdox65bq-uc.a.run.app/" if environ['PRODUCTION'] else "http://candle-server:6900/",
