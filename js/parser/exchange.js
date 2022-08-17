@@ -12,7 +12,12 @@ export class Exchange {
 		if (marketType === "crypto") {
 			this.properties = cache ? cache : new ccxt[id]()
 			if (!cache) {
-				try { this.properties.loadMarkets() } catch (e) { this.stale = false }
+				try {
+					this.properties.loadMarkets()
+				} catch (e) {
+					console.log(e)
+					this.stale = false
+				}
 			}
 			// USDⓈ-M
 			if (id == "binanceusdm") this.name = "Binance Futures"

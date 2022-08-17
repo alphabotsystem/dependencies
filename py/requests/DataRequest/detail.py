@@ -94,11 +94,11 @@ class DetailRequest(AbstractRequest):
 	async def process_ticker(self):
 		updatedTicker, error = None, None
 		try: updatedTicker, error = await TickerParser.match_ticker(self.tickerId, None, self.platform, self.parserBias)
-		except: pass
+		except: error = "Something went wrong while processing the requested ticker."
 
 		if error is not None:
 			self.set_error(error, isFatal=True)
-		elif not updatedTicker:
+		elif updatedTicker.get("id") is None:
 			self.couldFail = True
 		else:
 			self.ticker = updatedTicker

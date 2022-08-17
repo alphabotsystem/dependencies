@@ -99,18 +99,24 @@ class PriceRequestHandler(AbstractRequestHandler):
 				if request.tickerId not in ["FGI"]: request.set_error(None, isFatal=True)
 
 			elif platform == "CoinGecko":
-				if request.couldFail: request.set_error(None, isFatal=True)
+				if request.couldFail:
+					request.set_error("Requested ticker could not be found.", isFatal=True)
 				if bool(request.exchange) or ("CCXT" in self.requests and self.requests["CCXT"].ticker.get("mcapRank", MAXSIZE) < request.ticker.get("mcapRank", MAXSIZE)):
 					request.set_error(None, isFatal=True)
 
 			elif platform == "CCXT":
-				if not bool(request.exchange) or request.couldFail: request.set_error(None, isFatal=True)
+				if request.couldFail:
+					request.set_error("Requested ticker could not be found.", isFatal=True)
+				if not bool(request.exchange):
+					request.set_error(None, isFatal=True)
 
 			elif platform == "IEXC":
-				if request.couldFail: request.set_error(None, isFatal=True)
+				if request.couldFail:
+					request.set_error("Requested ticker could not be found.", isFatal=True)
 
 			elif platform == "Serum":
-				if request.couldFail: request.set_error(None, isFatal=True)
+				if request.couldFail:
+					request.set_error("Requested ticker could not be found.", isFatal=True)
 
 			elif platform == "LLD":
 				if not bool(request.exchange) and request.ticker.get("id") not in ["MCAP"]:
@@ -153,11 +159,11 @@ class PriceRequest(AbstractRequest):
 
 		updatedTicker, error = None, None
 		try: updatedTicker, error = await TickerParser.match_ticker(self.tickerId, self.exchange, self.platform, self.parserBias)
-		except: pass
+		except: error = "Something went wrong while processing the requested ticker."
 
 		if error is not None:
 			self.set_error(error, isFatal=True)
-		elif not updatedTicker:
+		elif updatedTicker.get("id") is None:
 			self.couldFail = True
 		else:
 			self.ticker = updatedTicker

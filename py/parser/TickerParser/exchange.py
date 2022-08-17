@@ -1,4 +1,5 @@
 from time import time
+from traceback import format_exc
 import ccxt
 
 
@@ -14,8 +15,11 @@ class Exchange(object):
 		if self.type == "crypto":
 			self.properties = getattr(ccxt, id)() if cache is None else cache
 			if cache is None:
-				try: self.properties.load_markets()
-				except: self.stale = True
+				try:
+					self.properties.load_markets()
+				except:
+					print(format_exc())
+					self.stale = True
 			if id == "binanceusdm": self.name = "Binance Futures" # USDⓈ-M
 			elif id == "binancecoinm": self.name = "Binance Futures COIN-M"
 			else: self.name = self.properties.name
