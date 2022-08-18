@@ -1,24 +1,15 @@
 import ccxt from "ccxt"
 
 export class Exchange {
-	constructor(id, marketType, name, region, cache) {
+	constructor(id, marketType, name, region) {
 		this.id = id
 		this.name = null
 		this.region = region
 		this.properties = null
 		this.type = marketType
-		this.stale = false
 
 		if (marketType === "crypto") {
-			this.properties = cache ? cache : new ccxt[id]()
-			if (!cache) {
-				try {
-					this.properties.loadMarkets()
-				} catch (e) {
-					console.log(e)
-					this.stale = false
-				}
-			}
+			this.properties = new ccxt[id]()
 			// USDⓈ-M
 			if (id == "binanceusdm") this.name = "Binance Futures"
 			// COIN-M
@@ -39,9 +30,9 @@ export class Exchange {
 		}
 	}
 
-	static fromDict(d, cache) {
+	static fromDict(d) {
 		if (!d || Object.keys(d).length == 0) return null
-		return new Exchange(d.id, d.type, d.name, d.region, cache)
+		return new Exchange(d.id, d.type, d.name, d.region)
 	}
 }
 

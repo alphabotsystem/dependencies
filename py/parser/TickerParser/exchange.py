@@ -4,22 +4,15 @@ import ccxt
 
 
 class Exchange(object):
-	def __init__(self, id, marketType, name=None, region=None, cache=None):
+	def __init__(self, id, marketType, name=None, region=None):
 		self.id = id
 		self.name = None
 		self.region = region
 		self.properties = None
 		self.type = marketType
-		self.stale = False
 
 		if self.type == "crypto":
-			self.properties = getattr(ccxt, id)() if cache is None else cache
-			if cache is None:
-				try:
-					self.properties.load_markets()
-				except:
-					print(format_exc())
-					self.stale = True
+			self.properties = getattr(ccxt, id)()
 			if id == "binanceusdm": self.name = "Binance Futures" # USDⓈ-M
 			elif id == "binancecoinm": self.name = "Binance Futures COIN-M"
 			else: self.name = self.properties.name
@@ -36,9 +29,9 @@ class Exchange(object):
 		}
 
 	@staticmethod
-	def from_dict(d, cache=None):
+	def from_dict(d):
 		if d is None or not d: return None
-		return Exchange(d.get("id"), d.get("type"), d.get("name"), d.get("region"), cache=cache)
+		return Exchange(d.get("id"), d.get("type"), d.get("name"), d.get("region"))
 
 	def __hash__(self):
 		return hash(self.id)
