@@ -128,29 +128,42 @@ class Processor(object):
 		payload1 = {"raw": {"quotePrice": [1]}}
 		payload2 = {"raw": {"quotePrice": [1]}}
 
-		if fromBase not in ["USD", "USDT", "USDC", "DAI", "HUSD", "TUSD", "PAX", "USDK", "USDN", "BUSD", "GUSD", "USDS"]:
-			outputMessage, request = await Processor.process_quote_arguments(commandRequest, [], platforms, tickerId=fromBase)
-			if outputMessage is not None: return None, outputMessage
-			payload1, quoteText = await Processor.process_task("quote", commandRequest.authorId, request)
-			if payload1 is None: return None, quoteText
-			fromBase = request.get(payload1.get("platform")).get("ticker").get("base")
-		else:
-			fromBase = "USD"
-		if toBase not in ["USD", "USDT", "USDC", "DAI", "HUSD", "TUSD", "PAX", "USDK", "USDN", "BUSD", "GUSD", "USDS"]:
-			outputMessage, request = await Processor.process_quote_arguments(commandRequest, [], platforms, tickerId=toBase)
-			if outputMessage is not None: return None, outputMessage
-			payload2, quoteText = await Processor.process_task("quote", commandRequest.authorId, request)
-			if payload2 is None: return None, quoteText
-			toBase = request.get(payload2.get("platform")).get("ticker").get("base")
-		else:
-			toBase = "USD"
+		# Check if a direct pair exists
+		outputMessage, request = await Processor.process_quote_arguments(commandRequest, [], platforms, tickerId=fromBase + toBase)
+		if outputMessage is None:
+			payload, quoteText = await Processor.process_task("quote", commandRequest.authorId, request)
+			if payload is not None: return {
+				"quotePrice": "{:,.8f}".format(amount).rstrip('0').rstrip('.') + " " + fromBase,
+				"quoteConvertedPrice": "{:,.8f}".format(payload["raw"]["quotePrice"][0] * amount).rstrip('0').rstrip('.') + " " + toBase,
+				"messageColor":"deep purple",
+				"sourceText": "Alpha Currency Conversions",
+				"platform": "Alpha Currency Conversions",
+				"raw": {
+					"quotePrice": [payload["raw"]["quotePrice"][0] * amount],
+					"ticker": toBase,
+					"timestamp": time()
+				}
+			}, None
+
+		# Indirect calculation
+		outputMessage, request = await Processor.process_quote_arguments(commandRequest, [], platforms, tickerId=fromBase)
+		if outputMessage is not None: return None, outputMessage
+		payload1, quoteText = await Processor.process_task("quote", commandRequest.authorId, request)
+		if payload1 is None: return None, quoteText
+		fromBase = request.get(payload1.get("platform")).get("ticker").get("base")
+
+		outputMessage, request = await Processor.process_quote_arguments(commandRequest, [], platforms, tickerId=toBase)
+		if outputMessage is not None: return None, outputMessage
+		payload2, quoteText = await Processor.process_task("quote", commandRequest.authorId, request)
+		if payload2 is None: return None, quoteText
+		toBase = request.get(payload2.get("platform")).get("ticker").get("base")
 
 		convertedValue = payload1["raw"]["quotePrice"][0] * amount / payload2["raw"]["quotePrice"][0]
 		if convertedValue > 1000000000000000: return None, "Sir?"
 
-		payload = {
-			"quotePrice": "{:,.3f} {}".format(amount, fromBase),
-			"quoteConvertedPrice": "{:,.6f} {}".format(convertedValue, toBase),
+		return {
+			"quotePrice": "{:,.8f}".format(amount).rstrip('0').rstrip('.') + " " + fromBase,
+			"quoteConvertedPrice": "{:,.8f}".format(convertedValue).rstrip('0').rstrip('.') + " " + toBase,
 			"messageColor":"deep purple",
 			"sourceText": "Alpha Currency Conversions",
 			"platform": "Alpha Currency Conversions",
@@ -159,8 +172,7 @@ class Processor(object):
 				"ticker": toBase,
 				"timestamp": time()
 			}
-		}
-		return payload, None
+		}, None
 
 	@staticmethod
 	def get_direct_ichibot_socket(identity):
