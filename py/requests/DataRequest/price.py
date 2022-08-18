@@ -17,7 +17,6 @@ PARAMETERS = {
 		Parameter("forcePlatform", "request quote on CoinGecko", ["cg", "coingecko"], coingecko=True),
 		Parameter("forcePlatform", "request quote on a crypto exchange", ["cx", "ccxt", "crypto", "exchange"], ccxt=True),
 		Parameter("forcePlatform", "request quote on a stock exchange", ["ix", "iexc", "stock", "stocks"], iexc=True),
-		Parameter("forcePlatform", "request quote on Serum", ["serum", "srm"], serum=True),
 		Parameter("forcePlatform", "request quote on Alternative.me", ["am", "alternativeme"], alternativeme=True),
 		Parameter("forcePlatform", "request quote on CNN Business", ["cnn", "cnnbusiness"], cnnbusiness=True),
 	]
@@ -36,9 +35,6 @@ DEFAULTS = {
 		"preferences": []
 	},
 	"IEXC": {
-		"preferences": []
-	},
-	"Serum": {
 		"preferences": []
 	},
 	"LLD": {
@@ -111,10 +107,6 @@ class PriceRequestHandler(AbstractRequestHandler):
 					request.set_error(None, isFatal=True)
 
 			elif platform == "IEXC":
-				if request.couldFail:
-					request.set_error("Requested ticker could not be found.", isFatal=True)
-
-			elif platform == "Serum":
 				if request.couldFail:
 					request.set_error("Requested ticker could not be found.", isFatal=True)
 

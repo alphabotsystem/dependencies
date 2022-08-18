@@ -66,7 +66,7 @@ class AbstractRequest(object):
 
 	async def add_exchange(self, argument):
 		if self.hasExchange: return None, None
-		if self.platform in ["Alternative.me", "CNN Business", "Finviz", "Serum", "CoinGecko"]: return None, None
+		if self.platform in ["Alternative.me", "CNN Business", "Finviz", "CoinGecko"]: return None, None
 		exchangeSupported, parsedExchange = None, None
 		try: exchangeSupported, parsedExchange = await TickerParser.find_exchange(argument, self.platform, self.parserBias)
 		except: return "Parser could not process your request. Please try again in a bit.", False
