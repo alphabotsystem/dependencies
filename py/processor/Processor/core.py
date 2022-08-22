@@ -19,7 +19,7 @@ from DataRequest import TradeRequestHandler
 class Processor(object):
 	zmqContext = Context.instance()
 	endpoints = {
-		"candle": "https://candle-server-yzrdox65bq-uc.a.run.app/" if environ['PRODUCTION'] else "http://candle-server:6900/",
+		"candle": "https://candle-server:6900/" if environ['PRODUCTION'] else "http://candle-server:6900/",
 		"chart": "https://image-server-yzrdox65bq-uc.a.run.app/" if environ['PRODUCTION'] else "http://image-server:6900/",
 		"depth": "https://quote-server-yzrdox65bq-uc.a.run.app/" if environ['PRODUCTION'] else "http://quote-server:6900/",
 		"detail": "https://quote-server-yzrdox65bq-uc.a.run.app/" if environ['PRODUCTION'] else "http://quote-server:6900/",

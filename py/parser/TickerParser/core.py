@@ -33,7 +33,7 @@ class TickerParser(object):
 
 	@staticmethod
 	async def match_ticker(tickerId, exchange, platform, bias):
-		exchangeId = exchange.get("id").lower() if bool(exchange) else ""
+		exchangeId = exchange.get("id").lower() if bool(exchange) else None
 		payload = await TickerParser.process_task("parser/match_ticker", {"tickerId": tickerId, "exchangeId": exchangeId, "platform": platform, "bias": bias})
 		return payload.get("response"), payload.get("message")
 
