@@ -61,12 +61,12 @@ class PriceRequestHandler(AbstractRequestHandler):
 
 			finalOutput = None
 
-			outputMessage, success = await request.add_preferences(_argument)
-			if outputMessage is not None: finalOutput = outputMessage
+			responseMessage, success = await request.add_preferences(_argument)
+			if responseMessage is not None: finalOutput = responseMessage
 			elif success: continue
 
-			outputMessage, success = await request.add_exchange(_argument)
-			if outputMessage is not None: finalOutput = outputMessage
+			responseMessage, success = await request.add_exchange(_argument)
+			if responseMessage is not None: finalOutput = responseMessage
 			elif success: continue
 
 			if finalOutput is None:

@@ -165,20 +165,20 @@ class HeatmapRequestHandler(AbstractRequestHandler):
 
 			finalOutput = None
 
-			outputMessage, success = await request.add_timeframe(_argument)
-			if outputMessage is not None: finalOutput = outputMessage
+			responseMessage, success = await request.add_timeframe(_argument)
+			if responseMessage is not None: finalOutput = responseMessage
 			elif success: continue
 
-			outputMessage, success = await request.add_type(_argument)
-			if outputMessage is not None: finalOutput = outputMessage
+			responseMessage, success = await request.add_type(_argument)
+			if responseMessage is not None: finalOutput = responseMessage
 			elif success: continue
 
-			outputMessage, success = await request.add_style(_argument)
-			if outputMessage is not None: finalOutput = outputMessage
+			responseMessage, success = await request.add_style(_argument)
+			if responseMessage is not None: finalOutput = responseMessage
 			elif success: continue
 
-			outputMessage, success = await request.add_preferences(_argument)
-			if outputMessage is not None: finalOutput = outputMessage
+			responseMessage, success = await request.add_preferences(_argument)
+			if responseMessage is not None: finalOutput = responseMessage
 			elif success: continue
 
 			if finalOutput is None:
@@ -313,8 +313,8 @@ class HeatmapRequest(AbstractRequest):
 		heatmapStyleSupported, parsedHeatmapStyle, requiresPro = self.add_parameter(argument, "types")
 		if parsedHeatmapStyle is not None and not self.has_parameter(parsedHeatmapStyle.id, self.types):
 			if not heatmapStyleSupported:
-				outputMessage = f"`{parsedHeatmapStyle.name.title()}` heatmap style is " + (f"only available with the {requiresPro} add-on." if requiresPro else f"not supported on {self.platform}.")
-				return outputMessage, False
+				responseMessage = f"`{parsedHeatmapStyle.name.title()}` heatmap style is " + (f"only available with the {requiresPro} add-on." if requiresPro else f"not supported on {self.platform}.")
+				return responseMessage, False
 			self.types.append(parsedHeatmapStyle)
 			return None, True
 		return None, None

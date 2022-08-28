@@ -357,32 +357,32 @@ class ChartRequestHandler(AbstractRequestHandler):
 
 			finalOutput = None
 
-			outputMessage, success = await request.add_timeframe(_argument)
-			if outputMessage is not None: finalOutput = outputMessage
+			responseMessage, success = await request.add_timeframe(_argument)
+			if responseMessage is not None: finalOutput = responseMessage
 			elif success: continue
 
-			outputMessage, success = await request.add_indicator(_argument)
-			if outputMessage is not None: finalOutput = outputMessage
+			responseMessage, success = await request.add_indicator(_argument)
+			if responseMessage is not None: finalOutput = responseMessage
 			elif success: continue
 
-			outputMessage, success = await request.add_type(_argument)
-			if outputMessage is not None: finalOutput = outputMessage
+			responseMessage, success = await request.add_type(_argument)
+			if responseMessage is not None: finalOutput = responseMessage
 			elif success: continue
 
-			outputMessage, success = await request.add_style(_argument)
-			if outputMessage is not None: finalOutput = outputMessage
+			responseMessage, success = await request.add_style(_argument)
+			if responseMessage is not None: finalOutput = responseMessage
 			elif success: continue
 
-			outputMessage, success = await request.add_preferences(_argument)
-			if outputMessage is not None: finalOutput = outputMessage
+			responseMessage, success = await request.add_preferences(_argument)
+			if responseMessage is not None: finalOutput = responseMessage
 			elif success: continue
 
-			outputMessage, success = await request.add_exchange(_argument)
-			if outputMessage is not None: finalOutput = outputMessage
+			responseMessage, success = await request.add_exchange(_argument)
+			if responseMessage is not None: finalOutput = responseMessage
 			elif success: continue
 
-			outputMessage, success = await request.add_numerical_parameters(_argument)
-			if outputMessage is not None: finalOutput = outputMessage
+			responseMessage, success = await request.add_numerical_parameters(_argument)
+			if responseMessage is not None: finalOutput = responseMessage
 			elif success: continue
 
 			if finalOutput is None:
@@ -526,14 +526,14 @@ class ChartRequest(AbstractRequest):
 		indicatorSupported, parsedIndicator, requiresPro = self.add_parameter(argument, "indicators")
 		if parsedIndicator is not None and not self.has_parameter(parsedIndicator.id, self.indicators):
 			if not indicatorSupported:
-				outputMessage = f"{parsedIndicator.name} indicator is " + (f"only available with the {requiresPro} add-on." if requiresPro else f"not supported on {self.platform}.")
-				return outputMessage, False
+				responseMessage = f"{parsedIndicator.name} indicator is " + (f"only available with the {requiresPro} add-on." if requiresPro else f"not supported on {self.platform}.")
+				return responseMessage, False
 			self.indicators.append(parsedIndicator)
 			self.numericalParameters.append(-1)
 			if length is not None:
 				if self.platform not in ["GoCharting"]:
-					outputMessage = "Indicator lengths can only be changed on GoCharting."
-					return outputMessage, False
+					responseMessage = "Indicator lengths can only be changed on GoCharting."
+					return responseMessage, False
 				else:
 					self.numericalParameters.append(int(length.group()))
 			return None, True
@@ -543,8 +543,8 @@ class ChartRequest(AbstractRequest):
 		typeSupported, parsedType, requiresPro = self.add_parameter(argument, "types")
 		if parsedType is not None and not self.has_parameter(parsedType.id, self.types):
 			if not typeSupported:
-				outputMessage = f"`{parsedType.name.title()}` chart style is " + (f"only available with the {requiresPro} add-on." if requiresPro else f"not supported on {self.platform}.")
-				return outputMessage, False
+				responseMessage = f"`{parsedType.name.title()}` chart style is " + (f"only available with the {requiresPro} add-on." if requiresPro else f"not supported on {self.platform}.")
+				return responseMessage, False
 			self.types.append(parsedType)
 			return None, True
 		return None, None
@@ -557,11 +557,11 @@ class ChartRequest(AbstractRequest):
 		try:
 			numericalParameter = float(argument)
 			if numericalParameter <= 0:
-				outputMessage = "Only parameters greater than `0` are valid."
-				return outputMessage, False
+				responseMessage = "Only parameters greater than `0` are valid."
+				return responseMessage, False
 			if self.platform not in ["GoCharting"]:
-				outputMessage = "Indicator lengths can only be changed on GoCharting."
-				return outputMessage, False
+				responseMessage = "Indicator lengths can only be changed on GoCharting."
+				return responseMessage, False
 			self.numericalParameters.append(numericalParameter)
 			return None, True
 		except: return None, None

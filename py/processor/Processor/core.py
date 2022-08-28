@@ -61,9 +61,9 @@ class Processor(object):
 
 		requestHandler.set_defaults()
 		await requestHandler.find_caveats()
-		outputMessage = requestHandler.get_preferred_platform()
+		responseMessage = requestHandler.get_preferred_platform()
 
-		return outputMessage, requestHandler.to_dict()
+		return responseMessage, requestHandler.to_dict()
 
 	@staticmethod
 	async def process_heatmap_arguments(commandRequest, arguments, platforms):
@@ -73,9 +73,9 @@ class Processor(object):
 
 		requestHandler.set_defaults()
 		await requestHandler.find_caveats()
-		outputMessage = requestHandler.get_preferred_platform()
+		responseMessage = requestHandler.get_preferred_platform()
 
-		return outputMessage, requestHandler.to_dict()
+		return responseMessage, requestHandler.to_dict()
 	
 	@staticmethod
 	async def process_quote_arguments(commandRequest, arguments, platforms, tickerId=None):
@@ -87,9 +87,9 @@ class Processor(object):
 
 		requestHandler.set_defaults()
 		await requestHandler.find_caveats()
-		outputMessage = requestHandler.get_preferred_platform()
+		responseMessage = requestHandler.get_preferred_platform()
 
-		return outputMessage, requestHandler.to_dict()
+		return responseMessage, requestHandler.to_dict()
 
 	@staticmethod
 	async def process_detail_arguments(commandRequest, arguments, platforms, tickerId=None):
@@ -101,9 +101,9 @@ class Processor(object):
 
 		requestHandler.set_defaults()
 		await requestHandler.find_caveats()
-		outputMessage = requestHandler.get_preferred_platform()
+		responseMessage = requestHandler.get_preferred_platform()
 
-		return outputMessage, requestHandler.to_dict()
+		return responseMessage, requestHandler.to_dict()
 
 	@staticmethod
 	async def process_trade_arguments(commandRequest, arguments, platforms, tickerId=None):
@@ -115,9 +115,9 @@ class Processor(object):
 
 		requestHandler.set_defaults()
 		await requestHandler.find_caveats()
-		outputMessage = requestHandler.get_preferred_platform()
+		responseMessage = requestHandler.get_preferred_platform()
 
-		return outputMessage, requestHandler.to_dict()
+		return responseMessage, requestHandler.to_dict()
 
 	@staticmethod
 	async def process_conversion(commandRequest, fromBase, toBase, amount, platforms):
@@ -129,9 +129,9 @@ class Processor(object):
 		payload2 = {"raw": {"quotePrice": [1]}}
 
 		# Check if a direct pair exists
-		outputMessage, request = await Processor.process_quote_arguments(commandRequest, [], platforms, tickerId=fromBase + toBase)
-		if outputMessage is None:
-			payload, quoteText = await Processor.process_task("quote", commandRequest.authorId, request)
+		responseMessage, request = await Processor.process_quote_arguments(commandRequest, [], platforms, tickerId=fromBase + toBase)
+		if responseMessage is None:
+			payload, _ = await Processor.process_task("quote", commandRequest.authorId, request)
 			if payload is not None: return {
 				"quotePrice": "{:,.8f}".format(amount).rstrip('0').rstrip('.') + " " + fromBase,
 				"quoteConvertedPrice": "{:,.8f}".format(payload["raw"]["quotePrice"][0] * amount).rstrip('0').rstrip('.') + " " + toBase,
@@ -146,16 +146,16 @@ class Processor(object):
 			}, None
 
 		# Indirect calculation
-		outputMessage, request = await Processor.process_quote_arguments(commandRequest, [], platforms, tickerId=fromBase)
-		if outputMessage is not None: return None, outputMessage
-		payload1, quoteText = await Processor.process_task("quote", commandRequest.authorId, request)
-		if payload1 is None: return None, quoteText
+		responseMessage, request = await Processor.process_quote_arguments(commandRequest, [], platforms, tickerId=fromBase)
+		if responseMessage is not None: return None, responseMessage
+		payload1, responseMessage = await Processor.process_task("quote", commandRequest.authorId, request)
+		if payload1 is None: return None, responseMessage
 		fromBase = request.get(payload1.get("platform")).get("ticker").get("base")
 
-		outputMessage, request = await Processor.process_quote_arguments(commandRequest, [], platforms, tickerId=toBase)
-		if outputMessage is not None: return None, outputMessage
-		payload2, quoteText = await Processor.process_task("quote", commandRequest.authorId, request)
-		if payload2 is None: return None, quoteText
+		responseMessage, request = await Processor.process_quote_arguments(commandRequest, [], platforms, tickerId=toBase)
+		if responseMessage is not None: return None, responseMessage
+		payload2, responseMessage = await Processor.process_task("quote", commandRequest.authorId, request)
+		if payload2 is None: return None, responseMessage
 		toBase = request.get(payload2.get("platform")).get("ticker").get("base")
 
 		convertedValue = payload1["raw"]["quotePrice"][0] * amount / payload2["raw"]["quotePrice"][0]
