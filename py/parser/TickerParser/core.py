@@ -2,16 +2,16 @@ from os import environ
 from orjson import loads
 from aiohttp import ClientSession
 
-import google.auth.transport.requests
-import google.oauth2.id_token
+from google.auth.transport import requests
+from google.oauth2 import id_token
 
 
 class TickerParser(object):
 	endpoint = "http://parser:6900/" if environ['PRODUCTION'] else "http://parser:6900/"
 
 	async def process_task(service, data, retries=3):
-		authReq = google.auth.transport.requests.Request()
-		token = google.oauth2.id_token.fetch_id_token(authReq, TickerParser.endpoint)
+		authReq = requests.Request()
+		token = id_token.fetch_id_token(authReq, TickerParser.endpoint)
 		headers = {
 			"Authorization": "Bearer " + token,
 			"content-type": "application/json",
@@ -38,13 +38,8 @@ class TickerParser(object):
 		return payload.get("response"), payload.get("message")
 
 	@staticmethod
-	async def check_if_fiat(tickerId):
-		payload = await TickerParser.process_task("parser/check_if_fiat", {"tickerId": tickerId})
-		return payload.get("isFiat"), payload.get("asset")
-
-	@staticmethod
-	async def get_listings(tickerBase, tickerQuote):
-		payload = await TickerParser.process_task("parser/get_listings", {"tickerBase": tickerBase, "tickerQuote": tickerQuote})
+	async def get_listings(ticker):
+		payload = await TickerParser.process_task("parser/get_listings", {"ticker": ticker})
 		return payload.get("response"), payload.get("total")
 
 	@staticmethod
@@ -58,6 +53,6 @@ class TickerParser(object):
 		return payload.get("response")
 
 	@staticmethod
-	async def get_venues(platforms):
-		payload = await TickerParser.process_task("parser/get_venues", {"platforms": platforms})
+	async def get_venues(tickerId, platforms):
+		payload = await TickerParser.process_task("parser/get_venues", {"tickerId": tickerId, "platforms": platforms})
 		return payload.get("response")

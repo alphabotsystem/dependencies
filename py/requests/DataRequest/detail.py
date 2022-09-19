@@ -63,7 +63,7 @@ class DetailRequestHandler(AbstractRequestHandler):
 			if request.errorIsFatal: continue
 
 			if not request.ticker.get("isSimple"):
-				request.set_error("Details for aggregated tickers aren't available.", isFatal=True)
+				request.set_error("Details for complex tickers aren't available.", isFatal=True)
 
 			if platform == "CoinGecko":
 				pass

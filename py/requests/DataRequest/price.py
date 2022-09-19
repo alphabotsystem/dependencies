@@ -2,7 +2,7 @@ from sys import maxsize as MAXSIZE
 from time import time
 from traceback import format_exc
 
-from TickerParser import TickerParser, Exchange
+from TickerParser import TickerParser
 from .parameter import PriceParameter as Parameter
 from .abstract import AbstractRequestHandler, AbstractRequest
 
@@ -97,7 +97,7 @@ class PriceRequestHandler(AbstractRequestHandler):
 			elif platform == "CoinGecko":
 				if request.couldFail:
 					request.set_error("Requested ticker could not be found.", isFatal=True)
-				if bool(request.exchange) or ("CCXT" in self.requests and self.requests["CCXT"].ticker.get("mcapRank", MAXSIZE) < request.ticker.get("mcapRank", MAXSIZE)):
+				if bool(request.exchange) or ("CCXT" in self.requests and self.requests["CCXT"].ticker.get("rank", MAXSIZE) < request.ticker.get("rank", MAXSIZE)):
 					request.set_error(None, isFatal=True)
 
 			elif platform == "CCXT":
