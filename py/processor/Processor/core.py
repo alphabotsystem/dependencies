@@ -146,17 +146,21 @@ class Processor(object):
 			}, None
 
 		# Indirect calculation
-		responseMessage, request = await Processor.process_quote_arguments(commandRequest, [], platforms, tickerId=fromBase)
-		if responseMessage is not None: return None, responseMessage
-		payload1, responseMessage = await Processor.process_task("quote", commandRequest.authorId, request)
-		if payload1 is None: return None, responseMessage
-		fromBase = request.get(payload1.get("platform")).get("ticker").get("base")
+		if fromBase != "USD":
+			responseMessage, request = await Processor.process_quote_arguments(commandRequest, [], platforms, tickerId=fromBase)
+			if responseMessage is not None: return None, responseMessage
+			payload1, responseMessage = await Processor.process_task("quote", commandRequest.authorId, request)
+			if payload1 is None: return None, responseMessage
+			fromBase = request.get(payload1.get("platform")).get("ticker").get("base")
 
-		responseMessage, request = await Processor.process_quote_arguments(commandRequest, [], platforms, tickerId=toBase)
-		if responseMessage is not None: return None, responseMessage
-		payload2, responseMessage = await Processor.process_task("quote", commandRequest.authorId, request)
-		if payload2 is None: return None, responseMessage
-		toBase = request.get(payload2.get("platform")).get("ticker").get("base")
+		if toBase != "USD":
+			responseMessage, request = await Processor.process_quote_arguments(commandRequest, [], platforms, tickerId=toBase)
+			if responseMessage is not None: return None, responseMessage
+			payload2, responseMessage = await Processor.process_task("quote", commandRequest.authorId, request)
+			if payload2 is None: return None, responseMessage
+			toBase = request.get(payload2.get("platform")).get("ticker").get("base")
+
+		print(payload1, payload2)
 
 		convertedValue = payload1["raw"]["quotePrice"][0] * amount / payload2["raw"]["quotePrice"][0]
 		if convertedValue > 1000000000000000: return None, "Sir?"
