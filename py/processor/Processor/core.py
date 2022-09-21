@@ -24,7 +24,7 @@ class Processor(object):
 		"depth": "https://quote-server-yzrdox65bq-uc.a.run.app/" if environ['PRODUCTION'] else "http://quote-server:6900/",
 		"detail": "https://quote-server-yzrdox65bq-uc.a.run.app/" if environ['PRODUCTION'] else "http://quote-server:6900/",
 		"heatmap": "https://image-server-yzrdox65bq-uc.a.run.app/" if environ['PRODUCTION'] else "http://image-server:6900/",
-		"quote": "https://quote-server-yzrdox65bq-uc.a.run.app/" if environ['PRODUCTION'] else "http://quote-server:6900/",
+		"quote": "http://quote-server:6900/" if environ['PRODUCTION'] else "http://quote-server:6900/",
 	}
 
 	async def process_task(service, authorId, request, retries=3):

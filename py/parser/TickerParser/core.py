@@ -38,8 +38,8 @@ class TickerParser(object):
 		return payload.get("response"), payload.get("message")
 
 	@staticmethod
-	async def get_listings(ticker):
-		payload = await TickerParser.process_task("parser/get_listings", {"ticker": ticker})
+	async def get_listings(ticker, currentPlatform):
+		payload = await TickerParser.process_task("parser/get_listings", {"ticker": ticker, "platform": currentPlatform})
 		return payload.get("response"), payload.get("total")
 
 	@staticmethod
