@@ -97,8 +97,6 @@ class PriceRequestHandler(AbstractRequestHandler):
 			elif platform == "CoinGecko":
 				if request.couldFail:
 					request.set_error("Requested ticker could not be found.", isFatal=True)
-				if bool(request.exchange) or ("CCXT" in self.requests and self.requests["CCXT"].ticker.get("rank", MAXSIZE) < request.ticker.get("rank", MAXSIZE)):
-					request.set_error(None, isFatal=True)
 
 			elif platform == "CCXT":
 				if request.couldFail:
