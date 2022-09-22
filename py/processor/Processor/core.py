@@ -21,8 +21,8 @@ class Processor(object):
 	endpoints = {
 		"candle": "http://candle-server:6900/" if environ['PRODUCTION'] else "http://candle-server:6900/",
 		"chart": "https://image-server-yzrdox65bq-uc.a.run.app/" if environ['PRODUCTION'] else "http://image-server:6900/",
-		"depth": "https://quote-server-yzrdox65bq-uc.a.run.app/" if environ['PRODUCTION'] else "http://quote-server:6900/",
-		"detail": "https://quote-server-yzrdox65bq-uc.a.run.app/" if environ['PRODUCTION'] else "http://quote-server:6900/",
+		"depth": "http://quote-server:6900/" if environ['PRODUCTION'] else "http://quote-server:6900/",
+		"detail": "http://quote-server:6900/" if environ['PRODUCTION'] else "http://quote-server:6900/",
 		"heatmap": "https://image-server-yzrdox65bq-uc.a.run.app/" if environ['PRODUCTION'] else "http://image-server:6900/",
 		"quote": "http://quote-server:6900/" if environ['PRODUCTION'] else "http://quote-server:6900/",
 	}
