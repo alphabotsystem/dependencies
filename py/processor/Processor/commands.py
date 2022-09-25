@@ -1,10 +1,9 @@
 from .core import process_task
 
 
-async def process_chart_arguments(commandRequest, arguments, platforms, tickerId=None):
+async def process_chart_arguments(arguments, platforms, tickerId=None):
 	payload = await process_task(
 		{
-			"bias": commandRequest.marketBias,
 			"arguments": arguments,
 			"platforms": platforms,
 			"tickerId": tickerId
@@ -14,10 +13,9 @@ async def process_chart_arguments(commandRequest, arguments, platforms, tickerId
 	)
 	return payload.get("message"), payload.get("response")
 
-async def process_heatmap_arguments(commandRequest, arguments, platforms):
+async def process_heatmap_arguments(arguments, platforms):
 	payload = await process_task(
 		{
-			"bias": commandRequest.marketBias,
 			"arguments": arguments,
 			"platforms": platforms
 		},
@@ -26,10 +24,9 @@ async def process_heatmap_arguments(commandRequest, arguments, platforms):
 	)
 	return payload.get("message"), payload.get("response")
 
-async def process_quote_arguments(commandRequest, arguments, platforms, tickerId=None):
+async def process_quote_arguments(arguments, platforms, tickerId=None):
 	payload = await process_task(
 		{
-			"bias": commandRequest.marketBias,
 			"arguments": arguments,
 			"platforms": platforms,
 			"tickerId": tickerId
@@ -39,10 +36,9 @@ async def process_quote_arguments(commandRequest, arguments, platforms, tickerId
 	)
 	return payload.get("message"), payload.get("response")
 
-async def process_detail_arguments(commandRequest, arguments, platforms, tickerId=None):
+async def process_detail_arguments(arguments, platforms, tickerId=None):
 	payload = await process_task(
 		{
-			"bias": commandRequest.marketBias,
 			"arguments": arguments,
 			"platforms": platforms,
 			"tickerId": tickerId
@@ -52,10 +48,9 @@ async def process_detail_arguments(commandRequest, arguments, platforms, tickerI
 	)
 	return payload.get("message"), payload.get("response")
 
-async def process_trade_arguments(commandRequest, arguments, platforms, tickerId=None):
+async def process_trade_arguments(arguments, platforms, tickerId=None):
 	payload = await process_task(
 		{
-			"bias": commandRequest.marketBias,
 			"arguments": arguments,
 			"platforms": platforms,
 			"tickerId": tickerId

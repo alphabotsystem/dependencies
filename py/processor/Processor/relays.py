@@ -17,7 +17,7 @@ async def process_conversion(commandRequest, fromBase, toBase, amount, platforms
 	payload2 = {"raw": {"quotePrice": [1]}}
 
 	# Check if a direct pair exists
-	responseMessage, request = await process_quote_arguments(commandRequest, [], platforms, tickerId=fromBase + toBase)
+	responseMessage, request = await process_quote_arguments([], platforms, tickerId=fromBase + toBase)
 	if responseMessage is None:
 		payload, _ = await process_task(request, "quote")
 		if payload is not None: return {
@@ -35,14 +35,14 @@ async def process_conversion(commandRequest, fromBase, toBase, amount, platforms
 
 	# Indirect calculation
 	if fromBase != "USD":
-		responseMessage, request = await process_quote_arguments(commandRequest, [], platforms, tickerId=fromBase)
+		responseMessage, request = await process_quote_arguments([], platforms, tickerId=fromBase)
 		if responseMessage is not None: return None, responseMessage
 		payload1, responseMessage = await process_task(request, "quote")
 		if payload1 is None: return None, responseMessage
 		fromBase = request.get(payload1.get("platform")).get("ticker").get("base")
 
 	if toBase != "USD":
-		responseMessage, request = await process_quote_arguments(commandRequest, [], platforms, tickerId=toBase)
+		responseMessage, request = await process_quote_arguments([], platforms, tickerId=toBase)
 		if responseMessage is not None: return None, responseMessage
 		payload2, responseMessage = await process_task(request, "quote")
 		if payload2 is None: return None, responseMessage

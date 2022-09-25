@@ -1,25 +1,23 @@
 from .core import process_task
 
-async def find_exchange(raw, platform, bias):
+async def find_exchange(raw, platform):
 	payload = await process_task(
 		{
 			"raw": raw,
-			"platform": platform,
-			"bias": bias
+			"platform": platform
 		},
 		"parser",
 		endpoint="/find_exchange"
 	)
 	return payload.get("success"), payload.get("match")
 
-async def match_ticker(tickerId, exchange, platform, bias):
+async def match_ticker(tickerId, exchange, platform):
 	exchangeId = exchange.get("id").lower() if bool(exchange) else None
 	payload = await process_task(
 		{
 			"tickerId": tickerId,
 			"exchangeId": exchangeId,
-			"platform": platform,
-			"bias": bias
+			"platform": platform
 		},
 		"parser",
 		endpoint="/match_ticker"
