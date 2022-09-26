@@ -47,15 +47,3 @@ async def process_detail_arguments(arguments, platforms, tickerId=None):
 		endpoint="/detail"
 	)
 	return payload.get("message"), payload.get("response")
-
-async def process_trade_arguments(arguments, platforms, tickerId=None):
-	payload = await process_task(
-		{
-			"arguments": arguments,
-			"platforms": platforms,
-			"tickerId": tickerId
-		},
-		"parser",
-		endpoint="/trade"
-	)
-	return payload.get("message"), payload.get("response")
