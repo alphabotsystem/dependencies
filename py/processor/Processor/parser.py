@@ -58,14 +58,3 @@ async def get_formatted_amount_ccxt(exchangeId, symbol, amount):
 		endpoint="/get_formatted_amount_ccxt"
 	)
 	return payload.get("response")
-
-async def get_venues(tickerId, platforms):
-	payload = await process_task(
-		{
-			"tickerId": tickerId,
-			"platforms": platforms
-		},
-		"parser",
-		endpoint="/get_venues"
-	)
-	return payload.get("response")

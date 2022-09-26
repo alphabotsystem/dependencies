@@ -1,6 +1,18 @@
 from .core import process_task
 
 
+async def autocomplete_venues(tickerId, platforms):
+	payload = await process_task(
+		{
+			"option": "venues",
+			"tickerId": tickerId,
+			"platforms": platforms
+		},
+		"parser",
+		endpoint="/autocomplete"
+	)
+	return payload.get("response")
+
 async def autocomplete_timeframe(cls, ctx):
 	payload = await process_task(
 		{
