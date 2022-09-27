@@ -16,22 +16,23 @@ async def process_conversion(commandRequest, fromBase, toBase, amount, platforms
 	payload1 = {"raw": {"quotePrice": [1]}}
 	payload2 = {"raw": {"quotePrice": [1]}}
 
-	# Check if a direct pair exists
-	responseMessage, request = await process_quote_arguments([], platforms, tickerId=fromBase + toBase)
-	if responseMessage is None:
-		payload, _ = await process_task(request, "quote")
-		if payload is not None: return {
-			"quotePrice": "{:,.8f}".format(amount).rstrip('0').rstrip('.') + " " + fromBase,
-			"quoteConvertedPrice": "{:,.8f}".format(payload["raw"]["quotePrice"][0] * amount).rstrip('0').rstrip('.') + " " + toBase,
-			"messageColor":"deep purple",
-			"sourceText": "Alpha Currency Conversions",
-			"platform": "Alpha Currency Conversions",
-			"raw": {
-				"quotePrice": [payload["raw"]["quotePrice"][0] * amount],
-				"ticker": toBase,
-				"timestamp": time()
-			}
-		}, None
+	if "|" not in fromBase and "|" not in toBase:
+		# Check if a direct pair exists
+		responseMessage, request = await process_quote_arguments([], platforms, tickerId=fromBase + toBase)
+		if responseMessage is None:
+			payload, _ = await process_task(request, "quote")
+			if payload is not None: return {
+				"quotePrice": "{:,.8f}".format(amount).rstrip('0').rstrip('.') + " " + fromBase,
+				"quoteConvertedPrice": "{:,.8f}".format(payload["raw"]["quotePrice"][0] * amount).rstrip('0').rstrip('.') + " " + toBase,
+				"messageColor":"deep purple",
+				"sourceText": "Alpha Currency Conversions",
+				"platform": "Alpha Currency Conversions",
+				"raw": {
+					"quotePrice": [payload["raw"]["quotePrice"][0] * amount],
+					"ticker": toBase,
+					"timestamp": time()
+				}
+			}, None
 
 	# Indirect calculation
 	if fromBase != "USD":
