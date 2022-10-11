@@ -38,6 +38,15 @@ async def process_conversion(commandRequest, fromBase, toBase, amount, platforms
 	if fromBase != "USD":
 		responseMessage, request = await process_quote_arguments([], platforms, tickerId=fromBase)
 		if responseMessage is not None: return None, responseMessage
+
+		platforms = request.get("platforms").copy()
+		for platform in platforms:
+			if request[platform].get("ticker").get("quote") != "USD":
+				request["platforms"].remove(platform)
+				request.pop(platform)
+		if len(request["platforms"]) == 0: return None, "We couldn't process this conversion. Please report this!"
+		request["currentPlatform"] = request["platforms"][0]
+
 		payload1, responseMessage = await process_task(request, "quote")
 		if payload1 is None: return None, responseMessage
 		fromBase = request.get(payload1.get("platform")).get("ticker").get("base")
@@ -45,6 +54,15 @@ async def process_conversion(commandRequest, fromBase, toBase, amount, platforms
 	if toBase != "USD":
 		responseMessage, request = await process_quote_arguments([], platforms, tickerId=toBase)
 		if responseMessage is not None: return None, responseMessage
+
+		platforms = request.get("platforms").copy()
+		for platform in platforms:
+			if request[platform].get("ticker").get("quote") != "USD":
+				request["platforms"].remove(platform)
+				request.pop(platform)
+		if len(request["platforms"]) == 0: return None, "We couldn't process this conversion. Please report this!"
+		request["currentPlatform"] = request["platforms"][0]
+
 		payload2, responseMessage = await process_task(request, "quote")
 		if payload2 is None: return None, responseMessage
 		toBase = request.get(payload2.get("platform")).get("ticker").get("base")
