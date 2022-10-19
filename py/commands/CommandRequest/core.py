@@ -41,17 +41,17 @@ class CommandRequest(object):
 		if commandType == "c":
 			chartSettings = self.accountProperties.get("settings", {}).get("charts", {})
 			if self.marketBias == "traditional":
-				return ["CNN Business", "TradingView", "GoCharting", "Finviz", "TradingLite", "Bookmap", "Alternative.me"]
+				order = ["CNN Business", "TradingView", "GoCharting", "Finviz", "TradingLite", "Bookmap", "Alternative.me"]
 				# order = ["CNN Business"] + chartSettings.get("preferredOrder", ["TradingView", "GoCharting", "TradingLite", "Bookmap"]) + ["Alternative.me"]
-				# if self.live_charting_available():
-				# 	order.insert(order.index("TradingView"), "TradingView Premium")
-				# return order
+				if self.live_charting_available():
+					order.insert(order.index("TradingView"), "TradingView Premium")
+				return order
 			else:
-				return ["Alternative.me", "TradingView", "GoCharting", "Finviz", "TradingLite", "Bookmap", "CNN Business"]
+				order = ["Alternative.me", "TradingView", "GoCharting", "Finviz", "TradingLite", "Bookmap", "CNN Business"]
 				# order = ["Alternative.me"] + chartSettings.get("preferredOrder", ["TradingView", "GoCharting", "TradingLite", "Bookmap"]) + ["CNN Business"]
-				# if self.live_charting_available():
-				# 	order.insert(order.index("TradingView"), "TradingView Premium")
-				# return order
+				if self.live_charting_available():
+					order.insert(order.index("TradingView"), "TradingView Premium")
+				return order
 		elif commandType == "hmap":
 			if self.marketBias == "traditional":
 				return ["TradingView Stock Heatmap", "TradingView Crypto Heatmap"]
