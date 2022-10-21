@@ -43,13 +43,13 @@ class CommandRequest(object):
 			if self.marketBias == "traditional":
 				order = ["CNN Business", "TradingView", "GoCharting", "Finviz", "TradingLite", "Bookmap", "Alternative.me"]
 				# order = ["CNN Business"] + chartSettings.get("preferredOrder", ["TradingView", "GoCharting", "TradingLite", "Bookmap"]) + ["Alternative.me"]
-				if self.live_charting_available():
+				if self.advanced_charting_available():
 					order.insert(order.index("TradingView"), "TradingView Premium")
 				return order
 			else:
 				order = ["Alternative.me", "TradingView", "GoCharting", "Finviz", "TradingLite", "Bookmap", "CNN Business"]
 				# order = ["Alternative.me"] + chartSettings.get("preferredOrder", ["TradingView", "GoCharting", "TradingLite", "Bookmap"]) + ["CNN Business"]
-				if self.live_charting_available():
+				if self.advanced_charting_available():
 					order.insert(order.index("TradingView"), "TradingView Premium")
 				return order
 		elif commandType == "hmap":
@@ -109,12 +109,12 @@ class CommandRequest(object):
 		userFilledSlots = sorted(userSlots.keys())[:userSubscription]
 		return str(self.guildId) in ownerFilledSlots or "personal" in userFilledSlots
 
-	def live_charting_available(self):
-		ownerSlots = self.guildProperties.get("connection", {}).get("customer", {}).get("slots", {}).get("liveCharting", {})
-		ownerSubscription = self.guildProperties.get("connection", {}).get("customer", {}).get("subscriptions", {}).get("liveCharting", 0)
+	def advanced_charting_available(self):
+		ownerSlots = self.guildProperties.get("connection", {}).get("customer", {}).get("slots", {}).get("advancedCharting", {})
+		ownerSubscription = self.guildProperties.get("connection", {}).get("customer", {}).get("subscriptions", {}).get("advancedCharting", 0)
 		ownerFilledSlots = sorted(ownerSlots.keys())[:ownerSubscription]
-		userSlots = self.accountProperties.get("customer", {}).get("slots", {}).get("liveCharting", {})
-		userSubscription = self.accountProperties.get("customer", {}).get("subscriptions", {}).get("liveCharting", 0)
+		userSlots = self.accountProperties.get("customer", {}).get("slots", {}).get("advancedCharting", {})
+		userSubscription = self.accountProperties.get("customer", {}).get("subscriptions", {}).get("advancedCharting", 0)
 		userFilledSlots = sorted(userSlots.keys())[:userSubscription]
 		return str(self.guildId) in ownerFilledSlots or "personal" in userFilledSlots
 
