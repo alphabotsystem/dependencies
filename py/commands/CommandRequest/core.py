@@ -79,6 +79,11 @@ class CommandRequest(object):
 				return ["IEXC", "CoinGecko"]
 			else:
 				return ["CoinGecko", "IEXC"]
+		elif commandType == "lookup":
+			if self.marketBias == "traditional":
+				return ["IEXC", "CCXT", "CoinGecko", "TradingView", "GoCharting", "Finviz", "TradingLite", "Bookmap"]
+			else:
+				return ["CCXT", "CoinGecko", "IEXC", "TradingView", "GoCharting", "Finviz", "TradingLite", "Bookmap"]
 		elif commandType == "alert" or commandType == "paper":
 			if self.marketBias == "traditional":
 				return ["IEXC", "CCXT"]
