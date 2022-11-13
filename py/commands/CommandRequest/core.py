@@ -41,14 +41,14 @@ class CommandRequest(object):
 		if commandType == "c":
 			chartSettings = self.accountProperties.get("settings", {}).get("charts", {})
 			if self.marketBias == "traditional":
-				order = ["CNN Business", "TradingView", "GoCharting", "Finviz", "TradingLite", "Bookmap", "Alternative.me"]
-				# order = ["CNN Business"] + chartSettings.get("preferredOrder", ["TradingView", "GoCharting", "TradingLite", "Bookmap"]) + ["Alternative.me"]
+				order = ["CNN Business", "TradingView", "TradingLite", "Bookmap", "Alternative.me"]
+				# order = ["CNN Business"] + chartSettings.get("preferredOrder", ["TradingView", "TradingLite", "Bookmap"]) + ["Alternative.me"]
 				if self.advanced_charting_available():
 					order.insert(order.index("TradingView"), "TradingView Premium")
 				return order
 			else:
-				order = ["Alternative.me", "TradingView", "GoCharting", "Finviz", "TradingLite", "Bookmap", "CNN Business"]
-				# order = ["Alternative.me"] + chartSettings.get("preferredOrder", ["TradingView", "GoCharting", "TradingLite", "Bookmap"]) + ["CNN Business"]
+				order = ["Alternative.me", "TradingView", "TradingLite", "Bookmap", "CNN Business"]
+				# order = ["Alternative.me"] + chartSettings.get("preferredOrder", ["TradingView", "TradingLite", "Bookmap"]) + ["CNN Business"]
 				if self.advanced_charting_available():
 					order.insert(order.index("TradingView"), "TradingView Premium")
 				return order
@@ -81,9 +81,9 @@ class CommandRequest(object):
 				return ["CoinGecko", "IEXC"]
 		elif commandType == "lookup":
 			if self.marketBias == "traditional":
-				return ["IEXC", "CCXT", "CoinGecko", "TradingView", "GoCharting", "Finviz", "TradingLite", "Bookmap"]
+				return ["IEXC", "CCXT", "CoinGecko", "TradingView", "Finviz", "TradingLite", "Bookmap"]
 			else:
-				return ["CCXT", "CoinGecko", "IEXC", "TradingView", "GoCharting", "Finviz", "TradingLite", "Bookmap"]
+				return ["CCXT", "CoinGecko", "IEXC", "TradingView", "Finviz", "TradingLite", "Bookmap"]
 		elif commandType == "alert" or commandType == "paper":
 			if self.marketBias == "traditional":
 				return ["IEXC", "CCXT"]
