@@ -105,32 +105,26 @@ class CommandRequest(object):
 	def is_registered(self):
 		return "customer" in self.accountProperties
 
-	def price_alerts_available(self):
-		ownerSlots = self.guildProperties.get("connection", {}).get("customer", {}).get("slots", {}).get("priceAlerts", {})
-		ownerSubscription = self.guildProperties.get("connection", {}).get("customer", {}).get("subscriptions", {}).get("priceAlerts", 0)
+	def is_feature_available(self, feature):
+		ownerSlots = self.guildProperties.get("connection", {}).get("customer", {}).get("slots", {}).get(feature, {})
+		ownerSubscription = self.guildProperties.get("connection", {}).get("customer", {}).get("subscriptions", {}).get(feature, 0)
 		ownerFilledSlots = sorted(ownerSlots.keys())[:ownerSubscription]
-		userSlots = self.accountProperties.get("customer", {}).get("slots", {}).get("priceAlerts", {})
-		userSubscription = self.accountProperties.get("customer", {}).get("subscriptions", {}).get("priceAlerts", 0)
+		userSlots = self.accountProperties.get("customer", {}).get("slots", {}).get(feature, {})
+		userSubscription = self.accountProperties.get("customer", {}).get("subscriptions", {}).get(feature, 0)
 		userFilledSlots = sorted(userSlots.keys())[:userSubscription]
 		return str(self.guildId) in ownerFilledSlots or "personal" in userFilledSlots
+
+	def price_alerts_available(self):
+		return self.is_feature_available("priceAlerts")
 
 	def advanced_charting_available(self):
-		ownerSlots = self.guildProperties.get("connection", {}).get("customer", {}).get("slots", {}).get("advancedCharting", {})
-		ownerSubscription = self.guildProperties.get("connection", {}).get("customer", {}).get("subscriptions", {}).get("advancedCharting", 0)
-		ownerFilledSlots = sorted(ownerSlots.keys())[:ownerSubscription]
-		userSlots = self.accountProperties.get("customer", {}).get("slots", {}).get("advancedCharting", {})
-		userSubscription = self.accountProperties.get("customer", {}).get("subscriptions", {}).get("advancedCharting", 0)
-		userFilledSlots = sorted(userSlots.keys())[:userSubscription]
-		return str(self.guildId) in ownerFilledSlots or "personal" in userFilledSlots
+		return self.is_feature_available("advancedCharting")
+
+	def scheduled_posting_available(self):
+		return self.is_feature_available("scheduledPosting")
 
 	def flow_available(self):
-		ownerSlots = self.guildProperties.get("connection", {}).get("customer", {}).get("slots", {}).get("flow", {})
-		ownerSubscription = self.guildProperties.get("connection", {}).get("customer", {}).get("subscriptions", {}).get("flow", 0)
-		ownerFilledSlots = sorted(ownerSlots.keys())[:ownerSubscription]
-		userSlots = self.accountProperties.get("customer", {}).get("slots", {}).get("flow", {})
-		userSubscription = self.accountProperties.get("customer", {}).get("subscriptions", {}).get("flow", 0)
-		userFilledSlots = sorted(userSlots.keys())[:userSubscription]
-		return str(self.guildId) in filled or "personal" in userFilledSlots
+		return self.is_feature_available("flow")
 
 
 	# -------------------------
