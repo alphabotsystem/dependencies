@@ -42,13 +42,11 @@ class CommandRequest(object):
 			chartSettings = self.accountProperties.get("settings", {}).get("charts", {})
 			if self.marketBias == "traditional":
 				order = ["CNN Business", "TradingView", "TradingLite", "Bookmap", "Alternative.me"]
-				# order = ["CNN Business"] + chartSettings.get("preferredOrder", ["TradingView", "TradingLite", "Bookmap"]) + ["Alternative.me"]
 				if self.advanced_charting_available():
 					order.insert(order.index("TradingView"), "TradingView Premium")
 				return order
 			else:
 				order = ["Alternative.me", "TradingView", "TradingLite", "Bookmap", "CNN Business"]
-				# order = ["Alternative.me"] + chartSettings.get("preferredOrder", ["TradingView", "TradingLite", "Bookmap"]) + ["CNN Business"]
 				if self.advanced_charting_available():
 					order.insert(order.index("TradingView"), "TradingView Premium")
 				return order
