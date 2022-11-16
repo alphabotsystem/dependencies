@@ -61,18 +61,6 @@ async def autocomplete_category(cls, ctx):
 	)
 	return payload.get("response")
 
-async def autocomplete_color(cls, ctx):
-	payload = await process_task(
-		{
-			"option": "color",
-			"color": " ".join(ctx.options.get("color", "").lower().split()),
-			"type": " ".join(ctx.options.get("type", "").lower().split())
-		},
-		"parser",
-		endpoint="/autocomplete"
-	)
-	return payload.get("response")
-
 async def autocomplete_size(cls, ctx):
 	payload = await process_task(
 		{
