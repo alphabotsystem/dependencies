@@ -89,9 +89,9 @@ class CommandRequest(object):
 				return ["CCXT", "IEXC"]
 		elif commandType == "convert":
 			if self.marketBias == "traditional":
-				return ["IEXC", "CCXT", "CoinGecko"]
+				return ["IEXC", "CoinGecko"]
 			else:
-				return ["CCXT", "CoinGecko", "IEXC"]
+				return ["CoinGecko", "IEXC"]
 		else:
 			raise ValueError(f"incorrect commant type: {commandType}")
 
