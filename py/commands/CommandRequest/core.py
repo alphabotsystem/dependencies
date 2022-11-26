@@ -132,6 +132,12 @@ class CommandRequest(object):
 	@staticmethod
 	def create_guild_settings(settings):
 		settingsTemplate = {
+			"charting": {
+				"theme": "dark",
+				"timeframe": "1-hour",
+				"indicators": [],
+				"chartType": "candles"
+			},
 			"settings": {
 				"assistant": {
 					"enabled": True
