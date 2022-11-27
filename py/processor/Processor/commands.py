@@ -1,12 +1,13 @@
 from .core import process_task
 
 
-async def process_chart_arguments(arguments, platforms, tickerId=None):
+async def process_chart_arguments(arguments, platforms, tickerId=None, defaults={}):
 	payload = await process_task(
 		{
 			"arguments": arguments,
 			"platforms": platforms,
-			"tickerId": tickerId
+			"tickerId": tickerId,
+			"defaults": defaults
 		},
 		"parser",
 		endpoint="/chart"
