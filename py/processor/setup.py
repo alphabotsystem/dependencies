@@ -14,8 +14,8 @@ from setuptools import find_packages, setup, Command
 # Package meta-data.
 NAME = 'Processor'
 DESCRIPTION = 'Data Server request processor client.'
-URL = 'https://www.alphabotsystem.com'
-EMAIL = 'matic@alphabotsystem.com'
+URL = 'https://www.alpha.bot'
+EMAIL = 'matic@alpha.bot'
 AUTHOR = 'Alpha Bot System OÜ'
 REQUIRES_PYTHON = '>=3.8.0'
 VERSION = '1.0.0'
