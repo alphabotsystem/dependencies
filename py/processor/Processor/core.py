@@ -18,7 +18,9 @@ endpoints = {
 }
 
 
-async def process_task(request, service, endpoint="", retries=3):
+async def process_task(request, service, endpoint="", origin="default", retries=3):
+	request["origin"] = origin
+
 	url = endpoints[service]
 	authReq = requests.Request()
 	token = id_token.fetch_id_token(authReq, url)

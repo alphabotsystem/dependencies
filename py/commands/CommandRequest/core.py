@@ -2,9 +2,10 @@ from datetime import datetime
 from pytz import utc
 
 class CommandRequest(object):
-	def __init__(self, raw=None, content=None, accountId=None, authorId=None, channelId=None, guildId=None, accountProperties={}, guildProperties={}, autodelete=None):
+	def __init__(self, raw=None, content=None, accountId=None, authorId=None, channelId=None, guildId=None, accountProperties={}, guildProperties={}, autodelete=None, origin="default"):
 		self.raw = raw
 		self.content = content
+		self.origin = origin
 
 		_timestamp = datetime.now().astimezone(utc)
 		self.snapshot = "{}-{:02d}".format(_timestamp.year, _timestamp.month)
