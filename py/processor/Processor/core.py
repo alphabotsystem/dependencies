@@ -45,5 +45,5 @@ async def process_task(request, service, endpoint="", origin="default", retries=
 					payload, message = data.get("response"), data.get("message")
 					return payload, message
 
-	if retries == 1: raise Exception("time out")
+	if retries <= 1: raise Exception("time out")
 	else: return await process_task(request, service, endpoint, retries-1)
