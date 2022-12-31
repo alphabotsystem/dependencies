@@ -1,5 +1,5 @@
+from time import time
 from datetime import datetime
-from pytz import utc
 
 class CommandRequest(object):
 	def __init__(self, raw=None, content=None, accountId=None, authorId=None, channelId=None, guildId=None, accountProperties={}, guildProperties={}, autodelete=None, origin="default"):
@@ -7,8 +7,16 @@ class CommandRequest(object):
 		self.content = content
 		self.origin = str(origin)
 
-		_timestamp = datetime.now().astimezone(utc)
+		self.start = time()
+		_timestamp = datetime.utcfromtimestamp(self.start)
 		self.snapshot = "{}-{:02d}".format(_timestamp.year, _timestamp.month)
+		self.telemetry = {
+			"database": None,
+			"prelight": None,
+			"parser": None,
+			"request": None,
+			"response": None
+		}
 
 		self.accountId = accountId
 		self.authorId = authorId
@@ -95,6 +103,21 @@ class CommandRequest(object):
 				return ["CCXT", "CoinGecko", "IEXC"]
 		else:
 			raise ValueError(f"incorrect commant type: {commandType}")
+
+
+	# -------------------------
+	# Telemetry
+	# -------------------------
+
+	def set_delay(self, at, delay):
+		if at not in self.telemetry:
+			raise Exception(f"{at} is not a valid telemetry checkpoint")
+		self.telemetry[at] = delay
+
+	def get_delay(self, at):
+		if at not in self.telemetry:
+			raise Exception(f"{at} is not a valid telemetry checkpoint")
+		return self.telemetry[at]
 
 
 	# -------------------------
