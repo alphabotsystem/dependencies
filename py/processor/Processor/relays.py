@@ -1,4 +1,5 @@
 from time import time
+from asyncio import gather
 from zmq.asyncio import Context
 from zmq import DEALER, LINGER
 
@@ -18,9 +19,25 @@ async def process_conversion(commandRequest, fromBase, toBase, amount, platforms
 	fromQuote, toQuote = "USD", "USD"
 	adjustment = 1
 
+	tasks, results = [], None
+
+	# Parse arguments
+	if "|" not in fromBase and "|" not in toBase:
+		tasks.append(process_quote_arguments([], platforms, tickerId=fromBase + toBase))
+	if fromBase != "USD":
+		tasks.append(process_quote_arguments([], platforms, tickerId=fromBase))
+	if toBase != "USD":
+		tasks.append(process_quote_arguments([], platforms, tickerId=toBase))
+	if fromQuote != toQuote:
+		relaySymbol = toQuote + fromQuote if fromQuote == "USD" else fromQuote + toQuote
+		tasks.append(process_quote_arguments([], platforms, tickerId=relaySymbol))
+
+	if len(tasks) > 0:
+		results = await gather(*tasks)
+
 	if "|" not in fromBase and "|" not in toBase:
 		# Check if a direct pair exists
-		responseMessage, request = await process_quote_arguments([], platforms, tickerId=fromBase + toBase)
+		responseMessage, request = results.pop(0)
 		if responseMessage is None:
 			payload, _ = await process_task(request, "quote")
 			if payload is not None: return {
@@ -36,31 +53,38 @@ async def process_conversion(commandRequest, fromBase, toBase, amount, platforms
 				}
 			}, None
 
-	# Indirect calculation
-	if fromBase != "USD":
-		responseMessage, request = await process_quote_arguments([], platforms, tickerId=fromBase)
-		if responseMessage is not None: return None, responseMessage
+	tasks, results = [], None
 
-		payload1, responseMessage = await process_task(request, "quote")
+	# Indirect conversion calculation
+	if fromBase != "USD":
+		responseMessage, request = results.pop(0)
+		if responseMessage is not None: return None, responseMessage
+		tasks.append(process_task(request, "quote"))
+	if toBase != "USD":
+		responseMessage, request = results.pop(0)
+		if responseMessage is not None: return None, responseMessage
+		tasks.append(process_task(request, "quote"))
+	if fromQuote != toQuote:
+		responseMessage, request = results.pop(0)
+		if responseMessage is not None: return None, responseMessage
+		tasks.append(process_task(request, "quote"))
+
+	if len(tasks) > 0:
+		results = await gather(*tasks)
+
+	if fromBase != "USD":
+		payload1, responseMessage = results.pop(0)
 		if payload1 is None: return None, responseMessage
 		fromBase = request.get(payload1.get("platform")).get("ticker").get("base")
 		fromQuote = request.get(payload1.get("platform")).get("ticker").get("quote")
-
 	if toBase != "USD":
-		responseMessage, request = await process_quote_arguments([], platforms, tickerId=toBase)
-		if responseMessage is not None: return None, responseMessage
-
-		payload2, responseMessage = await process_task(request, "quote")
+		payload2, responseMessage = results.pop(0)
 		if payload2 is None: return None, responseMessage
 		toBase = request.get(payload2.get("platform")).get("ticker").get("base")
 		toQuote = request.get(payload2.get("platform")).get("ticker").get("quote")
 
 	if fromQuote != toQuote:
-		relaySymbol = toQuote + fromQuote if fromQuote == "USD" else fromQuote + toQuote
-		responseMessage, request = await process_quote_arguments([], platforms, tickerId=relaySymbol)
-		if responseMessage is not None: return None, responseMessage
-
-		payload, responseMessage = await process_task(request, "quote")
+		payload, responseMessage = results.pop(0)
 		if payload is None: return None, responseMessage
 		adjustment = 1 / payload["raw"]["quotePrice"][0] if fromQuote == "USD" else payload["raw"]["quotePrice"][0]
 
