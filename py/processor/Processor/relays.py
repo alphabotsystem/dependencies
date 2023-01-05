@@ -53,7 +53,7 @@ async def process_conversion(commandRequest, fromBase, toBase, amount, platforms
 				}
 			}, None
 
-	tasks, results = [], None
+	tasks = []
 
 	# Indirect conversion calculation
 	if fromBase != "USD":
