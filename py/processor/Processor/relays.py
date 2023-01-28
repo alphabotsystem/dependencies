@@ -9,7 +9,7 @@ from .commands import process_quote_arguments
 context = Context.instance()
 
 
-async def process_conversion(commandRequest, fromBase, toBase, amount, platforms):
+async def process_conversion(commandRequest, fromBase, toBase, amount, platforms, acceptable=["USD"]):
 	if amount <= 0 or amount >= 1000000000000000: return None, "Sir?"
 
 	if fromBase == toBase: return None, "Converting into the same asset is trivial."
@@ -17,14 +17,15 @@ async def process_conversion(commandRequest, fromBase, toBase, amount, platforms
 	payload1 = {"raw": {"quotePrice": [1]}}
 	payload2 = {"raw": {"quotePrice": [1]}}
 	fromQuote, toQuote = "USD", "USD"
+	fromTicker, toTicker = "US Dollar", "US Dollar"
 	adjustment = 1
 
 	tasks, results = [], None
 
 	# Parse arguments
-	if fromBase != "USD":
+	if fromBase not in acceptable:
 		tasks.append(process_quote_arguments([], platforms, tickerId=fromBase))
-	if toBase != "USD":
+	if toBase not in acceptable:
 		tasks.append(process_quote_arguments([], platforms, tickerId=toBase))
 
 	if len(tasks) > 0:
@@ -33,47 +34,52 @@ async def process_conversion(commandRequest, fromBase, toBase, amount, platforms
 	tasks, requests = [], []
 
 	# Conversion calculation
-	if fromBase != "USD":
+	if fromBase not in acceptable:
 		responseMessage, request = results.pop(0)
-		if responseMessage is not None: return None, responseMessage
+		if responseMessage is not None: return None, "Value in `from` failed to parse. " + responseMessage
 		tasks.append(process_task(request, "quote"))
 		requests.append(request)
-	if toBase != "USD":
+	if toBase not in acceptable:
 		responseMessage, request = results.pop(0)
-		if responseMessage is not None: return None, responseMessage
+		if responseMessage is not None: return None, "Value in `to` failed to parse. " + responseMessage
 		tasks.append(process_task(request, "quote"))
 		requests.append(request)
 
 	if len(tasks) > 0:
 		results = await gather(*tasks)
 
-	if fromBase != "USD":
+	if fromBase not in acceptable:
 		request = requests.pop(0)
 		payload1, responseMessage = results.pop(0)
 		if payload1 is None: return None, responseMessage
 		fromBase = request.get(payload1.get("platform")).get("ticker").get("base")
 		fromQuote = request.get(payload1.get("platform")).get("ticker").get("quote")
-	if toBase != "USD":
+		fromTicker = request.get(payload1.get("platform")).get("ticker").get("name")
+	if toBase not in acceptable:
 		request = requests.pop(0)
 		payload2, responseMessage = results.pop(0)
 		if payload2 is None: return None, responseMessage
 		toBase = request.get(payload2.get("platform")).get("ticker").get("base")
 		toQuote = request.get(payload2.get("platform")).get("ticker").get("quote")
+		toTicker = request.get(payload2.get("platform")).get("ticker").get("name")
 
-	if fromQuote != toQuote:
-		relaySymbol = toQuote + fromQuote if fromQuote == "USD" else fromQuote + toQuote
+	if fromQuote != toQuote and fromQuote not in acceptable and toQuote not in acceptable:
+		relaySymbol = toQuote + fromQuote if fromQuote in acceptable else fromQuote + toQuote
+		print(relaySymbol)
 		responseMessage, request = await process_quote_arguments([], platforms, tickerId=relaySymbol)
 		if responseMessage is not None: return None, responseMessage
 		payload, responseMessage = await process_task(request, "quote")
 		if payload is None: return None, responseMessage
-		adjustment = 1 / payload["raw"]["quotePrice"][0] if fromQuote == "USD" else payload["raw"]["quotePrice"][0]
+		adjustment = 1 / payload["raw"]["quotePrice"][0] if fromQuote in acceptable else payload["raw"]["quotePrice"][0]
 
 	convertedValue = payload1["raw"]["quotePrice"][0] * amount / (payload2["raw"]["quotePrice"][0] * adjustment)
 	if convertedValue > 1000000000000000: return None, "Sir?"
 
 	return {
 		"quotePrice": "{:,.8f}".format(amount).rstrip('0').rstrip('.') + " " + fromBase,
+		"quoteVolume": f"Converting from {fromTicker}",
 		"quoteConvertedPrice": "{:,.8f}".format(convertedValue).rstrip('0').rstrip('.') + " " + toBase,
+		"quoteConvertedVolume": f"to {toTicker}",
 		"messageColor":"deep purple",
 		"sourceText": "Alpha Currency Conversions",
 		"platform": "Alpha Currency Conversions",
