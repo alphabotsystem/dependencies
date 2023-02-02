@@ -81,8 +81,8 @@ async def process_conversion(commandRequest, fromBase, toBase, amount, platforms
 		"quoteConvertedPrice": "{:,.8f}".format(convertedValue).rstrip('0').rstrip('.') + " " + toBase,
 		"quoteConvertedVolume": f"to {toTicker}",
 		"messageColor":"deep purple",
-		"sourceText": "Alpha Currency Conversions",
-		"platform": "Alpha Currency Conversions",
+		"sourceText": "Alpha.bot Conversions",
+		"platform": "Alpha.bot Conversions",
 		"raw": {
 			"quotePrice": [convertedValue],
 			"ticker": toBase,
