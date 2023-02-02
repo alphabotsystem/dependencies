@@ -13,7 +13,7 @@ from setuptools import find_packages, setup, Command
 
 # Package meta-data.
 NAME = 'CommandRequest'
-DESCRIPTION = 'Alpha Bot compatible command handling class.'
+DESCRIPTION = 'Alpha.bot compatible command handling class.'
 URL = 'https://www.alpha.bot'
 EMAIL = 'matic@alpha.bot'
 AUTHOR = 'Alpha Bot System OÜ'
