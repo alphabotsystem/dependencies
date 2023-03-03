@@ -168,7 +168,7 @@ class CommandRequest(object):
 				},
 				"messageProcessing": {
 					"bias": "traditional",
-					"autodelete": False
+					"autodelete": None
 				},
 				"setup": {
 					"completed": False,
