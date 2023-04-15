@@ -25,10 +25,10 @@ async def autocomplete_venues(tickerId, platforms):
 	)
 	return payload.get("response")
 
-async def autocomplete_timeframe(cls, ctx):
+async def autocomplete_hmap_timeframe(cls, ctx):
 	payload = await process_task(
 		{
-			"option": "timeframe",
+			"option": "hmap_timeframe",
 			"timeframe": " ".join(ctx.options.get("timeframe", "").lower().split()),
 			"type": " ".join(ctx.options.get("type", "").lower().split())
 		},

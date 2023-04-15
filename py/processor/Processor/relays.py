@@ -65,7 +65,6 @@ async def process_conversion(commandRequest, fromBase, toBase, amount, platforms
 
 	if fromQuote != toQuote and fromQuote not in acceptable and toQuote not in acceptable:
 		relaySymbol = toQuote + fromQuote if fromQuote in acceptable else fromQuote + toQuote
-		print(relaySymbol)
 		responseMessage, request = await process_quote_arguments([], platforms, tickerId=relaySymbol)
 		if responseMessage is not None: return None, responseMessage
 		payload, responseMessage = await process_task(request, "quote")
