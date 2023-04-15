@@ -37,6 +37,17 @@ async def autocomplete_hmap_timeframe(cls, ctx):
 	)
 	return payload.get("response")
 
+async def autocomplete_layout_timeframe(cls, ctx):
+	payload = await process_task(
+		{
+			"option": "layout_timeframe",
+			"timeframe": " ".join(ctx.options.get("timeframe", "").lower().split()),
+		},
+		"parser",
+		endpoint="/autocomplete"
+	)
+	return payload.get("response")
+
 async def autocomplete_market(cls, ctx):
 	payload = await process_task(
 		{
