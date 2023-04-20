@@ -145,6 +145,9 @@ class CommandRequest(object):
 	def scheduled_posting_available(self):
 		return self.is_feature_available("scheduledPosting")
 
+	def tradingview_layouts_available(self):
+		return self.is_feature_available("tradingviewLayouts")
+
 	def flow_available(self):
 		return self.is_feature_available("flow")
 
