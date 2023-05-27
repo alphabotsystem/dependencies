@@ -68,39 +68,39 @@ class CommandRequest(object):
 			return ["Alpha Flow"]
 		elif commandType == "p":
 			if self.marketBias == "traditional":
-				return ["CNN Business", "IEXC", "CCXT", "CoinGecko", "Alternative.me"]
+				return ["CNN Business", "Twelvedata", "CCXT", "CoinGecko", "Alternative.me"]
 			else:
-				return ["Alternative.me", "CCXT", "CoinGecko", "IEXC", "CNN Business"]
+				return ["Alternative.me", "CCXT", "CoinGecko", "Twelvedata", "CNN Business"]
 		elif commandType == "v":
 			if self.marketBias == "traditional":
-				return ["IEXC", "CoinGecko", "CCXT"]
+				return ["Twelvedata", "CoinGecko", "CCXT"]
 			else:
-				return ["CoinGecko", "CCXT", "IEXC"]
+				return ["CoinGecko", "CCXT", "Twelvedata"]
 		elif commandType == "d":
 			if self.marketBias == "traditional":
-				return ["IEXC", "CCXT"]
+				return ["Twelvedata", "CCXT"]
 			else:
-				return ["CCXT", "IEXC"]
+				return ["CCXT", "Twelvedata"]
 		elif commandType == "info":
 			if self.marketBias == "traditional":
-				return ["IEXC", "CoinGecko"]
+				return ["Twelvedata", "CoinGecko"]
 			else:
-				return ["CoinGecko", "IEXC"]
+				return ["CoinGecko", "Twelvedata"]
 		elif commandType == "lookup":
 			if self.marketBias == "traditional":
-				return ["IEXC", "CCXT", "CoinGecko", "TradingView", "TradingLite", "Bookmap"]
+				return ["Twelvedata", "CCXT", "CoinGecko", "TradingView", "TradingLite", "Bookmap"]
 			else:
-				return ["CCXT", "CoinGecko", "IEXC", "TradingView", "TradingLite", "Bookmap"]
+				return ["CCXT", "CoinGecko", "Twelvedata", "TradingView", "TradingLite", "Bookmap"]
 		elif commandType == "alert" or commandType == "paper":
 			if self.marketBias == "traditional":
-				return ["IEXC", "CCXT"]
+				return ["Twelvedata", "CCXT"]
 			else:
-				return ["CCXT", "IEXC"]
+				return ["CCXT", "Twelvedata"]
 		elif commandType == "convert":
 			if self.marketBias == "traditional":
-				return ["IEXC", "CCXT", "CoinGecko"]
+				return ["Twelvedata", "CCXT", "CoinGecko"]
 			else:
-				return ["CCXT", "CoinGecko", "IEXC"]
+				return ["CCXT", "CoinGecko", "Twelvedata"]
 		else:
 			raise ValueError(f"incorrect commant type: {commandType}")
 
