@@ -151,6 +151,9 @@ class CommandRequest(object):
 	def flow_available(self):
 		return self.is_feature_available("flow")
 
+	def is_paid_user(self):
+		return self.price_alerts_available() or self.advanced_charting_available() or self.scheduled_posting_available() or self.tradingview_layouts_available() or self.flow_available()
+
 
 	# -------------------------
 	# Helpers
