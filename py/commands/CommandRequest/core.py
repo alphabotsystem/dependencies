@@ -136,9 +136,6 @@ class CommandRequest(object):
 		userFilledSlots = sorted(userSlots.keys())[:userSubscription]
 		return str(self.guildId) in ownerFilledSlots or "personal" in userFilledSlots
 
-	def price_alerts_available(self):
-		return self.is_feature_available("priceAlerts")
-
 	def advanced_charting_available(self):
 		return self.is_feature_available("advancedCharting")
 
@@ -148,11 +145,20 @@ class CommandRequest(object):
 	def tradingview_layouts_available(self):
 		return self.is_feature_available("tradingviewLayouts")
 
+	def price_satellites_available(self):
+		return self.is_feature_available("satellites")
+
+	def price_alerts_available(self):
+		return self.is_feature_available("priceAlerts")
+
+	def bot_license_available(self):
+		return self.is_feature_available("botLicense")
+
 	def flow_available(self):
 		return self.is_feature_available("flow")
 
 	def is_paid_user(self):
-		return self.price_alerts_available() or self.advanced_charting_available() or self.scheduled_posting_available() or self.tradingview_layouts_available() or self.flow_available()
+		return self.advanced_charting_available() or self.scheduled_posting_available() or self.tradingview_layouts_available() or self.price_satellites_available() or self.price_alerts_available() or self.bot_license_available() or self.flow_available()
 
 
 	# -------------------------
