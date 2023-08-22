@@ -28,7 +28,7 @@ class DatabaseConnector(object):
 		return response
 
 	def get(self, value, default=None):
-		try: response = DatabaseConnector.process_task(f"{self.mode}/fetch", {"key": value})
+		try: response = DatabaseConnector.process_task(f"{self.mode}/fetch", {"key": str(value)})
 		except: return default
 
 		if response is None:
@@ -39,7 +39,7 @@ class DatabaseConnector(object):
 		if self.mode != "account":
 			raise Exception("match is only available for account mode")
 
-		try: response = DatabaseConnector.process_task(f"{self.mode}/match", {"key": value})
+		try: response = DatabaseConnector.process_task(f"{self.mode}/match", {"key": str(value)})
 		except: return default
 
 		if response is None:

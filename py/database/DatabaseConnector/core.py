@@ -30,7 +30,7 @@ class DatabaseConnector(object):
 		return response
 
 	async def get(self, value, default=None):
-		try: response = await DatabaseConnector.process_task(f"{self.mode}/fetch", {"key": value})
+		try: response = await DatabaseConnector.process_task(f"{self.mode}/fetch", {"key": str(value)})
 		except: return default
 
 		if response is None:
@@ -41,7 +41,7 @@ class DatabaseConnector(object):
 		if self.mode != "account":
 			raise Exception("match is only available for account mode")
 
-		try: response = await DatabaseConnector.process_task(f"{self.mode}/match", {"key": value})
+		try: response = await DatabaseConnector.process_task(f"{self.mode}/match", {"key": str(value)})
 		except: return default
 
 		if response is None:
