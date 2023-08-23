@@ -22,7 +22,7 @@ pub struct MessageProcessingData {
 #[derive(Debug, Clone, PartialEq, Deserialize)]
 pub struct SetupData {
 	pub completed: bool,
-	pub connection: AccountInfo,
+	pub connection: Option<String>,
 	pub tos: u8
 }
 
@@ -37,4 +37,5 @@ pub struct SettingsData {
 pub struct GuildInfo {
 	pub charting: ChartingSettings,
 	pub settings: SettingsData
+	pub connection: Option<AccountInfo>
 }
