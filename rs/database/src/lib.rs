@@ -77,10 +77,10 @@ impl<M> DatabaseConnector<M> where M: Debug, M: DatabaseObject, M: DeserializeOw
 
 	pub async fn get(&self, value: &str, default: Option<M>) -> Option<M> {
 		let request = json!({
-			"value": value,
+			"key": value,
 		});
 
-		let response = self.process_task::<M>("/get", Some(request), None).await;
+		let response = self.process_task::<M>("/fetch", Some(request), None).await;
 
 		if let Ok(data) = response {
 			data
@@ -91,8 +91,12 @@ impl<M> DatabaseConnector<M> where M: Debug, M: DatabaseObject, M: DeserializeOw
 	}
 
 	pub async fn match_id(&self, value: &str, default: Option<String>) -> Option<String> {
+		if self.mode != "account" {
+			panic!("match is only available for account mode");
+		}
+
 		let request = json!({
-			"value": value,
+			"key": value,
 		});
 
 		let response = self.process_task::<String>("/match", Some(request), None).await;
