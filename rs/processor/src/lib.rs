@@ -5,7 +5,7 @@ use serde_json::{Map, Value};
 use async_recursion::async_recursion;
 
 #[async_recursion(?Send)]
-pub async fn process_task(mut request: Map<String, Value>, service: &str, endpoint: Option<&str>, origin: Option<String>, retries: Option<u8>) -> Result<Map<String, Value>, reqwest::Error> {
+pub async fn process_task(mut request: Map<String, Value>, service: &str, endpoint: Option<&'async_recursion str>, origin: Option<String>, retries: Option<u8>) -> Result<Map<String, Value>, reqwest::Error> {
 	let retries = retries.unwrap_or(3);
 
 	let endpoint = endpoint.unwrap_or("");
