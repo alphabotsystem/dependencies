@@ -1,8 +1,8 @@
-use serde_json::{Map, Value, json};
+use serde_json::{Value, json};
 
 use crate::process_task;
 
-pub async fn process_chart_arguments(arguments: Vec<&str>, platforms: Vec<&str>, ticker_id: Option<&str>, defaults: Value) -> (Option<Value>, Option<Value>) {
+pub async fn process_chart_arguments(arguments: Vec<&str>, platforms: Vec<&str>, ticker_id: Option<&str>, defaults: Value) -> (Value, Value) {
 	let payload = process_task(
 		json!({
 			"arguments": arguments,
@@ -17,14 +17,14 @@ pub async fn process_chart_arguments(arguments: Vec<&str>, platforms: Vec<&str>,
 	).await;
 
 	if let Err(e) = payload {
-		(Some(Value::String(e.to_string())), None)
+		(Value::String(e.to_string()), Value::Null)
 	} else {
 		let payload = unsafe { payload.unwrap_unchecked() };
-		(Some(payload.get("message").unwrap().clone()), Some(payload.get("response").unwrap().clone()))
+		(payload.get("message").unwrap().clone(), payload.get("response").unwrap().clone())
 	}
 }
 
-pub async fn process_heatmap_arguments(arguments: Vec<&str>, platforms: Vec<&str>) -> (Option<Value>, Option<Value>) {
+pub async fn process_heatmap_arguments(arguments: Vec<&str>, platforms: Vec<&str>) -> (Value, Value) {
 	let payload = process_task(
 		json!({
 			"arguments": arguments,
@@ -37,14 +37,14 @@ pub async fn process_heatmap_arguments(arguments: Vec<&str>, platforms: Vec<&str
 	).await;
 
 	if let Err(e) = payload {
-		(Some(Value::String(e.to_string())), None)
+		(Value::String(e.to_string()), Value::Null)
 	} else {
 		let payload = unsafe { payload.unwrap_unchecked() };
-		(Some(payload.get("message").unwrap().clone()), Some(payload.get("response").unwrap().clone()))
+		(payload.get("message").unwrap().clone(), payload.get("response").unwrap().clone())
 	}
 }
 
-pub async fn process_quote_arguments(arguments: Vec<&str>, platforms: Vec<&str>, ticker_id: Option<&str>) -> (Option<Value>, Option<Value>) {
+pub async fn process_quote_arguments(arguments: Vec<&str>, platforms: Vec<&str>, ticker_id: Option<&str>) -> (Value, Value) {
 	let payload = process_task(
 		json!({
 			"arguments": arguments,
@@ -58,14 +58,14 @@ pub async fn process_quote_arguments(arguments: Vec<&str>, platforms: Vec<&str>,
 	).await;
 
 	if let Err(e) = payload {
-		(Some(Value::String(e.to_string())), None)
+		(Value::String(e.to_string()), Value::Null)
 	} else {
 		let payload = unsafe { payload.unwrap_unchecked() };
-		(Some(payload.get("message").unwrap().clone()), Some(payload.get("response").unwrap().clone()))
+		(payload.get("message").unwrap().clone(), payload.get("response").unwrap().clone())
 	}
 }
 
-pub async fn process_detail_arguments(arguments: Vec<&str>, platforms: Vec<&str>, ticker_id: Option<&str>) -> (Option<Value>, Option<Value>) {
+pub async fn process_detail_arguments(arguments: Vec<&str>, platforms: Vec<&str>, ticker_id: Option<&str>) -> (Value, Value) {
 	let payload = process_task(
 		json!({
 			"arguments": arguments,
@@ -79,9 +79,9 @@ pub async fn process_detail_arguments(arguments: Vec<&str>, platforms: Vec<&str>
 	).await;
 
 	if let Err(e) = payload {
-		(Some(Value::String(e.to_string())), None)
+		(Value::String(e.to_string()), Value::Null)
 	} else {
 		let payload = unsafe { payload.unwrap_unchecked() };
-		(Some(payload.get("message").unwrap().clone()), Some(payload.get("response").unwrap().clone()))
+		(payload.get("message").unwrap().clone(), payload.get("response").unwrap().clone())
 	}
 }
