@@ -14,7 +14,7 @@ pub struct DatabaseConnector<M: DatabaseObject> {
 	client: Client,
 }
 
-impl<M> DatabaseConnector<M> where M: Debug, M: DatabaseObject, M: DeserializeOwned {
+impl<M> DatabaseConnector<M> where M: Debug, M: DatabaseObject, M: DeserializeOwned, M: Sync, M: Send {
 	pub fn new() -> DatabaseConnector<M> {
 		DatabaseConnector {
 			_marker: PhantomData,
@@ -23,8 +23,8 @@ impl<M> DatabaseConnector<M> where M: Debug, M: DatabaseObject, M: DeserializeOw
 		}
 	}
 
-	#[async_recursion(?Send)]
-	async fn process_task<T: DeserializeOwned>(&self, endpoint: &str, request: Option<HashMap<&'async_recursion str, &'async_recursion str>>, retries: Option<u8>) -> Result<T, reqwest::Error> {
+	#[async_recursion]
+	async fn process_task<T>(&self, endpoint: &str, request: Option<HashMap<&'async_recursion str, &'async_recursion str>>, retries: Option<u8>) -> Result<T, reqwest::Error> where T: DeserializeOwned, T: Send {
 		let retries = retries.unwrap_or(3);
 
 		let response = self.client.post(BASE_URL.to_owned() + &self.mode + endpoint)
