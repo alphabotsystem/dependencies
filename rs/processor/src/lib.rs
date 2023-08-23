@@ -20,7 +20,6 @@ pub async fn process_task(mut request: Map<String, Value>, service: &str, endpoi
     };
     let ts = create_token_source(config).await.unwrap();
     let token = ts.token().await.unwrap();
-    println!("token is {}",token.access_token);
 
 	let client = Client::new();
 	let base_url = match service {
