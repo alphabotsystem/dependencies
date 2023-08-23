@@ -1,6 +1,5 @@
 from time import time
 from aiohttp import ClientSession
-from traceback import format_exc
 
 
 class DatabaseConnector(object):
@@ -42,9 +41,7 @@ class DatabaseConnector(object):
 			raise Exception("match is only available for account mode")
 
 		try: response = await DatabaseConnector.process_task(f"{self.mode}/match", {"key": str(value)})
-		except:
-			print(format_exc())
-			return default
+		except: return default
 
 		if response is None:
 			return default
