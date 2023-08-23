@@ -17,7 +17,7 @@ pub async fn process_chart_arguments(arguments: Vec<&str>, platforms: Vec<&str>,
 	).await;
 
 	if let Err(e) = payload {
-		(None, Some(json!({"error": e.to_string()})))
+		(e.to_string(), None)
 	} else {
 		let payload = unsafe { payload.unwrap_unchecked() };
 		(Some(payload.get("message").unwrap().clone()), Some(payload.get("response").unwrap().clone()))
