@@ -1,16 +1,18 @@
 use std::env;
 use google_cloud_auth::project::{create_token_source, Config};
 use reqwest::Client;
-use serde_json::{Map, Value};
+use serde_json::Value;
 use async_recursion::async_recursion;
 
 #[async_recursion]
-pub async fn process_task(mut request: Map<String, Value>, service: &str, endpoint: Option<&'async_recursion str>, origin: Option<String>, retries: Option<u8>) -> Result<Map<String, Value>, reqwest::Error> {
+pub async fn process_task(mut request: Value, service: &str, endpoint: Option<&'async_recursion str>, origin: Option<String>, retries: Option<u8>) -> Result<Value, reqwest::Error> {
 	let retries = retries.unwrap_or(3);
 
 	let endpoint = endpoint.unwrap_or("");
 	let origin = origin.unwrap_or("default".to_string());
-	request.insert("origin".to_string(), Value::String(origin.clone()));
+
+	let data = request.as_object_mut().unwrap();
+	data.insert("origin".to_string(), Value::String(origin.clone()));
 
     let scopes = ["https://www.googleapis.com/auth/cloud-platform"];
     let config = Config {
@@ -35,10 +37,10 @@ pub async fn process_task(mut request: Map<String, Value>, service: &str, endpoi
 
 	let response = client.post(base_url.to_owned() + service + endpoint)
 		.header("Authorization", token.access_token)
-		.json(&request)
+		.json(&data)
 		.send()
 		.await?
-		.json::<Map<String, Value>>()
+		.json::<Value>()
 		.await;
 
 	if let Ok(data) = response {
