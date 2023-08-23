@@ -3,6 +3,7 @@ pub mod structs;
 use std::{collections::HashMap, fmt::Debug, marker::PhantomData};
 use reqwest::Client;
 use serde::de::DeserializeOwned;
+use serde::Deserialize;
 use serde_json::{Value, json};
 use structs::DatabaseObject;
 use async_recursion::async_recursion;
@@ -16,6 +17,11 @@ pub struct DatabaseConnector<M: DatabaseObject> {
 	client: Client,
 }
 
+#[derive(Debug, Deserialize)]
+struct Response<T> {
+	response: Option<T>,
+}
+
 impl<M> DatabaseConnector<M> where M: Debug, M: DatabaseObject, M: DeserializeOwned, M: Sync, M: Send {
 	pub fn new() -> DatabaseConnector<M> {
 		DatabaseConnector {
@@ -26,23 +32,23 @@ impl<M> DatabaseConnector<M> where M: Debug, M: DatabaseObject, M: DeserializeOw
 	}
 
 	#[async_recursion]
-	async fn process_task<T>(&self, endpoint: &str, request: Option<Value>, retries: Option<u8>) -> Result<T, reqwest::Error> where T: DeserializeOwned, T: Send {
+	async fn process_task<T>(&self, endpoint: &str, request: Option<Value>, retries: Option<u8>) -> Result<Option<T>, reqwest::Error> where T: Debug, T: DeserializeOwned, T: Send {
 		let retries = retries.unwrap_or(3);
 
 		let response = self.client.post(BASE_URL.to_owned() + &self.mode + endpoint)
 			.json(&request)
 			.send()
 			.await?
-			.json::<T>()
+			.json::<Response<T>>()
 			.await;
 
 		if let Ok(data) = response {
-			Ok(data)
+			Ok(data.response)
 		} else {
 			if retries > 1 {
 				self.process_task::<T>(endpoint, request, Some(retries - 1)).await
 			} else {
-				response
+				Err(response.unwrap_err())
 			}
 		}
 	}
@@ -51,7 +57,7 @@ impl<M> DatabaseConnector<M> where M: Debug, M: DatabaseObject, M: DeserializeOw
 		let response = self.process_task::<String>("/status", None, None).await;
 
 		if let Ok(data) = response {
-			Some(data)
+			data
 		} else {
 			eprintln!("Error: {:?}", response.unwrap_err());
 			None
@@ -62,7 +68,7 @@ impl<M> DatabaseConnector<M> where M: Debug, M: DatabaseObject, M: DeserializeOw
 		let response = self.process_task::<HashMap<String, String>>("/keys", None, None).await;
 
 		if let Ok(data) = response {
-			Some(data)
+			data
 		} else {
 			eprintln!("Error: {:?}", response.unwrap_err());
 			default
@@ -77,7 +83,7 @@ impl<M> DatabaseConnector<M> where M: Debug, M: DatabaseObject, M: DeserializeOw
 		let response = self.process_task::<M>("/get", Some(request), None).await;
 
 		if let Ok(data) = response {
-			Some(data)
+			data
 		} else {
 			eprintln!("Error: {:?}", response.unwrap_err());
 			default
@@ -92,7 +98,7 @@ impl<M> DatabaseConnector<M> where M: Debug, M: DatabaseObject, M: DeserializeOw
 		let response = self.process_task::<String>("/match", Some(request), None).await;
 
 		if let Ok(data) = response {
-			Some(data)
+			data
 		} else {
 			eprintln!("Error: {:?}", response.unwrap_err());
 			default
