@@ -17,7 +17,7 @@ pub async fn process_chart_arguments(arguments: Vec<&str>, platforms: Vec<&str>,
 	).await;
 
 	if let Err(e) = payload {
-		(e.to_string(), None)
+		(Some(Value::String(e.to_string())), None)
 	} else {
 		let payload = unsafe { payload.unwrap_unchecked() };
 		(Some(payload.get("message").unwrap().clone()), Some(payload.get("response").unwrap().clone()))
@@ -37,7 +37,7 @@ pub async fn process_heatmap_arguments(arguments: Vec<&str>, platforms: Vec<&str
 	).await;
 
 	if let Err(e) = payload {
-		(None, Some(json!({"error": e.to_string()})))
+		(Some(Value::String(e.to_string())), None)
 	} else {
 		let payload = unsafe { payload.unwrap_unchecked() };
 		(Some(payload.get("message").unwrap().clone()), Some(payload.get("response").unwrap().clone()))
@@ -58,7 +58,7 @@ pub async fn process_quote_arguments(arguments: Vec<&str>, platforms: Vec<&str>,
 	).await;
 
 	if let Err(e) = payload {
-		(None, Some(json!({"error": e.to_string()})))
+		(Some(Value::String(e.to_string())), None)
 	} else {
 		let payload = unsafe { payload.unwrap_unchecked() };
 		(Some(payload.get("message").unwrap().clone()), Some(payload.get("response").unwrap().clone()))
@@ -79,7 +79,7 @@ pub async fn process_detail_arguments(arguments: Vec<&str>, platforms: Vec<&str>
 	).await;
 
 	if let Err(e) = payload {
-		(None, Some(json!({"error": e.to_string()})))
+		(Some(Value::String(e.to_string())), None)
 	} else {
 		let payload = unsafe { payload.unwrap_unchecked() };
 		(Some(payload.get("message").unwrap().clone()), Some(payload.get("response").unwrap().clone()))
