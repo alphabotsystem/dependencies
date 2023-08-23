@@ -55,7 +55,7 @@ pub struct PaperTraderData {
 }
 
 #[derive(Debug, Clone, PartialEq, Deserialize)]
-pub struct AccountInfo {
+pub struct AccountProperties {
 	pub apiKeys: ApiKeys,
 	pub customer: CustomerData,
 	pub oauth: OAuthData,

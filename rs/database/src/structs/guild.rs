@@ -1,6 +1,6 @@
 use serde::Deserialize;
 
-use crate::AccountInfo;
+use crate::AccountProperties;
 
 #[derive(Debug, Clone, PartialEq, Deserialize)]
 pub struct ChartingSettings {
@@ -36,8 +36,8 @@ pub struct SettingsData {
 }
 
 #[derive(Debug, Clone, PartialEq, Deserialize)]
-pub struct GuildInfo {
+pub struct GuildProperties {
 	pub charting: ChartingSettings,
 	pub settings: SettingsData,
-	pub connection: Option<AccountInfo>
+	pub connection: Option<AccountProperties>
 }
