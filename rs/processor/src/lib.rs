@@ -5,9 +5,10 @@ use serde_json::{Map, Value};
 use async_recursion::async_recursion;
 
 #[async_recursion(?Send)]
-pub async fn process_task(mut request: Map<String, Value>, service: &str, endpoint: &str, origin: Option<String>, retries: Option<u8>) -> Result<Map<String, Value>, reqwest::Error> {
+pub async fn process_task(mut request: Map<String, Value>, service: &str, endpoint: Option<&str>, origin: Option<String>, retries: Option<u8>) -> Result<Map<String, Value>, reqwest::Error> {
 	let retries = retries.unwrap_or(3);
 
+	let endpoint = endpoint.unwrap_or("");
 	let origin = origin.unwrap_or("default".to_string());
 	request.insert("origin".to_string(), Value::String(origin.clone()));
 
@@ -45,7 +46,7 @@ pub async fn process_task(mut request: Map<String, Value>, service: &str, endpoi
 		Ok(data)
 	} else {
 		if retries > 0 {
-			process_task(request, service, endpoint, Some(origin), Some(retries - 1)).await
+			process_task(request, service, Some(endpoint), Some(origin), Some(retries - 1)).await
 		} else {
 			response
 		}
