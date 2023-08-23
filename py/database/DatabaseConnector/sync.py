@@ -11,7 +11,7 @@ class DatabaseConnector(object):
 		url = "http://database:6900/"
 		response = requests.post(url + endpoint, json=request)
 		if response.status_code == 200:
-			return response.json()
+			return response.json().get("response")
 		if retries <= 1: raise Exception("time out")
 		else: return DatabaseConnector.process_task(endpoint, request, retries-1)
 

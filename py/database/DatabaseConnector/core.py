@@ -13,7 +13,7 @@ class DatabaseConnector(object):
 		async with ClientSession() as session:
 			async with session.post(url + endpoint, json=request) as response:
 				if response.status == 200:
-					return await response.json()
+					return (await response.json()).get("response")
 		if retries <= 1: raise Exception("time out")
 		else: return await process_task(endpoint, request, retries-1)
 
@@ -42,7 +42,9 @@ class DatabaseConnector(object):
 			raise Exception("match is only available for account mode")
 
 		try: response = await DatabaseConnector.process_task(f"{self.mode}/match", {"key": str(value)})
-		except: return default
+		except:
+			print(format_exc())
+			return default
 
 		if response is None:
 			return default
