@@ -37,7 +37,7 @@ impl<M> DatabaseConnector<M> where M: Debug, M: DatabaseObject, M: DeserializeOw
 		if let Ok(data) = response {
 			Ok(data)
 		} else {
-			if retries > 0 {
+			if retries > 1 {
 				self.process_task::<T>(endpoint, request, Some(retries - 1)).await
 			} else {
 				response

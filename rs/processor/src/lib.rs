@@ -44,7 +44,7 @@ pub async fn process_task(mut request: Map<String, Value>, service: &str, endpoi
 	if let Ok(data) = response {
 		Ok(data)
 	} else {
-		if retries > 0 {
+		if retries > 1 {
 			process_task(request, service, Some(endpoint), Some(origin), Some(retries - 1)).await
 		} else {
 			response
