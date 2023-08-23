@@ -1,4 +1,4 @@
-pub mod structs;
+mod structs;
 
 use std::{collections::HashMap, fmt::Debug, marker::PhantomData};
 use reqwest::Client;
@@ -6,6 +6,7 @@ use serde::de::DeserializeOwned;
 use serde_json::{Value, json};
 use structs::DatabaseObject;
 use async_recursion::async_recursion;
+pub use structs::{account::AccountInfo, guild::GuildInfo};
 
 const BASE_URL: &str = "http://database:6900/";
 
