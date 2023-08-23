@@ -2,7 +2,7 @@ use serde_json::{Map, Value, json};
 
 use crate::process_task;
 
-pub async fn process_chart_arguments(arguments: Vec<&str>, platforms: Vec<&str>, ticker_id: Option<&str>, defaults: Map<String, Value>) -> (Option<Value>, Option<Value>) {
+pub async fn process_chart_arguments(arguments: Vec<&str>, platforms: Vec<&str>, ticker_id: Option<&str>, defaults: Value) -> (Option<Value>, Option<Value>) {
 	let payload = process_task(
 		json!({
 			"arguments": arguments,
