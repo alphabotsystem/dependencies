@@ -59,7 +59,7 @@ impl<M> DatabaseConnector<M> where M: Debug, M: DatabaseObject, M: DeserializeOw
 		if let Ok(data) = response {
 			data
 		} else {
-			eprintln!("Error: {:?}", response.unwrap_err());
+			eprintln!("Failed to fetch {} status: {:?}", self.mode, response.unwrap_err());
 			None
 		}
 	}
@@ -70,7 +70,7 @@ impl<M> DatabaseConnector<M> where M: Debug, M: DatabaseObject, M: DeserializeOw
 		if let Ok(data) = response {
 			data
 		} else {
-			eprintln!("Error: {:?}", response.unwrap_err());
+			eprintln!("Failed to fetch {} keys: {:?}", self.mode, response.unwrap_err());
 			default
 		}
 	}
@@ -85,7 +85,7 @@ impl<M> DatabaseConnector<M> where M: Debug, M: DatabaseObject, M: DeserializeOw
 		if let Ok(data) = response {
 			data
 		} else {
-			eprintln!("Error: {:?}", response.unwrap_err());
+			eprintln!("Failed to get {} properties: {:?}", self.mode, response.unwrap_err());
 			default
 		}
 	}
@@ -104,7 +104,7 @@ impl<M> DatabaseConnector<M> where M: Debug, M: DatabaseObject, M: DeserializeOw
 		if let Ok(data) = response {
 			data
 		} else {
-			eprintln!("Error: {:?}", response.unwrap_err());
+			eprintln!("Failed to match {} id: {:?}", self.mode, response.unwrap_err());
 			default
 		}
 	}
