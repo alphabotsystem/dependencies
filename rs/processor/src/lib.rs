@@ -2,14 +2,14 @@ mod commands;
 
 use std::env;
 use google_cloud_auth::project::{create_token_source, Config};
-use reqwest::Client;
-use serde_json::Value;
+use reqwest::{Client, Error};
+use serde_json::{Value, json};
 use async_recursion::async_recursion;
 
 pub use crate::commands::*;
 
 #[async_recursion]
-pub async fn process_task(mut request: Value, service: &str, endpoint: Option<&'async_recursion str>, origin: Option<String>, retries: Option<u8>) -> Result<Value, reqwest::Error> {
+pub async fn process_task(mut request: Value, service: &str, endpoint: Option<&'async_recursion str>, origin: Option<String>, retries: Option<u8>) -> Result<Value, Error> {
 	let retries = retries.unwrap_or(3);
 
 	let endpoint = endpoint.unwrap_or("");
@@ -24,7 +24,15 @@ pub async fn process_task(mut request: Value, service: &str, endpoint: Option<&'
         scopes: Some(&scopes),
         sub: None
     };
-    let ts = create_token_source(config).await.unwrap();
+    let ts = match create_token_source(config).await {
+		Ok(ts) => ts,
+		Err(e) => {
+			return Ok(json!({
+				"message": format!("Error: {}", e),
+				"response": Value::Null
+			}));
+		}
+	};
     let token = ts.token().await.unwrap();
 
 	let client = Client::new();
