@@ -68,9 +68,9 @@ class CommandRequest(object):
 			return ["Alpha Flow"]
 		elif commandType == "p":
 			if self.marketBias == "traditional":
-				return ["CNN Business", "Twelvedata", "CCXT", "CoinGecko", "Alternative.me"]
+				return ["CNN Business", "Twelvedata", "CCXT", "CoinGecko", "Alternative.me", "Blockchair"]
 			else:
-				return ["Alternative.me", "CCXT", "CoinGecko", "Twelvedata", "CNN Business"]
+				return ["Alternative.me", "CCXT", "CoinGecko", "Twelvedata", "CNN Business", "Blockchair"]
 		elif commandType == "v":
 			if self.marketBias == "traditional":
 				return ["Twelvedata", "CoinGecko", "CCXT"]
