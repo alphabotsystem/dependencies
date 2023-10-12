@@ -3,17 +3,17 @@ from base64 import decodebytes
 from aiohttp import ClientSession
 from io import BytesIO
 
-from google.auth.transport import requests
-from google.oauth2 import id_token
+# from google.auth.transport import requests
+# from google.oauth2 import id_token
 
 
 endpoints = {
 	"parser": "http://parser:6900/" if environ['PRODUCTION'] else "http://parser:6900/",
 	"candle": "http://candle-server:6900/" if environ['PRODUCTION'] else "http://candle-server:6900/",
-	"chart": "https://image-server-yzrdox65bq-uc.a.run.app/" if environ['PRODUCTION'] else "http://image-server:6900/",
+	"chart": "http://image-server:6900/" if environ['PRODUCTION'] else "http://image-server:6900/",
 	"depth": "http://quote-server:6900/" if environ['PRODUCTION'] else "http://quote-server:6900/",
 	"detail": "http://quote-server:6900/" if environ['PRODUCTION'] else "http://quote-server:6900/",
-	"heatmap": "https://image-server-yzrdox65bq-uc.a.run.app/" if environ['PRODUCTION'] else "http://image-server:6900/",
+	"heatmap": "http://image-server:6900/" if environ['PRODUCTION'] else "http://image-server:6900/",
 	"quote": "http://quote-server:6900/" if environ['PRODUCTION'] else "http://quote-server:6900/",
 }
 
@@ -22,10 +22,10 @@ async def process_task(request, service, endpoint="", origin="default", retries=
 	request["origin"] = origin
 
 	url = endpoints[service]
-	authReq = requests.Request()
-	token = id_token.fetch_id_token(authReq, url)
+	# authReq = requests.Request()
+	# token = id_token.fetch_id_token(authReq, url)
 	headers = {
-		"Authorization": "Bearer " + token,
+		# "Authorization": "Bearer " + token,
 		"content-type": "application/json",
 		"accept": "application/json"
 	}
