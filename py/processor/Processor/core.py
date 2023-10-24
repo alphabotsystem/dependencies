@@ -1,6 +1,8 @@
 from os import environ
 from base64 import decodebytes
+from asyncio import sleep
 from aiohttp import ClientSession
+from aiohttp.client_exceptions import ServerDisconnectedError
 from io import BytesIO
 
 # from google.auth.transport import requests
@@ -30,20 +32,23 @@ async def process_task(request, service, endpoint="", origin="default", retries=
 		"accept": "application/json"
 	}
 
-	async with ClientSession(headers=headers) as session:
-		async with session.post(url + service + endpoint, json=request) as response:
-			if response.status == 200:
-				data = await response.json()
-				if service in ["parser"]:
-					return data
-				elif service in ["chart", "heatmap", "depth"]:
-					payload, message = data.get("response"), data.get("message")
-					if payload is not None and payload["data"] is not None:
-						payload["data"] = BytesIO(decodebytes(payload["data"].encode()))
-					return payload, message
-				else:
-					payload, message = data.get("response"), data.get("message")
-					return payload, message
+	try:
+		async with ClientSession(headers=headers) as session:
+			async with session.post(url + service + endpoint, json=request) as response:
+				if response.status == 200:
+					data = await response.json()
+					if service in ["parser"]:
+						return data
+					elif service in ["chart", "heatmap", "depth"]:
+						payload, message = data.get("response"), data.get("message")
+						if payload is not None and payload["data"] is not None:
+							payload["data"] = BytesIO(decodebytes(payload["data"].encode()))
+						return payload, message
+					else:
+						payload, message = data.get("response"), data.get("message")
+						return payload, message
+	except ServerDisconnectedError:
+		sleep(1)
 
 	if retries <= 1: raise Exception("time out")
 	else: return await process_task(request, service, endpoint, origin, retries-1)
