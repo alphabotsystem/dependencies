@@ -2,7 +2,7 @@ from os import environ
 from base64 import decodebytes
 from asyncio import sleep
 from aiohttp import ClientSession
-from aiohttp.client_exceptions import ServerDisconnectedError
+from aiohttp.client_exceptions import ServerDisconnectedError, ClientConnectorError
 from io import BytesIO
 
 # from google.auth.transport import requests
@@ -47,7 +47,8 @@ async def process_task(request, service, endpoint="", origin="default", retries=
 					else:
 						payload, message = data.get("response"), data.get("message")
 						return payload, message
-	except ServerDisconnectedError:
+	except (ServerDisconnectedError, ClientConnectorError) as e:
+		if retries <= 1: raise e
 		sleep(1)
 
 	if retries <= 1: raise Exception("time out")
