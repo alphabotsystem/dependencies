@@ -47,10 +47,12 @@ async def process_task(request, service, endpoint="", origin="default", retries=
 					else:
 						payload, message = data.get("response"), data.get("message")
 						return payload, message
+				else:
+					print(f"Error: {response.status}")
 	except (ServerDisconnectedError, ClientConnectorError, TimeoutError) as e:
 		if retries >= maxRetries: raise e
 		print(f"Retrying {service}{endpoint} request ({retries}/{maxRetries - 1})")
 		await sleep(retries)
 
-	if retries >= 3: raise Exception("time out")
+	if retries >= maxRetries: raise Exception("exhausted retries")
 	else: return await process_task(request, service, endpoint, origin, retries + 1)
