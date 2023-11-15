@@ -5,12 +5,13 @@ use google_cloud_auth::project::{create_token_source, Config};
 use reqwest::{Client, Error};
 use serde_json::{Value, json};
 use async_recursion::async_recursion;
+use tokio::time::{sleep, Duration};
 
 pub use crate::commands::*;
 
 #[async_recursion]
 pub async fn process_task(mut request: Value, service: &str, endpoint: Option<&'async_recursion str>, origin: Option<String>, retries: Option<u8>) -> Result<Value, Error> {
-	let retries = retries.unwrap_or(3);
+	let retries = retries.unwrap_or(1);
 
 	let endpoint = endpoint.unwrap_or("");
 	let origin = origin.unwrap_or("default".to_string());
@@ -58,8 +59,9 @@ pub async fn process_task(mut request: Value, service: &str, endpoint: Option<&'
 	if let Ok(data) = response {
 		Ok(data)
 	} else {
-		if retries > 1 {
-			process_task(request, service, Some(endpoint), Some(origin), Some(retries - 1)).await
+		if retries < 3 {
+			sleep(Duration::from_secs(retries as u64)).await;
+			process_task(request, service, Some(endpoint), Some(origin), Some(retries + 1)).await
 		} else {
 			response
 		}

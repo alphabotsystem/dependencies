@@ -7,14 +7,14 @@ class DatabaseConnector(object):
 		self.mode = mode
 
 	@staticmethod
-	async def process_task(endpoint, request=None, retries=3):
+	async def process_task(endpoint, request=None, retries=1):
 		url = "http://database:6900/"
 		async with ClientSession() as session:
 			async with session.post(url + endpoint, json=request) as response:
 				if response.status == 200:
 					return (await response.json()).get("response")
-		if retries <= 1: raise Exception("time out")
-		else: return await process_task(endpoint, request, retries-1)
+		if retries >= 3: raise Exception("time out")
+		else: return await process_task(endpoint, request, retries + 1)
 
 	async def check_status(self):
 		try: return await DatabaseConnector.process_task(f"{self.mode}/status")

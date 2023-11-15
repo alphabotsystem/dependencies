@@ -7,6 +7,7 @@ use serde::Deserialize;
 use serde_json::{Value, json};
 use structs::DatabaseObject;
 use async_recursion::async_recursion;
+use tokio::time::{sleep, Duration};
 pub use structs::{account::AccountProperties, guild::GuildProperties};
 
 const BASE_URL: &str = "http://database:6900/";
@@ -33,7 +34,7 @@ impl<M> DatabaseConnector<M> where M: Debug, M: DatabaseObject, M: DeserializeOw
 
 	#[async_recursion]
 	async fn process_task<T>(&self, endpoint: &str, request: Option<Value>, retries: Option<u8>) -> Result<Option<T>, reqwest::Error> where T: Debug, T: DeserializeOwned, T: Send {
-		let retries = retries.unwrap_or(3);
+		let retries = retries.unwrap_or(1);
 
 		let response = self.client.post(BASE_URL.to_owned() + &self.mode + endpoint)
 			.json(&request)
@@ -45,8 +46,9 @@ impl<M> DatabaseConnector<M> where M: Debug, M: DatabaseObject, M: DeserializeOw
 		if let Ok(data) = response {
 			Ok(data.response)
 		} else {
-			if retries > 1 {
-				self.process_task::<T>(endpoint, request, Some(retries - 1)).await
+			if retries < 3 {
+				sleep(Duration::from_secs(retries as u64)).await;
+				self.process_task::<T>(endpoint, request, Some(retries + 1)).await
 			} else {
 				Err(response.unwrap_err())
 			}

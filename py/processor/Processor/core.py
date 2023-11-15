@@ -20,7 +20,7 @@ endpoints = {
 }
 
 
-async def process_task(request, service, endpoint="", origin="default", retries=3):
+async def process_task(request, service, endpoint="", origin="default", retries=1):
 	request["origin"] = origin
 
 	url = endpoints[service]
@@ -48,8 +48,9 @@ async def process_task(request, service, endpoint="", origin="default", retries=
 						payload, message = data.get("response"), data.get("message")
 						return payload, message
 	except (ServerDisconnectedError, ClientConnectorError) as e:
-		if retries <= 1: raise e
-		sleep(1)
+		if retries >= 3: raise e
+		print("retrying", service, endpoint, retries)
+		sleep(retries)
 
-	if retries <= 1: raise Exception("time out")
-	else: return await process_task(request, service, endpoint, origin, retries-1)
+	if retries >= 3: raise Exception("time out")
+	else: return await process_task(request, service, endpoint, origin, retries + 1)
