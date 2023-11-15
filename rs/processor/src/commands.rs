@@ -13,6 +13,7 @@ pub async fn process_chart_arguments(arguments: Vec<&str>, platforms: Vec<&str>,
 		"parser",
 		Some("/chart"),
 		None,
+		None,
 		None
 	).await;
 
@@ -32,6 +33,7 @@ pub async fn process_heatmap_arguments(arguments: Vec<&str>, platforms: Vec<&str
 		}),
 		"parser",
 		Some("/heatmap"),
+		None,
 		None,
 		None
 	).await;
@@ -54,6 +56,7 @@ pub async fn process_quote_arguments(arguments: Vec<&str>, platforms: Vec<&str>,
 		"parser",
 		Some("/quote"),
 		None,
+		None,
 		None
 	).await;
 
@@ -74,6 +77,7 @@ pub async fn process_detail_arguments(arguments: Vec<&str>, platforms: Vec<&str>
 		}),
 		"parser",
 		Some("/detail"),
+		None,
 		None,
 		None
 	).await;

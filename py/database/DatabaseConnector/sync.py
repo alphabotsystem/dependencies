@@ -7,12 +7,12 @@ class DatabaseConnector(object):
 		self.mode = mode
 
 	@staticmethod
-	def process_task(endpoint, request=None, retries=1):
+	def process_task(endpoint, request=None, retries=1, maxRetries=5):
 		url = "http://database:6900/"
 		response = requests.post(url + endpoint, json=request)
 		if response.status_code == 200:
 			return response.json().get("response")
-		if retries >= 3: raise Exception("time out")
+		if retries >= maxRetries: raise Exception("time out")
 		else: return DatabaseConnector.process_task(endpoint, request, retries + 1)
 
 	def check_status(self):

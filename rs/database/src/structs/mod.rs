@@ -4,17 +4,17 @@ pub mod account;
 pub mod guild;
 
 pub trait DatabaseObject {
-	fn mode() -> String;
+    fn mode() -> String;
 }
 
 impl DatabaseObject for AccountProperties {
-	fn mode() -> String {
-		"account".to_owned()
-	}
+    fn mode() -> String {
+        "account".to_owned()
+    }
 }
 
 impl DatabaseObject for GuildProperties {
-	fn mode() -> String {
-		"guild".to_owned()
-	}
+    fn mode() -> String {
+        "guild".to_owned()
+    }
 }
