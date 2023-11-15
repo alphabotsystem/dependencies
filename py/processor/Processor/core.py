@@ -1,6 +1,6 @@
 from os import environ
 from base64 import decodebytes
-from asyncio import sleep
+from asyncio import sleep, TimeoutError
 from aiohttp import ClientSession
 from aiohttp.client_exceptions import ServerDisconnectedError, ClientConnectorError
 from io import BytesIO
@@ -34,7 +34,7 @@ async def process_task(request, service, endpoint="", origin="default", retries=
 
 	try:
 		async with ClientSession(headers=headers) as session:
-			async with session.post(url + service + endpoint, json=request) as response:
+			async with session.post(url + service + endpoint, json=request, timeout=30) as response:
 				if response.status == 200:
 					data = await response.json()
 					if service in ["parser"]:
@@ -47,7 +47,7 @@ async def process_task(request, service, endpoint="", origin="default", retries=
 					else:
 						payload, message = data.get("response"), data.get("message")
 						return payload, message
-	except (ServerDisconnectedError, ClientConnectorError) as e:
+	except (ServerDisconnectedError, ClientConnectorError, TimeoutError) as e:
 		if retries >= 3: raise e
 		print(f"Retrying request for {service}{endpoint} ({retries}/2)")
 		sleep(retries)
