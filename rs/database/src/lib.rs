@@ -7,7 +7,6 @@ use serde::Deserialize;
 use serde_json::{Value, json};
 use structs::DatabaseObject;
 use async_recursion::async_recursion;
-use tokio::time::{sleep, Duration};
 pub use structs::{account::AccountProperties, guild::GuildProperties};
 
 const BASE_URL: &str = "http://database:6900/";
@@ -47,7 +46,6 @@ impl<M> DatabaseConnector<M> where M: Debug, M: DatabaseObject, M: DeserializeOw
 			Ok(data.response)
 		} else {
 			if retries < 3 {
-				sleep(Duration::from_secs(retries as u64)).await;
 				self.process_task::<T>(endpoint, request, Some(retries + 1)).await
 			} else {
 				Err(response.unwrap_err())

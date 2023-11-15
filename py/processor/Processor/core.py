@@ -49,7 +49,7 @@ async def process_task(request, service, endpoint="", origin="default", retries=
 						return payload, message
 	except (ServerDisconnectedError, ClientConnectorError) as e:
 		if retries >= 3: raise e
-		print("retrying", service, endpoint, retries)
+		print(f"Retrying request for {service}{endpoint} ({retries}/2)")
 		sleep(retries)
 
 	if retries >= 3: raise Exception("time out")

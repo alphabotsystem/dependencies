@@ -60,6 +60,7 @@ pub async fn process_task(mut request: Value, service: &str, endpoint: Option<&'
 		Ok(data)
 	} else {
 		if retries < 3 {
+			println!("Retrying request {}{} ({}/2)", service, endpoint, retries);
 			sleep(Duration::from_secs(retries as u64)).await;
 			process_task(request, service, Some(endpoint), Some(origin), Some(retries + 1)).await
 		} else {
