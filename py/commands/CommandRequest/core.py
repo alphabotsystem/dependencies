@@ -50,12 +50,12 @@ class CommandRequest(object):
 		if commandType == "c":
 			chartSettings = self.accountProperties.get("settings", {}).get("charts", {})
 			if self.marketBias == "traditional":
-				order = ["CNN Business", "TradingView", "TradingLite", "Bookmap", "Alternative.me"]
+				order = ["CNN Business", "TradingView", "TradingLite", "Alternative.me"]
 				if self.advanced_charting_available():
 					order.insert(order.index("TradingView"), "TradingView Premium")
 				return order
 			else:
-				order = ["Alternative.me", "TradingView", "TradingLite", "Bookmap", "CNN Business"]
+				order = ["Alternative.me", "TradingView", "TradingLite", "CNN Business"]
 				if self.advanced_charting_available():
 					order.insert(order.index("TradingView"), "TradingView Premium")
 				return order
@@ -88,9 +88,9 @@ class CommandRequest(object):
 				return ["CoinGecko", "Twelvedata"]
 		elif commandType == "lookup":
 			if self.marketBias == "traditional":
-				return ["Twelvedata", "CCXT", "CoinGecko", "TradingView", "TradingLite", "Bookmap"]
+				return ["Twelvedata", "CCXT", "CoinGecko", "TradingView", "TradingLite"]
 			else:
-				return ["CCXT", "CoinGecko", "Twelvedata", "TradingView", "TradingLite", "Bookmap"]
+				return ["CCXT", "CoinGecko", "Twelvedata", "TradingView", "TradingLite"]
 		elif commandType == "alert" or commandType == "paper":
 			if self.marketBias == "traditional":
 				return ["Twelvedata", "CCXT"]
