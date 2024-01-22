@@ -61,9 +61,9 @@ class CommandRequest(object):
 				return order
 		elif commandType == "hmap":
 			if self.marketBias == "traditional":
-				return ["TradingView Stock Heatmap", "TradingView Crypto Heatmap"]
+				return ["TradingView Stock Heatmap", "TradingView ETF Heatmap", "TradingView Crypto Heatmap"]
 			else:
-				return ["TradingView Crypto Heatmap", "TradingView Stock Heatmap"]
+				return ["TradingView Crypto Heatmap", "TradingView Stock Heatmap", "TradingView ETF Heatmap"]
 		elif commandType == "flow":
 			return ["Alpha Flow"]
 		elif commandType == "p":
