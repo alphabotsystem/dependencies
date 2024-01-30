@@ -56,3 +56,39 @@ async def process_task(request, service, endpoint="", origin="default", retries=
 
 	if retries >= maxRetries: raise Exception("exhausted retries")
 	else: return await process_task(request, service, endpoint, origin, retries + 1)
+
+async def process_task_with(session, request, service, endpoint="", origin="default", retries=1, maxRetries=5):
+	request["origin"] = origin
+
+	url = endpoints[service]
+	# authReq = requests.Request()
+	# token = id_token.fetch_id_token(authReq, url)
+	headers = {
+		# "Authorization": "Bearer " + token,
+		"content-type": "application/json",
+		"accept": "application/json"
+	}
+
+	try:
+		async with session.post(url + service + endpoint, json=request, timeout=30) as response:
+			if response.status == 200:
+				data = await response.json()
+				if service in ["parser"]:
+					return data
+				elif service in ["chart", "heatmap", "depth"]:
+					payload, message = data.get("response"), data.get("message")
+					if payload is not None and payload["data"] is not None:
+						payload["data"] = BytesIO(decodebytes(payload["data"].encode()))
+					return payload, message
+				else:
+					payload, message = data.get("response"), data.get("message")
+					return payload, message
+			else:
+				print(f"Error: {response.status}")
+	except (ServerDisconnectedError, ClientConnectorError, TimeoutError) as e:
+		if retries >= maxRetries: raise e
+		print(f"Retrying {service}{endpoint} request ({retries}/{maxRetries - 1})")
+		await sleep(retries)
+
+	if retries >= maxRetries: raise Exception("exhausted retries")
+	else: return await process_task_with(session, request, service, endpoint, origin, retries + 1)
