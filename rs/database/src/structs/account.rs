@@ -49,8 +49,8 @@ pub struct PaperTraderBalance {
 
 #[derive(Debug, Clone, PartialEq, Deserialize)]
 pub struct PaperTraderData {
-    pub globalLastReset: u64,
-    pub globalResetCount: u64,
+    pub globalLastReset: Option<u64>,
+    pub globalResetCount: Option<u64>,
     pub balance: Option<PaperTraderBalance>,
 }
 
