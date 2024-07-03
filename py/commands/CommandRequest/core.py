@@ -175,9 +175,6 @@ class CommandRequest(object):
 				"chartType": "candles"
 			},
 			"settings": {
-				"assistant": {
-					"enabled": True
-				},
 				"messageProcessing": {
 					"bias": "traditional",
 					"autodelete": None
