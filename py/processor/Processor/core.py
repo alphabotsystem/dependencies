@@ -5,32 +5,27 @@ from aiohttp import ClientSession
 from aiohttp.client_exceptions import ServerDisconnectedError, ClientConnectorError
 from io import BytesIO
 
-# from google.auth.transport import requests
-# from google.oauth2 import id_token
+from google.auth.transport import requests
+from google.oauth2 import id_token
 
 
-endpoints = {
-	"parser": "http://parser:6900/" if environ['PRODUCTION'] else "http://parser:6900/",
-	"candle": "http://candle-server:6900/" if environ['PRODUCTION'] else "http://candle-server:6900/",
-	"chart": "http://image-server:6900/" if environ['PRODUCTION'] else "http://image-server:6900/",
-	"depth": "http://quote-server:6900/" if environ['PRODUCTION'] else "http://quote-server:6900/",
-	"detail": "http://quote-server:6900/" if environ['PRODUCTION'] else "http://quote-server:6900/",
-	"heatmap": "http://image-server:6900/" if environ['PRODUCTION'] else "http://image-server:6900/",
-	"quote": "http://quote-server:6900/" if environ['PRODUCTION'] else "http://quote-server:6900/",
-}
-
-
-async def process_task(request, service, endpoint="", origin="default", retries=1, maxRetries=5):
+async def process_task(request, service, endpoint="", origin="default", retries=1, maxRetries=5, priority=True):
 	request["origin"] = origin
 
-	url = endpoints[service]
-	# authReq = requests.Request()
-	# token = id_token.fetch_id_token(authReq, url)
-	headers = {
-		# "Authorization": "Bearer " + token,
-		"content-type": "application/json",
-		"accept": "application/json"
-	}
+	url = resolve_endpoint(service, priority)
+	if priority:
+		headers = {
+			"content-type": "application/json",
+			"accept": "application/json"
+		}
+	else:
+		authReq = requests.Request()
+		token = id_token.fetch_id_token(authReq, url)
+		headers = {
+			"Authorization": "Bearer " + token,
+			"content-type": "application/json",
+			"accept": "application/json"
+		}
 
 	try:
 		async with ClientSession(headers=headers) as session:
@@ -60,14 +55,20 @@ async def process_task(request, service, endpoint="", origin="default", retries=
 async def process_task_with(session, request, service, endpoint="", origin="default", retries=1, maxRetries=5):
 	request["origin"] = origin
 
-	url = endpoints[service]
-	# authReq = requests.Request()
-	# token = id_token.fetch_id_token(authReq, url)
-	headers = {
-		# "Authorization": "Bearer " + token,
-		"content-type": "application/json",
-		"accept": "application/json"
-	}
+	url = resolve_endpoint(service, priority)
+	if priority:
+		headers = {
+			"content-type": "application/json",
+			"accept": "application/json"
+		}
+	else:
+		authReq = requests.Request()
+		token = id_token.fetch_id_token(authReq, url)
+		headers = {
+			"Authorization": "Bearer " + token,
+			"content-type": "application/json",
+			"accept": "application/json"
+		}
 
 	try:
 		async with session.post(url + service + endpoint, json=request, timeout=30) as response:
@@ -92,3 +93,28 @@ async def process_task_with(session, request, service, endpoint="", origin="defa
 
 	if retries >= maxRetries: raise Exception("exhausted retries")
 	else: return await process_task_with(session, request, service, endpoint, origin, retries + 1)
+
+def resolve_endpoint(service, priority=True):
+	match service:
+		case "parser":
+			return "http://parser:6900/" if environ['PRODUCTION'] else "http://parser:6900/"
+		case "candle":
+			return "http://candle-server:6900/" if environ['PRODUCTION'] else "http://candle-server:6900/"
+		case "chart":
+			if priority:
+				return "http://image-server:6900/" if environ['PRODUCTION'] else "http://image-server:6900/"
+			else:
+				return "https://image-server-yzrdox65bq-uc.a.run.app" if environ['PRODUCTION'] else "http://image-server:6900/"
+		case "depth":
+			return "http://quote-server:6900/" if environ['PRODUCTION'] else "http://quote-server:6900/"
+		case "detail":
+			return "http://quote-server:6900/" if environ['PRODUCTION'] else "http://quote-server:6900/"
+		case "heatmap":
+			if priority:
+				return "http://image-server:6900/" if environ['PRODUCTION'] else "http://image-server:6900/"
+			else:
+				return "https://image-server-yzrdox65bq-uc.a.run.app" if environ['PRODUCTION'] else "http://image-server:6900/"
+		case "quote":
+			return "http://quote-server:6900/" if environ['PRODUCTION'] else "http://quote-server:6900/"
+		case _:
+			return None
