@@ -52,7 +52,7 @@ async def process_task(request, service, endpoint="", origin="default", retries=
 	if retries >= maxRetries: raise Exception("exhausted retries")
 	else: return await process_task(request, service, endpoint, origin, retries + 1)
 
-async def process_task_with(session, request, service, endpoint="", origin="default", retries=1, maxRetries=5):
+async def process_task_with(session, request, service, endpoint="", origin="default", retries=1, maxRetries=5, priority=True):
 	request["origin"] = origin
 
 	url = resolve_endpoint(service, priority)
