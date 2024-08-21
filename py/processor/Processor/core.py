@@ -55,23 +55,6 @@ async def process_task(request, service, endpoint="", origin="default", priority
 async def process_task_with(session, request, service, endpoint="", origin="default", priority=True, timeout=30, retries=1, maxRetries=5):
 	request["origin"] = origin
 
-	url = resolve_endpoint(service, priority)
-	if priority:
-		headers = {
-			"content-type": "application/json",
-			"accept": "application/json"
-		}
-	else:
-		authReq = requests.Request()
-		token = id_token.fetch_id_token(authReq, url)
-		headers = {
-			"Authorization": "Bearer " + token,
-			"content-type": "application/json",
-			"accept": "application/json"
-		}
-
-	session.headers = headers
-
 	try:
 		async with session.post(url + service + endpoint, json=request, timeout=30) as response:
 			if response.status == 200:
