@@ -104,7 +104,7 @@ def resolve_endpoint(service, priority=True):
 			if priority:
 				return "http://image-server:6900/" if environ['PRODUCTION'] else "http://image-server:6900/"
 			else:
-				return "https://image-server-yzrdox65bq-uc.a.run.app" if environ['PRODUCTION'] else "http://image-server:6900/"
+				return "https://image-server-yzrdox65bq-uc.a.run.app/" if environ['PRODUCTION'] else "http://image-server:6900/"
 		case "depth":
 			return "http://quote-server:6900/" if environ['PRODUCTION'] else "http://quote-server:6900/"
 		case "detail":
@@ -113,7 +113,7 @@ def resolve_endpoint(service, priority=True):
 			if priority:
 				return "http://image-server:6900/" if environ['PRODUCTION'] else "http://image-server:6900/"
 			else:
-				return "https://image-server-yzrdox65bq-uc.a.run.app" if environ['PRODUCTION'] else "http://image-server:6900/"
+				return "https://image-server-yzrdox65bq-uc.a.run.app/" if environ['PRODUCTION'] else "http://image-server:6900/"
 		case "quote":
 			return "http://quote-server:6900/" if environ['PRODUCTION'] else "http://quote-server:6900/"
 		case _:
