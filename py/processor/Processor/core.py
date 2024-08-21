@@ -55,6 +55,8 @@ async def process_task(request, service, endpoint="", origin="default", priority
 async def process_task_with(session, request, service, endpoint="", origin="default", priority=True, timeout=30, retries=1, maxRetries=5):
 	request["origin"] = origin
 
+	url = resolve_endpoint(service, priority)
+
 	try:
 		async with session.post(url + service + endpoint, json=request, timeout=30) as response:
 			if response.status == 200:
