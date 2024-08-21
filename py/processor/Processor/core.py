@@ -70,7 +70,7 @@ async def process_task_with(session, request, service, endpoint="", origin="defa
 			"accept": "application/json"
 		}
 
-	session.headers.update(headers)
+	session.headers = headers
 
 	try:
 		async with session.post(url + service + endpoint, json=request, timeout=30) as response:
