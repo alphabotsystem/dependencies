@@ -9,7 +9,7 @@ from google.auth.transport import requests
 from google.oauth2 import id_token
 
 
-async def process_task(request, service, endpoint="", origin="default", retries=1, maxRetries=5, priority=True):
+async def process_task(request, service, endpoint="", origin="default", priority=True, timeout=30, retries=1, maxRetries=5):
 	request["origin"] = origin
 
 	url = resolve_endpoint(service, priority)
@@ -50,9 +50,9 @@ async def process_task(request, service, endpoint="", origin="default", retries=
 		await sleep(retries)
 
 	if retries >= maxRetries: raise Exception("exhausted retries")
-	else: return await process_task(request, service, endpoint, origin, retries + 1)
+	else: return await process_task(request, service, endpoint, origin, priority, timeout, retries + 1)
 
-async def process_task_with(session, request, service, endpoint="", origin="default", retries=1, maxRetries=5, priority=True):
+async def process_task_with(session, request, service, endpoint="", origin="default", priority=True, timeout=30, retries=1, maxRetries=5):
 	request["origin"] = origin
 
 	url = resolve_endpoint(service, priority)
@@ -92,7 +92,7 @@ async def process_task_with(session, request, service, endpoint="", origin="defa
 		await sleep(retries)
 
 	if retries >= maxRetries: raise Exception("exhausted retries")
-	else: return await process_task_with(session, request, service, endpoint, origin, retries + 1)
+	else: return await process_task_with(session, request, service, endpoint, origin, priority, timeout, retries + 1)
 
 def resolve_endpoint(service, priority=True):
 	match service:
